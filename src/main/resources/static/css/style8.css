@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+*{
+    font-family: "Nunito Sans", serif;
+}
+.table{
+    width: 100%;
+}
+.table_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    background-color: #fff;
+}
+.table_header p{
+    color: #000000;
+}
+button{
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.table_section{
+    height: 417px;
+    overflow: auto;
+}
+table{
+    width: 100%;
+    table-layout: inherit;
+    min-width: 573px;
+    border-collapse: collapse;
+}
+thead th{
+    position: sticky;
+    top: 0;
+    background-color: #dfe2df; 
+    color: #000;
+    font-size: 15px;
+    font-weight: 900;
+}
+th, td{
+    border-bottom: 1px solid #dddddd;
+    padding: 10px 20px;
+    word-break: break-all;
+    text-align: center;
+}
+tr:hover td{
+    color: #3a6324;
+    cursor: pointer;
+    background-color: #f6f9fc;
+}
+.btn{
+    text-align: right;
+}
+.nextBtn{
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    max-width: 200px;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #000;
+    border-radius: 5px;
+    margin: 25px 0;
+    background-color: #cbced4;
+    transition: all 0.3s linear;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .table_header {
+        flex-direction: column; /* Cambia a diseño vertical */
+        align-items: center; /* Centra todo */
+    }
+
+    .table_header p {
+        text-align: center; /* Centrar el título */
+        margin-bottom: 15px; /* Espacio debajo del título */
+        font-size: 24px;
+        font-weight: bolder;
+    }
+
+    .fechaList {
+        align-items: flex-start; /* Mantén el contenido a la izquierda */
+        width: 100%; /* Asegúrate de que ocupe todo el ancho */
+    }
+    .btn{
+        text-align: center;
+    }
+    .table_section{
+        height: 415px;
+        overflow: auto;
+    }
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" th:href="@{css/style3.css}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+    
+    <main id="main">
+        <div class="cards">
+            <div class="card">
+                <div class="card-content">
+                    <div class="number">1217</div>
+                    <div class="card-name">Socios</div>
+                </div>
+                <div class="icon-box">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="number">42</div>
+                    <div class="card-name">Administrativos</div>
+                </div>
+                <div class="icon-box">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="number">Bs 4500</div>
+                    <div class="card-name">Recaudacion Anual</div>
+                </div>
+                <div class="icon-box">
+                    <i class="fas fa-money-bill"></i>
+                </div>
+            </div>
+        </div>
+        <div class="charts">
+            <div class="chart">
+                <h2>Recaudacion (Ultimos 12 meses)</h2>
+                <div>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+            <div class="chart doughnut-chart">
+                <h2>Employees</h2>
+                <div>
+                    <canvas id="doughnut"></canvas>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script th:src="@{/js/chart1.js}"></script>
+    <script th:src="@{/js/chart2.js}"></script>
+</body>
+</html>

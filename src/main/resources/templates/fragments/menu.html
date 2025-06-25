@@ -1,0 +1,72 @@
+<div th:fragment="menu-izquierda" class="left">
+    <div class="menu-container">
+        <div class="menu" id="menu">
+            <div></div> 
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="brand">
+        <img th:src="@{/icons2/udemy.svg}" alt="icon-udemy" class="logo">
+        <span class="name">SPDM</span>
+    </div>
+</div>
+        
+<div th:fragment="menu-derecha" class="right">
+    <a href="#" class="icons-header">
+        <img th:src="@{/icons2/chat.svg}" alt="chat">
+    </a>
+    <a href="#" class="icons-header">
+        <img th:src="@{/icons2/question.svg}" alt="chat">
+    </a>
+    <a href="#" class="icons-header">
+        <img th:src="@{/icons2/notification.svg}" alt="chat">
+    </a>
+    <img th:src="@{/img/foto.jpg}" alt="img-user" class="user">
+</div>
+
+<nav th:fragment="menu-barra">
+    <ul>
+        <li>
+            <a href="/home.html">
+                <img src="/icons2/home.svg" alt="">
+                <span>Home</span>
+            </a>
+        </li>
+        <li class=" list__item list__item--click">
+            <a class="list__button list__button--click">
+                <img src="/icons2/register.svg" alt="">
+                <span>Registro</span>
+                <img src="/icons/arrow.svg" class="list__arrow">
+            </a>
+            <ul class="list__show">
+                <li class="list__inside">
+                    <a href="/formRegistroSocio.html" class="nav__link nav__link--inside">Registro Socio</a>
+                </li>
+                <li class="list__inside">
+                    <a href="/formRegistroMovilidad.html" class="nav__link nav__link--inside">Registro Movilidad</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a th:href="@{/usuarios/index}">
+                <img src="/icons2/list.svg" alt="">
+                <span>Socios</span>
+            </a>
+        </li>
+        <li>
+            <a href="/AsistenciaSocio.html">
+                <img src="/icons2/asistencia.svg" alt="">
+                <span>Asistencia</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/reporteSocio.html">
+                <img src="/icons2/report.svg" alt="">
+                <span>Reporte</span>
+            </a>
+        </li>
+    </ul>
+</nav>

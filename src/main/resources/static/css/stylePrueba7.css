@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+.container-arriba{
+  margin-top: -20px;
+}
+.container-arriba h2{
+    display: flex;
+    margin-bottom: -30px;
+    justify-content: center;
+    align-items: center;
+    
+}
+  section.card-socio {
+
+    background: #dddee0;
+    border-radius: 10px;
+    padding: 48px 48px 48px 308px;
+    margin: 84px 0;
+    min-width: 640px;
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    position: relative;
+    box-shadow: 5px 0 0 0 rgba(204,204,204,0.3), -5px 0 0 0 rgba(204,204,204,0.3), 0 5px 0 0 rgba(204,204,204,0.3);
+  }
+  section.card-socio .text-content {
+    display: flex;
+    flex-direction: column;
+    width:calc(60vw - 192px);
+  }
+  section.card-socio .text-content h3 {
+    margin: 0;
+    font-size: 1.5em;
+    max-width: 20ch;
+    color: #fff;
+  }
+  section.card-socio .text-content p {
+    margin: 25px 0 24px;
+    color: #fff;
+  }
+  section.card-socio .text-content a {
+    border: 3px solid #f2f2f2;
+    color: #ffffff;
+    align-self: flex-start;
+    text-decoration: none;
+    padding: 16px 32px;
+    border-radius: 12px;
+    transition: 400ms all;
+  }
+  section.card-socio .text-content a:hover {
+    background: #051c5e;
+    color: white;
+  }
+  section.card-socio .visual {
+    width: 240px;
+    height: 100%;
+    position: absolute;
+    top: -24px;
+    left: 24px;
+    overflow: hidden;
+    border-radius: 24px;
+  }
+  section.card-socio .visual img {
+    height: 110%;
+  }
+  article {
+    margin: auto;
+    display: block;
+    width:calc(60vw + 248px);
+    max-width:calc(620px + 248px);
+    min-width:calc(640px + 248px); 
+  }
+  @media all and (max-width: 1100px) {
+    body {
+      padding: 96px 48px 24px;
+    }
+    article {
+      width: 100%;
+      min-width: 100%;
+    }
+    section.card-socio {
+      min-width: 100%;
+    }
+    section.card-socio .text-content {
+      width: 100%;
+    }
+  }
+  @media all and (max-width: 720px) {
+    body {
+      padding: 48px 24px 0;
+    }
+    section.card-socio {
+      margin: 64px 0;
+      padding: 125px 20px 7px;
+      flex-direction: column;
+      border-radius: 24px;
+    }
+    section.card-socio .text-content h3 {
+      max-width:calc(100% - 150px);
+      font-size: 1em;
+    }
+    section.card-socio .text-content p,
+    section.card-socio .text-content a {
+      font-size: 0.8em;
+    }
+    section.card-socio .visual {
+      width: 150px;
+      height: 150px;
+      right: 16px;
+      left: auto;
+      border-radius: 50%;
+    }
+    section.card-socio .visual img{
+      width: 100%;
+      height: auto;
+      }
+  }
+
+  .container{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap: 5px;
+  }
+  .container-abajo h2{
+    display: flex;
+    margin-top: -20px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    
+}
+  .card {
+    padding: 20px;
+    width: 330px;
+    min-height: 370px;
+    border-radius: 10px;
+    background: #dddee0;
+    transition: 0.4s;
+  }
+  .card:hover {
+    translate: 0 -10px;
+  }
+  
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin: 15px 0 0 10px;
+  }
+  
+  .card-image {
+    min-height: 170px;
+    background-color: #313131;
+    border-radius: 10px;
+  }
+  .card-image img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .card-body {
+    margin: 13px 0 0 10px;
+    color: rgb(184, 184, 184);
+    font-size: 15px;
+  }
+
+  .by-name {
+    font-weight: 700;
+  }
+
+  .card-info h3 {
+    margin-bottom: 10px;
+    color: #000;
+    text-align: center;
+}
+
+.card-info ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-info ul li {
+    padding: 5px 0;
+    font-size: 14px;
+    color: #000;
+    
+}
+.reporteSocio{
+  margin-top: 60px;
+}
+
+.reporteSocio h2{
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+    .container-arriba{
+      margin-top: -40px;
+    }
+    .card {
+      flex: 0.5 0.5 55%; /* Cada tarjeta ocupa el 100% del ancho en pantallas pequeñas */
+      margin: 10px 0; /* Espacio vertical entre las tarjetas */
+    }
+}

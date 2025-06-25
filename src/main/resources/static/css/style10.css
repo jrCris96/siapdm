@@ -1,0 +1,165 @@
+.table{
+    width: 100%;
+}
+.table_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    flex-wrap: wrap;
+    padding: 20px;
+    background-color: rgb(240, 240, 240);
+}
+.table_header p{
+    color: #000000;
+}
+button{
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    color: #ffffff;
+}
+input{
+    padding: 10px 20px;
+    margin: 0 10px;
+    outline: none;
+    border: 1px solid #3a6324;
+    border-radius: 5px;
+    color: #3a6324;
+}
+
+.table_section{
+    height: 500px;
+    overflow: auto;
+}
+.tabla-ancha{
+    width: 90%;
+}
+table{
+    width: 50%;
+    margin: 0 auto;
+    table-layout: inherit;
+    min-width: 500px;
+    border-collapse: collapse;
+}
+
+thead th{
+    position: sticky;
+    top: 0;
+    background-color: #dbdbdb;
+    color: #000;
+    font-size: 15px;
+    font-weight: 900;
+}
+th, td{
+    border-bottom: 1px solid #dddddd;
+    padding: 10px 20px;
+    word-break: break-all;
+    text-align: center;
+}
+td{
+    max-width: 230px; /* Define el ancho máximo */
+    word-wrap: break-word; /* Permite que el texto se divida en varias líneas */
+    overflow: hidden; /* Evita que el texto desborde */
+    padding: 4px;
+}
+td .p-bueno{
+    display: inline-block; /* Permite que actúe como un botón */
+            padding: 10px 20px; /* Espaciado interno */
+            background-color: #74b750; /* Color de fondo */
+            color: white; /* Color del texto */
+            font-size: 16px; /* Tamaño del texto */
+            text-align: center; /* Centrar el texto */
+            border: none; /* Sin bordes */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor a una mano */
+            transition: background-color 0.3s ease; /* Efecto al pasar el mouse */
+}
+td .p-malo{
+    display: inline-block; /* Permite que actúe como un botón */
+            padding: 10px 20px; /* Espaciado interno */
+            background-color: #d73911; /* Color de fondo */
+            color: white; /* Color del texto */
+            font-size: 16px; /* Tamaño del texto */
+            text-align: center; /* Centrar el texto */
+            border: none; /* Sin bordes */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor a una mano */
+            transition: background-color 0.3s ease; /* Efecto al pasar el mouse */
+}
+tr:hover td{
+    color: #3a6324;
+    cursor: pointer;
+    background-color: #f6f9fc;
+}
+
+.input-field {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.input-field label{
+    font-size: 12px;
+    font-weight: 500;
+    color: #2e2e2e;
+}
+.input-field select{
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+}
+.btn{
+    text-align: left;
+    margin-top: 0px;
+}
+.nextBtn{
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    max-width: 200px;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #000;
+    border-radius: 5px;
+    margin: 25px 0;
+    background-color: #cbced4;
+    transition: all 0.3s linear;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .table_header {
+        flex-direction: column; /* Cambia a diseño vertical */
+        align-items: center; /* Centra todo */
+    }
+
+    .table_header p {
+        text-align: center; /* Centrar el título */
+        margin-bottom: 15px; /* Espacio debajo del título */
+        font-size: 24px;
+        font-weight: bolder;
+    }
+
+    .input-field {
+        align-items: center; /* Mantén el contenido a la izquierda */
+        width: 100%; /* Asegúrate de que ocupe todo el ancho */
+        gap: 14px;
+        margin-bottom: 10px;
+    }
+    .input-field label{
+        font-size: 15px;
+        font-weight: 500;
+        color: #2e2e2e;
+    }
+    .input-field select{
+        width: 70%;
+    }
+    th, td{
+        word-break:break-word;
+    }  
+}
