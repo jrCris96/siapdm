@@ -7,4 +7,4 @@ import net.crisjr.model.Usuario;
 public interface UsuariosRepository extends JpaRepository<Usuario, Integer> {
 
 }
- 
+  

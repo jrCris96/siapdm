@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +22,10 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id; 
+    
+    @Column(unique = true)
+    private String id_usuario;
     private String foto;
     private String nombre;
     private String apellido;
@@ -60,6 +64,13 @@ public class Usuario {
     }
     public void setId(Integer id) {
         this.id = id;
+    }
+    public String getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(String id_usuario) {
+        this.id_usuario = id_usuario;
     }
     public String getFoto() {
         return foto;
@@ -149,11 +160,10 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario [id=" + id + ", foto=" + foto + ", nombre=" + nombre + ", apellido=" + apellido + ", carnet="
-                + carnet + ", fecha_nacimiento=" + fecha_nacimiento + ", ubicacion=" + ubicacion + ", celular="
-                + celular + ", genero=" + genero + ", estado_civil=" + estado_civil + ", fecha_ingreso=" + fecha_ingreso
-                + ", estado=" + estado + ", es_decano=" + es_decano + ", grupo=" + grupo + "]";
+        return "Usuario [id=" + id + ", id_usuario=" + id_usuario + ", foto=" + foto + ", nombre=" + nombre
+                + ", apellido=" + apellido + ", carnet=" + carnet + ", fecha_nacimiento=" + fecha_nacimiento
+                + ", ubicacion=" + ubicacion + ", celular=" + celular + ", genero=" + genero + ", estado_civil="
+                + estado_civil + ", fecha_ingreso=" + fecha_ingreso + ", estado=" + estado + ", es_decano=" + es_decano
+                + ", grupo=" + grupo + "]";
     }
-
-    
 }

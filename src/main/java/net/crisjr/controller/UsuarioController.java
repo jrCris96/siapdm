@@ -52,7 +52,7 @@ public class UsuarioController {
     @Autowired
     private IPerfilService servicePerfil;
 
-    @GetMapping("/index")
+    @GetMapping("/index") 
     public String mostrarIndex(Model model) {
 
         List<Usuario> lista= serviceUsuario.buscarTodas();

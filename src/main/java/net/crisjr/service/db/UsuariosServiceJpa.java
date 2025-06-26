@@ -20,8 +20,10 @@ public class UsuariosServiceJpa implements IUsuariosService {
 
     @Override
     public void guardar(Usuario usuario) {
-        usuariosRepo.save(usuario);
-    } 
+        Usuario saved= usuariosRepo.save(usuario);
+        saved.setId_usuario("spdm_soc_"+saved.getId());
+        usuariosRepo.save(saved);
+    }  
 
     @Override
     public List<Usuario> buscarTodas() {
