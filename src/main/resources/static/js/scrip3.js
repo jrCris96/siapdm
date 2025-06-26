@@ -1,8 +1,9 @@
 const menu= document.getElementById('menu');
 const sidebar= document.getElementById('sidebar');
 const main= document.getElementById('main');
-const image= document.querySelector("#imgFile");
-const input= document.querySelector("#inputFile");
+
+const input = document.getElementById('archivoImagen');
+const image = document.getElementById('imgFile');
 
 let listElements= document.querySelectorAll('.list__button--click');
 
@@ -27,13 +28,17 @@ listElements.forEach(listElement =>{
     })
 });
 
-input.addEventListener("change", () => {
+// Escucha el cambio
+input.addEventListener('change', () => {
     const file = input.files[0];
-    if (file && file.type.startsWith("image/")) {
+    if (file && file.type.startsWith('image/')) {
+        // Revoca URL anterior si existe
+        if (image.src) URL.revokeObjectURL(image.src);
+
         image.src = URL.createObjectURL(file);
-        image.style.display = "block";  // Mostrar la imagen
+        image.style.display = 'block';
     } else {
-        alert("Selecciona una imagen válida.");
-        image.style.display = "none";  // Ocultar la imagen si no es válida
+        alert('Selecciona una imagen válida.');
+        image.style.display = 'none';
     }
 });
