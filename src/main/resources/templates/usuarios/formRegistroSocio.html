@@ -1,104 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/css/style3.css">
-    <link rel="stylesheet" href="/css/styleSocio.css">
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
 </head>
 <body>
     <header>
-        <div class="left">
-            <div class="menu-container">
-                <div class="menu" id="menu">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-
-            <div class="brand">
-                <img src="/icons2/udemy.svg" alt="icon-udemy" class="logo">
-                <span class="name">SPDM</span>
-            </div>
-        </div>
-        
-        <div class="right">
-            <a href="#" class="icons-header">
-                <img src="/icons2/chat.svg" alt="chat">
-            </a>
-            <a href="#" class="icons-header">
-                <img src="/icons2/question.svg" alt="chat">
-            </a>
-            <a href="#" class="icons-header">
-                <img src="/icons2/notification.svg" alt="chat">
-            </a>
-            <img src="/user1.png" alt="img-user" class="user">
-        </div>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
     </header>
 
-    <div class="sidebar" id="sidebar">
-        <nav>
-            <ul>
-                <li>
-                    <a href="/home.html">
-                        <img src="/icons2/home.svg" alt="">
-                        <span>Home</span>
-                    </a>
-                </li>
-                <li class=" list__item list__item--click">
-                    <a class="list__button list__button--click">
-                        <img src="/icons2/register.svg" alt="">
-                        <span>Registro</span>
-                        <img src="/icons/arrow.svg" class="list__arrow">
-                    </a>
-                    <ul class="list__show">
-                        <li class="list__inside">
-                            <a href="/formRegistroSocio.html" class="nav__link nav__link--inside">Registro Socio</a>
-                        </li>
-                        <li class="list__inside">
-                            <a href="/formRegistroMovilidad.html" class="nav__link nav__link--inside">Registro Movilidad</a>
-                        </li>
-                        <li class="list__inside">
-                            <a href="/formMesaDir.html" class="nav__link nav__link--inside">Registro Mesa Directiva</a>
-                        </li>
-                        <li class="list__inside">
-                            <a href="/formJefeGrupo.html" class="nav__link nav__link--inside">Registro Jefe de Grupo</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/listSocio.html">
-                        <img src="/icons2/list.svg" alt="">
-                        <span>Socios</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/AsistenciaSocio.html">
-                        <img src="/icons2/asistencia.svg" alt="">
-                        <span>Pagos</span>
-                    </a>
-                </li>
-        
-                <li>
-                    <a href="/reporteSocio.html">
-                        <img src="/icons2/report.svg" alt="">
-                        <span>Reporte</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
 
-    </div>
     <main id="main">
       <div class="container">
         <header>Registro Socio</header>
 
-        <form action="#">
+        <form th:action="@{/usuarios/save}" method="post" th:object="${usuario}" enctype="multipart/form-data"> 
+
+            <div th:if="${#fields.hasErrors('*')}"class='alert alert-danger' role='alert'>
+                Por favor corrija los siguientes errores:
+                <ul>
+                  <li th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
+                </ul>
+            </div>
+
             <div class="form first">
                 <div class="details personal"> 
                     <span class="title">Datos del Socio</span>
@@ -106,98 +40,102 @@
                     <div class="fields">
                         <div class="input-field">
                             <label for="">Nombre(s):</label>
-                            <input type="text" placeholder="nombre completo" required>
+                            <input type="text" th:field="*{nombre}" id="nombre" name="nombre" placeholder="nombre completo" required>
                         </div>
 
                         <div class="input-field">
                             <label for="">Apellido(s):</label>
-                            <input type="text" placeholder="Apellidos" required>
+                            <input type="text" th:field="*{apellido}" id="apellido" name="apellido" placeholder="Apellidos" required>
                         </div>
 
                         <div class="input-field">
                             <label for="">Numero de Carnet:</label>
-                            <input type="text" placeholder="numero de Carnet" required>
+                            <input type="text" th:field="*{carnet}" id="carnet" name="carnet" placeholder="numero de Carnet" required>
                         </div>
 
                         <div class="input-field">
                             <label for="">Fecha de Nacimiento</label>
-                            <input type="date" placeholder="Ingresa la fecha de nacimiento" required>
+                            <input type="date" th:field="*{fecha_nacimiento}" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Ingresa la fecha de nacimiento" required>
                         </div>
                         
                         <div class="input-field">
                             <label for="">Domicilio:</label>
-                            <input type="text" placeholder="Ubicacion del domicilio" required>
+                            <input type="text" th:field="*{ubicacion}" id="ubicacion" name="ubicacion" placeholder="Ubicacion del domicilio" required>
                         </div>
 
                         <div class="input-field">
                             <label for="">N° de Celular</label>
-                            <input type="number" placeholder="Número de celular" required>
+                            <input type="number" th:field="*{celular}" id="celular" name="celular" placeholder="Número de celular" required>
                         </div>
 
                         <div class="input-field">
                             <label for="">Genero</label>
                             <div class="radio">
                                 <label>Hombre
-                                    <input type="radio" name="genero" value="hombre" /> 
+                                    <input type="radio" th:field="*{genero}" name="genero" id="genero" value="M" /> 
                                   </label>
                                   <label>Mujer
-                                    <input type="radio" name="genero" value="mujer" /> 
+                                    <input type="radio" th:field="*{genero}" name="genero" id="genero" value="F" /> 
                                   </label>
                             </div>
                         </div>
 
                         <div class="input-field">
-                            <label>Estado Civil</label>
-                            <select id="estado-civil" required>
-                                <option value="" disabled selected>Selecciona una opción</option>
-                                <option value="soltero">Soltero</option>
-                                <option value="casado">Casado</option>
-                                <option value="viudo">Viudo</option>
+                            <label for="estadoCivil">Estado Civil</label>
+                            <select id="estadoCivil" th:field="*{estado_civil}" required>
+                                <option value="" disabled th:selected="*{estado_civil} == null">Selecciona una opción</option>
+                                <option value="soltero" th:selected="*{estado_civil} == 'soltero'">Soltero</option>
+                                <option value="casado" th:selected="*{estado_civil} == 'casado'">Casado</option>
+                                <option value="viudo" th:selected="*{estado_civil} == 'viudo'">Viudo</option>
                             </select>
                         </div>
 
                         <div class="input-field">
                             <label for="">Fecha de Ingreso</label>
-                            <input type="date" placeholder="registra la fecha de ingreso" required>
+                            <input type="date" th:field="*{fecha_ingreso}" id="fecha_ingreso" name="fecha_ingreso" placeholder="registra la fecha de ingreso" required>
                         </div>
 
                         <div class="input-field">
-                            <label>Tipo de Ususario</label>
-                            <select id="estado-civil" required>
+                            <label>Estado</label>
+                            <select id="estado" th:field="*{estado}" name="estado" required>
                                 <option value="" disabled selected>Selecciona una opción</option>
-                                <option value="socio">Activo</option>
-                                <option value="jGrupo">Pasivo</option>
-                                <option value="sGeneral">Decano</option>
+                                <option value="habilitado">habilitado</option>
+                                <option value="deshabilitado">deshabilitado</option>
                             </select>
                         </div>
 
                         <div class="input-field">
-                            <label>Sector</label>
-                            <select id="estado-civil" required>
+                            <label for="sectorSelect">Sector</label>
+                            <select id="sectorSelect" required>
                                 <option value="" disabled selected>Selecciona una opción</option>
-                                <option value="socio">Selectivo</option>
-                                <option value="jGrupo">Masivo</option>
-                                <option value="sGeneral">Secretario General</option>
-                                <option value="admin">Administrador</option>
+                                <option th:each="sector : ${sectores}" th:value="${sector.id}" th:text="${sector.nombre}"></option>
                             </select>
                         </div>
 
                         <div class="input-field">
-                            <label>Grupo</label>
-                            <select id="estado-civil" required>
+                            <label for="grupoSelect">Grupo</label>
+                            <select id="grupoSelect" th:field="*{grupo.id}" required>
                                 <option value="" disabled selected>Selecciona un Grupo</option>
-                                <option value="socio">Uno</option>
-                                <option value="jGrupo">Dos</option>
-                                <option value="sGeneral">Tres</option>
-                                <option value="admin">Cuatro</option>
                             </select>
                         </div>
 
                         <div class="input-field">
                             <img class="imgFile" id="imgFile" src="" >
-                            <input type="file" id="inputFile" class="inputFile" accept="image/*">
+                            <input type="file" name="archivoImagen" id="archivoImagen" class="inputFile" accept="image/*">
+                        </div>
+
+                        <div class="input-field">
+                            <label>Perfiles:</label>
+                            <div th:each="perfil : ${perfiles}">
+                                <input type="checkbox" th:id="'perfil-' + ${perfil.id}" 
+                                    th:name="perfiles" 
+                                    th:value="${perfil.id}" 
+                                    th:checked="${#lists.contains(usuario.perfiles, perfil)}"/>
+                                <label th:for="'perfil-' + ${perfil.id}" th:text="${perfil.perfil}"></label>
+                            </div>
                         </div>
                     </div>
+                    
 
                     <button class="nextBtn">
                         <span class="btnText">Guardar</span>
@@ -209,7 +147,8 @@
         
     </main>
     
-    <script src="/js/scrip3.js"></script>
+    <script th:src="@{/js/scrip3.js}"></script>
+    <script th:src="@{/js/script4.js}"></script>
 </body>
 </html>
 

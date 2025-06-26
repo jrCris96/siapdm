@@ -33,7 +33,7 @@ public class Usuario {
     private String estado_civil;
     private Date fecha_ingreso;
     private String estado;
-    private String es_decano;
+    private Integer es_decano=0;
 
     @ManyToOne
     @JoinColumn(name = "id_grupo")
@@ -127,10 +127,10 @@ public class Usuario {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    public String getEs_decano() {
+    public Integer getEs_decano() {
         return es_decano;
     }
-    public void setEs_decano(String es_decano) {
+    public void setEs_decano(Integer es_decano) {
         this.es_decano = es_decano;
     }
     public Grupo getGrupo() {
@@ -138,6 +138,13 @@ public class Usuario {
     }
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
+    }
+    
+    public List<Perfil> getPerfiles() {
+        return perfiles;
+    }
+    public void setPerfiles(List<Perfil> perfiles) {
+        this.perfiles = perfiles;
     }
 
     @Override
@@ -147,4 +154,6 @@ public class Usuario {
                 + celular + ", genero=" + genero + ", estado_civil=" + estado_civil + ", fecha_ingreso=" + fecha_ingreso
                 + ", estado=" + estado + ", es_decano=" + es_decano + ", grupo=" + grupo + "]";
     }
+
+    
 }
