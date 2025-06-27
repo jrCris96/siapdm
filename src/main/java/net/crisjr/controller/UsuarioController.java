@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.crisjr.model.Grupo;
 import net.crisjr.model.Usuario;
+import net.crisjr.model.Vehiculo;
 import net.crisjr.service.IGruposService;
 import net.crisjr.service.IPerfilService;
 import net.crisjr.service.ISectorService;
@@ -61,7 +62,7 @@ public class UsuarioController {
         return "/usuarios/listSocio";
     }
     
-    @GetMapping("/create")
+    @GetMapping("/create") 
     public String crear(Usuario usuario, Model model){
         model.addAttribute("sectores", serviceSector.buscarTodas());
         model.addAttribute("perfiles", servicePerfil.buscarTodas()); 
@@ -79,33 +80,69 @@ public class UsuarioController {
     }
 
     @PostMapping("/save")
-    public String guardar(Usuario usuario, BindingResult result, RedirectAttributes attributes, @RequestParam("archivoImagen") MultipartFile multipart){
-        if(result.hasErrors()){
-            for(ObjectError error: result.getAllErrors()){
-                System.out.println("Ocurrio un error: "+error.getDefaultMessage());
+    public String guardar(Usuario usuario, BindingResult result, RedirectAttributes attributes, @RequestParam("archivoImagen") MultipartFile multipart) {
+        if (result.hasErrors()) {
+            for (ObjectError error : result.getAllErrors()) {
+                System.out.println("Ocurrio un error: " + error.getDefaultMessage());
             }
             return "usuarios/formRegistroSocio";
         }
-        //para Subir la imagen
-        if (!multipart.isEmpty()) {
-            //String ruta = "c:/empleos/img-vacantes/"; 
-            String nombreImagen = Utileria.guardarArchivo(multipart, ruta);
 
-            if (nombreImagen != null){ // La imagen si se subio
-            // Procesamos la variable nombreImagen
-            usuario.setFoto(nombreImagen);
+        try {
+            // Subir la imagen si existe
+            if (!multipart.isEmpty()) {
+                String nombreImagen = Utileria.guardarArchivo(multipart, ruta);
+                if (nombreImagen != null) {
+                    usuario.setFoto(nombreImagen); 
+                }
             }
+
+            // Guardar usuario con la lógica del servicio (que puede lanzar excepciones)
+            serviceUsuario.guardar(usuario);
+
+            attributes.addFlashAttribute("msg", "Registro Guardado!");
+            System.out.println("Usuario: " + usuario);
+
+            return "redirect:/usuarios/index";
+
+        } catch (IllegalArgumentException e) {
+            // Captura la excepción y manda mensaje de error a la vista
+            attributes.addFlashAttribute("error", e.getMessage());
+
+            // Para que el formulario conserve los datos ingresados
+            attributes.addFlashAttribute("usuario", usuario);
+
+            // Redirige al formulario de creación para que el usuario corrija
+            return "redirect:/usuarios/create";
+        }
+}
+
+    @GetMapping("/view/{id}")
+    public String verDetalle(@PathVariable("id") int idUsuario, Model model) {
+
+        Usuario usuario = serviceUsuario.buscarPorId(idUsuario);
+
+        if (usuario == null) {
+            model.addAttribute("error", "Usuario no encontrado");
+            return "error";
         }
 
-        serviceUsuario.guardar(usuario);
-        attributes.addFlashAttribute("msg", "Registro Guardado!");
-        System.out.println("Usuario: "+usuario);
-        return "redirect:/usuarios/index";
+        // Cargar los vehículos donde es dueño
+        List<Vehiculo> vehiculosPropios = usuario.getVehiculosPropios();
+
+        // Cargar los vehículos donde es asalariado
+        List<Vehiculo> vehiculosAsignados = usuario.getVehiculosAsignados();
+
+        model.addAttribute("usuarios", usuario);
+        model.addAttribute("vehiculosPropios", vehiculosPropios);
+        model.addAttribute("vehiculosAsignados", vehiculosAsignados);
+
+        return "/usuarios/verSocio";
     }
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
 }

@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,11 +22,11 @@ import jakarta.persistence.Table;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Integer id; 
     
-    @Column(unique = true)
-    private String id_usuario;
+    @Column(name = "id_usuario", unique = true)
+    private String idUsuario; 
     private String foto;
     private String nombre;
     private String apellido;
@@ -43,9 +44,17 @@ public class Usuario {
     @JoinColumn(name = "id_grupo")
     private Grupo grupo;
 
+    // Vehículos donde el usuario es el dueño
+    @OneToMany(mappedBy = "usuarioId", fetch = FetchType.LAZY)
+    private List<Vehiculo> vehiculosPropios;
+
+    // Vehículos donde el usuario es socio asalariado
+    @OneToMany(mappedBy = "socioAsalariadoId", fetch = FetchType.LAZY)
+    private List<Vehiculo> vehiculosAsignados;
+
     //muchos a muchos
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
+    @JoinTable( 
         name="UsuarioPerfil",
         joinColumns = @JoinColumn(name="idUsuario"),
         inverseJoinColumns = @JoinColumn(name="idPerfil")
@@ -65,12 +74,12 @@ public class Usuario {
     public void setId(Integer id) {
         this.id = id;
     }
-    public String getId_usuario() {
-        return id_usuario;
-    }
 
-    public void setId_usuario(String id_usuario) {
-        this.id_usuario = id_usuario;
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
     public String getFoto() {
         return foto;
@@ -158,12 +167,30 @@ public class Usuario {
         this.perfiles = perfiles;
     }
 
+    public List<Vehiculo> getVehiculosPropios() {
+        return vehiculosPropios;
+    }
+
+    public void setVehiculosPropios(List<Vehiculo> vehiculosPropios) {
+        this.vehiculosPropios = vehiculosPropios;
+    }
+
+    public List<Vehiculo> getVehiculosAsignados() {
+        return vehiculosAsignados;
+    }
+
+    public void setVehiculosAsignados(List<Vehiculo> vehiculosAsignados) {
+        this.vehiculosAsignados = vehiculosAsignados;
+    }
+
     @Override
     public String toString() {
-        return "Usuario [id=" + id + ", id_usuario=" + id_usuario + ", foto=" + foto + ", nombre=" + nombre
+        return "Usuario [id=" + id + ", idUsuario=" + idUsuario + ", foto=" + foto + ", nombre=" + nombre
                 + ", apellido=" + apellido + ", carnet=" + carnet + ", fecha_nacimiento=" + fecha_nacimiento
                 + ", ubicacion=" + ubicacion + ", celular=" + celular + ", genero=" + genero + ", estado_civil="
                 + estado_civil + ", fecha_ingreso=" + fecha_ingreso + ", estado=" + estado + ", es_decano=" + es_decano
                 + ", grupo=" + grupo + "]";
     }
+
+    
 }

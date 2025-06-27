@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import net.crisjr.model.Usuario;
 
 public interface UsuariosRepository extends JpaRepository<Usuario, Integer> {
+    Usuario findByCarnet(String carnet);
+    Usuario findByIdUsuario(String idUsuario);
 
 }
   

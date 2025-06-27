@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+      <div class="container">
+        <header>Registro de Vehiculo</header>
+        
+
+        <form th:action="@{/vehiculos/save}" method="post" th:object="${vehiculo}" enctype="multipart/form-data"> 
+
+            <div th:if="${#fields.hasErrors('*')}"class='alert alert-danger' role='alert'>
+                Por favor corrija los siguientes errores:
+                <ul>
+                  <li th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
+                </ul>
+            </div>
+
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Detalles del Vehiculo</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label for="">Marca del Vehiculo:</label>
+                            <input type="text" th:field="*{marca}" id="marca" name="marca" placeholder="Marca del Vehiculo" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">N° de Placa</label>
+                            <input th:field="*{placa}" id="placa" name="placa" type="text" placeholder="Placa" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">Modelo</label>
+                            <input type="text" th:field="*{modelo}" id="modelo" name="modelo" placeholder="Modelo del Vehiculo" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">Color</label>
+                            <input type="text" th:field="*{color}" id="color" name="color" placeholder="Color del Vehiculo" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">Año de Fabricacion</label>
+                            <input type="text" th:field="*{año_fabricacion}" id="año_fabricacion" name="año_fabricacion" placeholder="Color del Vehiculo" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="estadoCivil">Tipo de Vehiculo</label>
+                            <select id="estadoCivil" th:field="*{tipo_vehiculo}" required>
+                                <option value="" disabled th:selected="*{tipo_vehiculo} == null">Selecciona una opción</option>
+                                <option value="Minibus" th:selected="*{tipo_vehiculo} == 'Minibus'">Minibus</option>
+                                <option value="Micro" th:selected="*{tipo_vehiculo} == 'Micro'">Micro</option>
+                                <option value="Carry" th:selected="*{tipo_vehiculo} == 'Carry'">Carry</option>
+                                <option value="Trufi" th:selected="*{tipo_vehiculo} == 'Trufi'">Trufi</option>
+                                <option value="Taxi" th:selected="*{tipo_vehiculo} == 'Taxi'">Taxi</option>
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">ID de Propietario</label>
+                            <input type="text" name="idPropietario" placeholder="Introduce ID" required>
+                        </div>
+
+                        <div class="input-field">
+                            <img class="imgFile" id="imgFile" src="" >
+                            <input type="file" name="archivoImagen" id="archivoImagen" class="inputFile" accept="image/*">
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">ID del Socio Asalariado (Opcional)</label>
+                            <input type="text" name="idAsalariado" placeholder="Introduce ID">
+                        </div>
+                    </div>
+
+                    <button class="nextBtn">
+                        <span class="btnText">Next</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+      </div>
+        
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script>
+</body>
+</html>

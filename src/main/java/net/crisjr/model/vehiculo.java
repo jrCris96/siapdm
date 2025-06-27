@@ -1,23 +1,31 @@
 package net.crisjr.model;
 
-import java.util.Date;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
-public class vehiculo {
+@Entity
+@Table(name="vehiculo")
+public class Vehiculo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String foto;
     private String tipo_vehiculo;
     private String placa;
     private String marca;
-    private Date modelo;
+    private String modelo;
     private String color;
     private String año_fabricacion;
 
     @ManyToOne
     @JoinColumn(name = "usuarioId")
-    private Usuario usuarioId;
+    private Usuario usuarioId; 
 
     @ManyToOne
     @JoinColumn(name = "socioAsalariadoId")
@@ -63,11 +71,11 @@ public class vehiculo {
         this.marca = marca;
     }
 
-    public Date getModelo() {
+    public String getModelo() {
         return modelo;
     }
 
-    public void setModelo(Date modelo) {
+    public void setModelo(String modelo) {
         this.modelo = modelo;
     }
 
@@ -105,7 +113,7 @@ public class vehiculo {
 
     @Override
     public String toString() {
-        return "vehiculo [id=" + id + ", foto=" + foto + ", tipo_vehiculo=" + tipo_vehiculo + ", placa=" + placa
+        return "Vehiculo [id=" + id + ", foto=" + foto + ", tipo_vehiculo=" + tipo_vehiculo + ", placa=" + placa
                 + ", marca=" + marca + ", modelo=" + modelo + ", color=" + color + ", año_fabricacion="
                 + año_fabricacion + ", usuarioId=" + usuarioId + ", socioAsalariadoId=" + socioAsalariadoId + "]";
     }

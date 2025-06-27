@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/style16_1.css}">
+    <link rel="stylesheet" th:href="@{/css/stylePrueba6.css}" />
+    <link rel="stylesheet" th:href="@{/css/style10.css}">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+        <div class="container">
+              <div class="DSocios">
+            <h2 class="titulo">Datos del Socio</h2>
+            <div class="containerCard" >
+
+                <div class="card" th:each="usuario :${usuarios}">
+                    <div class="left-column background2-left-column">
+                        <h6>Socio</h6>
+                        <h2><span th:text="${usuario.nombre}"></span> <span th:text="${usuario.apellido}">Quispe Choque</span></h2>
+                        <img th:src="@{/img/{img} (img=${usuario.foto})}" alt="">
+                    </div>
+
+                    <div class="right-column" >
+                        <div>
+                            <h6>Usuario: <span th:text="${usuario.idUsuario}"></span></h6>
+                        </div>
+                        <div>
+                            <p>Carnet: <span th:text="${usuario.carnet}"></span></p>
+                            <p>fecha de Nacimiento: <span th:text="${#dates.format(usuario.fecha_nacimiento, 'dd-MM-yyyy')}"></span></p>
+                            <p>Ubicacion: <span th:text="${usuario.ubicacion}"></span></p>
+                            <p>Celular: <span th:text="${usuario.celular}"></span></p>
+                            <p>Genero: <span th:text="${usuario.genero}"></span></p>
+                            <p>Estado Civil: <span th:text="${usuario.estado_civil}"></span></p>
+                            <p>fecha de Ingreso: <span th:text="${#dates.format(usuario.fecha_ingreso, 'dd-MM-yyyy')}"></span></p>
+                            <p>Es Decano: <span th:text="${usuario.es_decano}"></span></p>
+                            <p>Grupo: <span th:text="${usuario.grupo.nombre}"></span></p>
+                            <p>Sector: <span th:text="${usuario.grupo.sector.nombre}"></span></p>
+                        </div>
+                        <div>
+                            <button class="button background2-left-column">Editar</button>
+                            <button class="button background3-left-column">Desactivar</button>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="DVehiculo">
+            <h2 class="titulo">Vehiculo</h2>
+            <div class="containerCard" >
+                
+                <div class="card" th:each="vehiculo : ${vehiculosPropios}">
+                    <div class="left-column background2-left-column">
+                        <h6>Vehiculo</h6>
+                        <h2>Dueño: <span th:text="${vehiculo.usuarioId != null ? vehiculo.usuarioId.nombre + ' ' + vehiculo.usuarioId.apellido : 'Desconocido'}"></span> Asignado: <span th:text="${vehiculo.socioAsalariadoId != null ? vehiculo.socioAsalariadoId.nombre + ' ' + vehiculo.socioAsalariadoId.apellido : 'Nadie'}"></span></h2>
+                        <img src="/auto.jpg" alt="">
+                    </div>
+
+                    <div class="right-column">
+                        <div>
+                            <h6>Codigo: <span>spdm342</span></h6>
+                        </div>
+                        <div>
+                            <p>Tipo de Vehiculo: <span th:text="${vehiculo.tipo_vehiculo}"></span></p>
+                            <p>Placa: <span th:text="${vehiculo.placa}"></span></p>
+                            <p>Marca: <span th:text="${vehiculo.marca}"></span></p>
+                            <p>Modelo: <span th:text="${vehiculo.modelo}"></span></p>
+                            <p>Color: <span th:text="${vehiculo.color}">Masculino</span></p>
+                            <p>Año Fabricacion: <span th:text="${vehiculo.año_fabricacion}"></span></p>
+                        </div>
+                        <div>
+                            <button class="button background2-left-column">Editar</button>
+                            <button class="button background3-left-column">Desactivar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="DPagos">
+            <h2 class="titulo">Registro de pagos</h2>
+            <div class="table_section">
+                <table> 
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-malo">Pendiente</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td><p class="p-bueno">Pago</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr>
+            
+        <div class="DLlamadasAtencion">
+            <h2 class="titulo">llamadas de atención</h2>
+
+            <div class="table_section">
+                <table class="tabla-ancha"> 
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Nivel de Amonestación</th>
+                            <th>Descripcion</th>
+                            <th>Fecha de reingreso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td>Primera</td>
+                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis, repellat dicta dolor at sequi, deserunt sed autem maxime doloribus culpa ipsum.</td>
+                            <td>11/12/1999</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td>Primera</td>
+                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis, repellat dicta dolor at sequi, deserunt sed autem maxime doloribus culpa ipsum.</td>
+                            <td>11/12/1999</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>11/11/1999</td>
+                            <td>Primera</td>
+                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis, repellat dicta dolor at sequi, deserunt sed autem maxime doloribus culpa ipsum.</td>
+                            <td>11/12/1999</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        </div>
+      
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script>
+</body>
+</html>

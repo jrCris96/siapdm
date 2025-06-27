@@ -32,6 +32,9 @@
                   <li th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
                 </ul>
             </div>
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <p th:text="${error}"></p>
+            </div>
 
             <div class="form first">
                 <div class="details personal"> 
@@ -111,7 +114,7 @@
                                 <option th:each="sector : ${sectores}" th:value="${sector.id}" th:text="${sector.nombre}"></option>
                             </select>
                         </div>
-
+ 
                         <div class="input-field">
                             <label for="grupoSelect">Grupo</label>
                             <select id="grupoSelect" th:field="*{grupo.id}" required>

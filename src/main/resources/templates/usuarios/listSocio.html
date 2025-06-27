@@ -80,13 +80,13 @@
                         </thead>
                         <tbody>
                             <tr th:each="usuario : ${usuarios}">
-                                <td th:text="${usuario.id_usuario}" class="tdId"></td>
+                                <td th:text="${usuario.idUsuario}" class="tdId"></td>
                                 <td><img th:src="@{/img/{img} (img=${usuario.foto})}" alt=""></td>
                                 <td th:text="${usuario.nombre + ' ' + usuario.apellido}"></td>
                                 <td th:text="${usuario.grupo.nombre}">
                                 <td><p th:text="${usuario.estado}"class="p-bueno">Activado</p></td>
                                 <td>
-                                    <a href="/verSocio.html">
+                                    <a th:href="@{/usuarios/view/{id} (id=${usuario.id})}">
                                         <button type="button" class="btnSocio"><i class="fa-solid fa-eye"></i></button>
                                     </a>
                                     <button class="btnSocio"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -110,6 +110,6 @@
         
     </main>
     
-    <script src="/js/scrip3.js"></script>
+    <script th:src="@{/js/scrip3.js}"></script>
 </body>
-</html>
+</html> 
