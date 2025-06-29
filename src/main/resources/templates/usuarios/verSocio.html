@@ -78,7 +78,7 @@
                         <div>
                             <h6>Codigo: <span>spdm342</span></h6>
                         </div>
-                        <div>
+                        <div> 
                             <p>Tipo de Vehiculo: <span th:text="${vehiculo.tipo_vehiculo}"></span></p>
                             <p>Placa: <span th:text="${vehiculo.placa}"></span></p>
                             <p>Marca: <span th:text="${vehiculo.marca}"></span></p>
@@ -87,8 +87,9 @@
                             <p>Año Fabricacion: <span th:text="${vehiculo.año_fabricacion}"></span></p>
                         </div>
                         <div>
-                            <button class="button background2-left-column">Editar</button>
-                            <button class="button background3-left-column">Desactivar</button>
+                            <a th:href="@{/vehiculos/edit/{id}(id=${vehiculo.id})}" class="button background2-left-column">
+                                Editar
+                            </a>
                         </div>
                     </div>
                 </div>

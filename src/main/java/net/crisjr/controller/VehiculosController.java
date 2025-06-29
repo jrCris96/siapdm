@@ -55,43 +55,58 @@ public class VehiculosController {
             attributes.addFlashAttribute("error", "No se encontró el propietario con ID: " + idPropietario);
             return "redirect:/vehiculos/create";
         }
- 
-        // Validar que no tenga más de 2 vehículos
-        long cantidadVehiculos = vehiculosRepo.countByUsuarioId(propietario);
-        if (cantidadVehiculos >= 2) {
-            attributes.addFlashAttribute("error", "Este usuario ya tiene 2 vehículos asignados.");
-            return "redirect:/vehiculos/create";
+
+        // Validar cantidad de vehículos según si es creación o edición
+        if (vehiculo.getId() == null) {
+            // Nuevo vehículo
+            long cantidadVehiculos = vehiculosRepo.countByUsuarioIdExceptVehiculoId(propietario, null);
+            if (cantidadVehiculos >= 2) {
+                attributes.addFlashAttribute("error", "Este usuario ya tiene 2 vehículos asignados.");
+                return "redirect:/vehiculos/create";
+            }
+        } else {
+            // Edición de vehículo, excluir el vehículo actual del conteo
+            long cantidadVehiculos = vehiculosRepo.countByUsuarioIdExceptVehiculoId(propietario, vehiculo.getId());
+            if (cantidadVehiculos >= 2) {
+                attributes.addFlashAttribute("error", "Este usuario ya tiene 2 vehículos asignados.");
+                return "redirect:/vehiculos/edit/" + vehiculo.getId();
+            }
         }
 
         // Asignar propietario
         vehiculo.setUsuarioId(propietario);
 
-        // Si hay asalariado, buscarlo
+        // Buscar asalariado si existe
         if (idAsalariado != null && !idAsalariado.trim().isEmpty()) { 
             Usuario asalariado = usuariosRepo.findByIdUsuario(idAsalariado);
             if (asalariado == null) {
                 attributes.addFlashAttribute("error", "No se encontró el asalariado con ID: " + idAsalariado);
-                return "redirect:/vehiculos/create";
+                return vehiculo.getId() == null ? "redirect:/vehiculos/create" : "redirect:/vehiculos/edit/" + vehiculo.getId();
             }
             vehiculo.setSocioAsalariadoId(asalariado);
+        } else {
+            vehiculo.setSocioAsalariadoId(null); // Si quitan el asalariado
         }
 
-        //para Subir la imagen
-            if (!multiPart.isEmpty()) {
-                //String ruta = "c:/empleos/img-vacantes/"; 
-                String nombreImagen = Utileria.guardarArchivo(multiPart, ruta);
-
-                if (nombreImagen != null){ // La imagen si se subio
-                // Procesamos la variable nombreImagen
+        // Subir imagen si la hay
+        if (!multiPart.isEmpty()) {
+            String nombreImagen = Utileria.guardarArchivo(multiPart, ruta);
+            if (nombreImagen != null) {
                 vehiculo.setFoto(nombreImagen);
-                }
             }
+        }
 
         // Guardar vehículo
         serviceVehiculos.guardar(vehiculo);
-        attributes.addFlashAttribute("msg", "Vehículo registrado correctamente.");
-        return "redirect:/usuarios/index";
+
+        attributes.addFlashAttribute("msg", vehiculo.getId() == null ? "Vehículo registrado correctamente." : "Vehículo actualizado correctamente.");
+        
+        Integer idNumerico= propietario.getId();
+        return "redirect:/usuarios/view/" + idNumerico;
     }
+
+
+
 
     @GetMapping("/view/{id}")
     public String verDetalle(@PathVariable("id") int idVehiculo, Model model){
@@ -102,6 +117,24 @@ public class VehiculosController {
         //Buscar los detalles de la vacante en la base de datos
 
         return "/usuarios/verSocio";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editarVehiculo(@PathVariable("id") int idVehiculo, Model model) {
+
+        Vehiculo vehiculo = serviceVehiculos.buscarPorId(idVehiculo);
+
+        model.addAttribute("vehiculo", vehiculo);
+
+        // Para mostrar datos del propietario actual
+        Usuario propietario = vehiculo.getUsuarioId();
+        model.addAttribute("propietario", propietario);
+
+        // Para mostrar datos del asalariado actual (si hay)
+        Usuario asalariado = vehiculo.getSocioAsalariadoId();
+        model.addAttribute("asalariado", asalariado);
+
+        return "/vehiculos/formRegistroMovilidad"; // tu formulario para editar el vehículo
     }
 
 }

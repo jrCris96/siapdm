@@ -43,6 +43,8 @@
                     <div class="fields">
                         <div class="input-field">
                             <label for="">Marca del Vehiculo:</label>
+                            <input type="hidden" th:field="*{id}"></input>
+                            <input type="hidden" th:field="*{foto}"></input>
                             <input type="text" th:field="*{marca}" id="marca" name="marca" placeholder="Marca del Vehiculo" required>
                         </div>
 
@@ -77,20 +79,30 @@
                                 <option value="Taxi" th:selected="*{tipo_vehiculo} == 'Taxi'">Taxi</option>
                             </select>
                         </div>
+ 
+                        <div class="input-field" th:if="${vehiculo.usuarioId != null}">
+                            <label>Propietario:</label>
+                            <input type="text" th:value="${vehiculo.usuarioId.nombre + ' ' + vehiculo.usuarioId.apellido}" disabled>
+                            <!-- Campo oculto para enviar el idPropietario -->
+                            <input type="hidden" name="idPropietario" th:value="${vehiculo.usuarioId.idUsuario}" />
+                        </div>
 
-                        <div class="input-field">
-                            <label for="">ID de Propietario</label>
-                            <input type="text" name="idPropietario" placeholder="Introduce ID" required>
+                        <!-- Si es registro (vehiculo no tiene usuarioId aún) -->
+                        <div class="input-field" th:if="${vehiculo.usuarioId == null}">
+                            <label>ID del Propietario:</label>
+                            <input type="text" name="idPropietario" placeholder="Introduce el ID del propietario" required>
                         </div>
 
                         <div class="input-field">
-                            <img class="imgFile" id="imgFile" src="" >
+                            <img class="imgFile" th:src="@{/logos/{img}(img=${vehiculo.foto})}" alt="Imagen actual">
                             <input type="file" name="archivoImagen" id="archivoImagen" class="inputFile" accept="image/*">
                         </div>
 
                         <div class="input-field">
                             <label for="">ID del Socio Asalariado (Opcional)</label>
-                            <input type="text" name="idAsalariado" placeholder="Introduce ID">
+                            <input type="text" name="idAsalariado"
+                                th:value="${vehiculo.socioAsalariadoId != null ? vehiculo.socioAsalariadoId.idUsuario : ''}"
+                                placeholder="Introduce ID del asalariado">
                         </div>
                     </div>
 
