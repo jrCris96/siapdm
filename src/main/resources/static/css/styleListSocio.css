@@ -15,7 +15,7 @@
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 .container header{
-    position: relative;
+    position: static;
     font-size: 20px;
     font-weight: 600;
     color: #333;
@@ -106,7 +106,7 @@ form .fields .input-field {
 .table_header p{
     color: #000000;
 }
-.btnSocio{
+.btnSocio{ 
     outline: none ; 
     border: none; 
     border-radius: 5px; 
@@ -114,20 +114,26 @@ form .fields .input-field {
     padding: 10px; 
     color: #ffffff; 
 }
-td .btnSocio:nth-child(1){
+td a:nth-of-type(1) .btnSocio {
     background-color: #0298cf;
 }
-td .btnSocio:nth-child(2){
+td a:nth-of-type(2) .btnSocio {
     background-color: #FFDE21;
 }
-td .btnSocio:nth-child(3){
+
+.btn-rojo{
     background-color: #f80000;
 }
+.btn-verde{
+    background-color: #28a745;
+}
+
 .add_new{
     padding: 10px 20px;
     color: #ffffff;
     background-color: #0298cf;
 }
+
 
 input{
     padding: 10px 20px;
@@ -169,25 +175,57 @@ tr:hover td{
 }
 
 
-.pagination{
+.pagination1{
     display: flex;
     justify-content: flex-end;
-    width: 100%;
+    width: 60%;
     padding: 10px 20px;
 }
-.pagination div{
-    padding: 10px;
-    border: 2px solid #d5d0d0;
-    height: 40px;
-    width: 40px;
-    border-radius: 20%;
+
+
+.pagination-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    background-color: #0298cf;
-    color: #ffffff;
-    margin: 0 5px;
-    cursor: pointer;
+    margin-top: 20px;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    gap: 5px;
+}
+
+.pagination-item {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 12px;
+    background-color: #f4f4f4;
+    transition: 0.3s;
+}
+
+.pagination-item a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.pagination-item:hover {
+    background-color: #dce6f1;
+}
+
+.pagination-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination-item.active a {
+    color: white;
+}
+
+.pagination-item.disabled {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .btnBuscar{

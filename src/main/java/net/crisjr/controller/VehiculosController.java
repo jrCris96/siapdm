@@ -55,7 +55,7 @@ public class VehiculosController {
             attributes.addFlashAttribute("error", "No se encontró el propietario con ID: " + idPropietario);
             return "redirect:/vehiculos/create";
         }
-
+ 
         // Validar que no tenga más de 2 vehículos
         long cantidadVehiculos = vehiculosRepo.countByUsuarioId(propietario);
         if (cantidadVehiculos >= 2) {
@@ -87,11 +87,10 @@ public class VehiculosController {
                 }
             }
 
-
         // Guardar vehículo
         serviceVehiculos.guardar(vehiculo);
         attributes.addFlashAttribute("msg", "Vehículo registrado correctamente.");
-        return "redirect:/vehiculos/create";
+        return "redirect:/usuarios/index";
     }
 
     @GetMapping("/view/{id}")

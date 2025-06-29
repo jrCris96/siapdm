@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import net.crisjr.model.Grupo;
 
 public interface GruposRepository extends JpaRepository<Grupo, Integer> {
-    List<Grupo> findBySectorId(Long sectorId);
+    List<Grupo> findBySectorId(Integer sectorId);
 } 

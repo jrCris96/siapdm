@@ -25,46 +25,45 @@
       <div class="container">
         <header>Lista de los socios</header> 
 
-        <form action="#">
-
+        <form th:action="@{/usuarios/buscar}" method="get">
             <div class="form first">
                 <div class="details personal">
-
                     <div class="fields">
                         <div class="input-field">
                             <label for="">ID</label>
-                            <input type="text" placeholder="Codigo ID" required>
+                            <input  type="text" name="idUsuario" placeholder="Código ID">
                         </div>
+
                         <div class="input-field">
-                            <label>Sector</label>
-                            <select id="estado-civil" required>
-                                <option value="" disabled selected>Selecciona una Sector</option>
-                                <option value="socio">Selectivo</option>
-                                <option value="jGrupo">Masivo</option>
-                                <option value="sGeneral">Secretario General</option>
-                                <option value="admin">Administrador</option>
+                            <label for="sectorSelect">Sector</label>
+                            <select id="sectorSelect" name="idSector">
+                                <option value="" disabled selected>Selecciona un Sector</option>
+                                <option th:each="sector : ${sectores}" 
+                                        th:value="${sector.id}" 
+                                        th:text="${sector.nombre}"></option>
                             </select>
                         </div>
-        
+
                         <div class="input-field">
-                            <label>Grupo</label>
-                            <select id="estado-civil" required>
+                            <label for="grupoSelect">Grupo</label>
+                            <select id="grupoSelect" name="idGrupo">
                                 <option value="" disabled selected>Selecciona un Grupo</option>
-                                <option value="socio">Uno</option>
-                                <option value="jGrupo">Dos</option>
-                                <option value="sGeneral">Tres</option>
-                                <option value="admin">Cuatro</option>
+                                <option th:each="grupo : ${grupoPorSector}" 
+                                        th:value="${grupo.id}" 
+                                        th:text="${grupo.nombre}"></option>
                             </select>
                         </div>
                     </div>
+
                     <div class="btn">
-                        <button class="btnBuscar">
+                        <button class="btnBuscar" type="submit">
                             <span class="btnText">Buscar</span>
                         </button>
                     </div>
                 </div>
             </div>
-            <div th:if="${msg != null}" th:text="${msg}" role='alert'></div>
+        </form>
+        <div th:if="${msg != null}" th:text="${msg}" role='alert'></div>
             <div class="table">
                 <div class="table_section">
                     <table>
@@ -81,35 +80,79 @@
                         <tbody>
                             <tr th:each="usuario : ${usuarios}">
                                 <td th:text="${usuario.idUsuario}" class="tdId"></td>
-                                <td><img th:src="@{/img/{img} (img=${usuario.foto})}" alt=""></td>
+                                <td><img th:src="@{/logos/{img} (img=${usuario.foto})}" alt=""></td>
                                 <td th:text="${usuario.nombre + ' ' + usuario.apellido}"></td>
                                 <td th:text="${usuario.grupo.nombre}">
-                                <td><p th:text="${usuario.estado}"class="p-bueno">Activado</p></td>
+                                <td>
+                                    <p th:text="${usuario.estado}" th:if="${usuario.estado == 'habilitado'}" class="p-bueno">Activado</p>
+                                    <p th:text="${usuario.estado}" th:unless="${usuario.estado == 'habilitado'}" class="p-malo">Deshabilitado</p>
+                                </td>
                                 <td>
                                     <a th:href="@{/usuarios/view/{id} (id=${usuario.id})}">
                                         <button type="button" class="btnSocio"><i class="fa-solid fa-eye"></i></button>
                                     </a>
-                                    <button class="btnSocio"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button class="btnSocio"><i class="fa-solid fa-ban"></i></button>
+                                    <a th:href="@{/usuarios/edit/{id}(id=${usuario.id})}">
+                                        <button class="btnSocio"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    </a>
+                                    <a th:href="@{/usuarios/desactivar/{id}(id=${usuario.id})}" th:if="${usuario.estado == 'habilitado'}" onclick="return confirm('¿Seguro que quieres deshabilitar este usuario?');">
+                                        <button type="button" class="btnSocio btn-rojo"><i class="fa-solid fa-ban"></i></button>
+                                    </a>
+                                    <a th:href="@{/usuarios/activar/{id}(id=${usuario.id})}" th:if="${usuario.estado == 'deshabilitado'}" onclick="return confirm('¿Seguro que quieres Habilitar este usuario?');">
+                                        <button type="button" class="btnSocio btn-verde"><i class="fa-regular fa-circle-check"></i></i></button>
+                                    </a>
+                                    
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="pagination">
-                    <div><i class="fa-solid fa-angles-left"></i></div>
-                    <div><i class="fa-solid fa-angle-left"></i></div>
-                    <div>1</div>
-                    <div>2</div>
-                    <div><i class="fa-solid fa-angle-right"></i></div>
-                    <div><i class="fa-solid fa-angles-right"></i></div>
-                </div>
-        </form>
+                    <div class="pagination1">
+                        <nav th:if="${usuarios instanceof T(org.springframework.data.domain.Page)} and ${usuarios.totalPages > 0}">
+                            <ul class="pagination">
 
-      </div>
-        
+                                <!-- Primera página -->
+                                <li class="pagination-item" th:classappend="${usuarios.first} ? 'disabled'">
+                                    <a th:href="@{/usuarios/indexPaginate(page=0)}">
+                                        <i class="fa-solid fa-angles-left"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Página anterior -->
+                                <li class="pagination-item" th:classappend="${usuarios.first} ? 'disabled'">
+                                    <a th:href="@{/usuarios/indexPaginate(page=${usuarios.number - 1})}">
+                                        <i class="fa-solid fa-angle-left"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Números de página -->
+                                <li class="pagination-item"
+                                    th:each="i : ${#numbers.sequence(1, usuarios.totalPages)}"
+                                    th:classappend="${i == usuarios.number + 1} ? 'active'">
+                                    <a th:href="@{/usuarios/indexPaginate(page=${i - 1})}" th:text="${i}"></a>
+                                </li>
+
+                                <!-- Página siguiente -->
+                                <li class="pagination-item" th:classappend="${usuarios.last} ? 'disabled'">
+                                    <a th:href="@{/usuarios/indexPaginate(page=${usuarios.number + 1})}">
+                                        <i class="fa-solid fa-angle-right"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Última página -->
+                                <li class="pagination-item" th:classappend="${usuarios.last} ? 'disabled'">
+                                    <a th:href="@{/usuarios/indexPaginate(page=${usuarios.totalPages - 1})}">
+                                        <i class="fa-solid fa-angles-right"></i>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                
+        </div>   
     </main>
     
     <script th:src="@{/js/scrip3.js}"></script>
+    <script th:src="@{/js/script4.js}"></script>
 </body>
 </html> 

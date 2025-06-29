@@ -1,6 +1,7 @@
 package net.crisjr.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +33,7 @@ import net.crisjr.util.Utileria;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -61,11 +65,17 @@ public class UsuarioController {
 
         return "/usuarios/listSocio";
     }
+
+    @GetMapping(value = "/indexPaginate")
+        public String mostrarIndexPaginado(Model model, Pageable page) {
+        Page<Usuario>lista = serviceUsuario.buscarTodas(page);
+        model.addAttribute("usuarios", lista);
+        return "usuarios/listSocio";
+    }
     
     @GetMapping("/create") 
     public String crear(Usuario usuario, Model model){
-        model.addAttribute("sectores", serviceSector.buscarTodas());
-        model.addAttribute("perfiles", servicePerfil.buscarTodas()); 
+        
 
         if (usuario.getPerfiles() == null) {
         usuario.setPerfiles(new LinkedList<>());
@@ -75,7 +85,7 @@ public class UsuarioController {
 
     @GetMapping("/grupos-por-sector/{sectorId}")
     @ResponseBody
-    public List<Grupo> obtenerGruposPorSector(@PathVariable Long sectorId) {
+    public List<Grupo> obtenerGruposPorSector(@PathVariable int sectorId) {
         return serviceGrupos.findBySectorId(sectorId);
     }
 
@@ -140,6 +150,86 @@ public class UsuarioController {
         return "/usuarios/verSocio";
     }
 
+    @GetMapping("/desactivar/{id}")
+    public String desactivarUsuario(@PathVariable("id") Integer idUsuario, RedirectAttributes attributes) {
+
+        Usuario usuario = serviceUsuario.buscarPorId(idUsuario);
+
+        if (usuario != null) {
+            usuario.setEstado("deshabilitado"); 
+            serviceUsuario.guardar(usuario);
+            attributes.addFlashAttribute("msg","El usuario fue deshabilitado correctamente.");
+        } else {
+            attributes.addFlashAttribute("error",
+                    "Usuario no encontrado.");
+        }
+        return "redirect:/usuarios/index";
+    }
+
+    @GetMapping("/activar/{id}")
+    public String activarUsuario(@PathVariable("id") Integer idUsuario, RedirectAttributes attributes) {
+        Usuario usuario = serviceUsuario.buscarPorId(idUsuario);
+        if (usuario != null) {
+            usuario.setEstado("habilitado");
+            serviceUsuario.guardar(usuario);
+            attributes.addFlashAttribute("msg", "Usuario habilitado correctamente.");
+        } else {
+            attributes.addFlashAttribute("error", "Usuario no encontrado.");
+        }
+        return "redirect:/usuarios/index";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editar(@PathVariable("id") int idUsuario, Model model){
+        Usuario usuario= serviceUsuario.buscarPorId(idUsuario);
+        model.addAttribute("usuario", usuario);
+
+        Grupo grupoUsuario= usuario.getGrupo();
+        model.addAttribute("grupoUsuario", grupoUsuario);
+
+        List<Grupo> gruposPorSector= new ArrayList<>();
+        if(grupoUsuario !=null && grupoUsuario.getSector() !=null){
+            gruposPorSector= serviceGrupos.findBySectorId(grupoUsuario.getSector().getId());
+        }
+        model.addAttribute("grupoPorSector", gruposPorSector);
+
+        return "usuarios/formRegistroSocio";
+    }
+
+    @ModelAttribute
+    public void setGenericos(Model model){
+        Usuario usuarioSearch= new Usuario();
+        model.addAttribute("sectores", serviceSector.buscarTodas());
+        model.addAttribute("perfiles", servicePerfil.buscarTodas()); 
+        model.addAttribute("search", usuarioSearch);
+    }
+    
+    @GetMapping("/buscar")
+    public String buscarUsuarios(
+        @RequestParam(name = "idUsuario", required = false) String idUsuario,
+        @RequestParam(name = "idGrupo", required = false) Integer idGrupo,
+        @RequestParam(name = "idSector", required = false) Integer idSector,
+        Model model) {
+
+        // Limpia idUsuario, si viene vacío lo pones en null
+        if (idUsuario != null && idUsuario.trim().isEmpty()) {
+            idUsuario = null;
+        }
+
+        List<Usuario> lista = serviceUsuario.buscarPorFiltros(idUsuario, idGrupo, idSector);
+
+        model.addAttribute("usuarios", lista);
+        model.addAttribute("sectores", serviceSector.buscarTodas());
+
+        if (idSector != null) {
+            List<Grupo> grupos = serviceGrupos.findBySectorId(idSector);
+            model.addAttribute("grupoPorSector", grupos);
+        }
+
+        return "usuarios/listSocio";
+    }
+
+    
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

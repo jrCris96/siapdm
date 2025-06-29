@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.crisjr.model.Perfil;
@@ -73,6 +76,20 @@ public void guardar(Usuario usuario) {
             return optional.get();
         }
         return null;
+    }
+
+    @Override
+    public List<Usuario> buscarByExample(Example<Usuario> example) {
+        return usuariosRepo.findAll(example);
+    }
+    @Override
+    public List<Usuario> buscarPorFiltros(String idUsuario, Integer idGrupo, Integer idSector) {
+        return usuariosRepo.buscarPorFiltros(idUsuario, idGrupo, idSector);
+    }
+
+    @Override
+    public Page<Usuario> buscarTodas(Pageable page) {
+        return usuariosRepo.findAll(page);
     }
 
 }

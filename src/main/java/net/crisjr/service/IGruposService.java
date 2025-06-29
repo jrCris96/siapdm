@@ -7,6 +7,6 @@ import net.crisjr.model.Grupo;
 public interface IGruposService {
     List<Grupo> buscarTodas();
     Grupo buscarPorId(Integer idGrupo);
-    List<Grupo> findBySectorId(Long sectorId);
+    List<Grupo> findBySectorId(Integer sectorId);
 }
   

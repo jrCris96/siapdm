@@ -32,7 +32,7 @@
                     <div class="left-column background2-left-column">
                         <h6>Socio</h6>
                         <h2><span th:text="${usuario.nombre}"></span> <span th:text="${usuario.apellido}">Quispe Choque</span></h2>
-                        <img th:src="@{/img/{img} (img=${usuario.foto})}" alt="">
+                        <img th:src="@{/logos/{img} (img=${usuario.foto})}" alt="">
                     </div>
 
                     <div class="right-column" >
@@ -71,7 +71,7 @@
                     <div class="left-column background2-left-column">
                         <h6>Vehiculo</h6>
                         <h2>Dueño: <span th:text="${vehiculo.usuarioId != null ? vehiculo.usuarioId.nombre + ' ' + vehiculo.usuarioId.apellido : 'Desconocido'}"></span> Asignado: <span th:text="${vehiculo.socioAsalariadoId != null ? vehiculo.socioAsalariadoId.nombre + ' ' + vehiculo.socioAsalariadoId.apellido : 'Nadie'}"></span></h2>
-                        <img src="/auto.jpg" alt="">
+                        <img th:src="@{/logos/{img} (img=${vehiculo.foto})}" alt="">
                     </div>
 
                     <div class="right-column">

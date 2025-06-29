@@ -33,7 +33,9 @@
                   <li th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
                 </ul>
             </div>
-
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <p th:text="${error}"></p>
+            </div>
             <div class="form first">
                 <div class="details personal">
                     <span class="title">Detalles del Vehiculo</span>

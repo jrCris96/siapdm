@@ -20,11 +20,6 @@ public class GruposServiceJpa implements IGruposService {
     public List<Grupo> buscarTodas() {
         return gruposRepo.findAll();
     }
-
-    @Override
-    public List<Grupo> findBySectorId(Long sectorId) {
-        return gruposRepo.findBySectorId(sectorId);
-    }
     @Override
     public Grupo buscarPorId(Integer idGrupo) {
         Optional<Grupo> optional= gruposRepo.findById(idGrupo);
@@ -33,4 +28,10 @@ public class GruposServiceJpa implements IGruposService {
         }
         return null;
     }
+
+    @Override
+    public List<Grupo> findBySectorId(Integer sectorId) {
+        return gruposRepo.findBySectorId(sectorId);
+    }
+    
 }

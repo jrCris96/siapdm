@@ -39,10 +39,11 @@
             <div class="form first">
                 <div class="details personal"> 
                     <span class="title">Datos del Socio</span>
-
                     <div class="fields">
                         <div class="input-field">
                             <label for="">Nombre(s):</label>
+                            <input type="hidden" th:field="*{id}"></input>
+                            <input type="hidden" th:field="*{foto}"></input>
                             <input type="text" th:field="*{nombre}" id="nombre" name="nombre" placeholder="nombre completo" required>
                         </div>
 
@@ -109,7 +110,7 @@
 
                         <div class="input-field">
                             <label for="sectorSelect">Sector</label>
-                            <select id="sectorSelect" required>
+                            <select id="sectorSelect" name="id_sector" th:field="*{grupo.sector.id}" required>
                                 <option value="" disabled selected>Selecciona una opción</option>
                                 <option th:each="sector : ${sectores}" th:value="${sector.id}" th:text="${sector.nombre}"></option>
                             </select>
@@ -118,12 +119,15 @@
                         <div class="input-field">
                             <label for="grupoSelect">Grupo</label>
                             <select id="grupoSelect" th:field="*{grupo.id}" required>
-                                <option value="" disabled selected>Selecciona un Grupo</option>
+                                <option th:each="grupo : ${grupoPorSector}" 
+                                th:value="${grupo.id}" 
+                                th:text="${grupo.nombre}"
+                                th:selected="${grupo.id == grupoUsuario.id}"></option>
                             </select>
                         </div>
 
                         <div class="input-field">
-                            <img class="imgFile" id="imgFile" src="" >
+                            <img class="imgFile" th:src="@{/logos/{img} (img=${usuario.foto})}" id="imgFile" src="" >
                             <input type="file" name="archivoImagen" id="archivoImagen" class="inputFile" accept="image/*">
                         </div>
 

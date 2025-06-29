@@ -14,7 +14,7 @@ import net.crisjr.service.IVehiculosService;
 @Service
 @Primary
 public class VehiculosServiceJpa implements IVehiculosService {
-
+ 
     @Autowired
     private VehiculosRepository vehiculosRepo;
 
