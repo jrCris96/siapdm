@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         grupoSelect.innerHTML = '<option value="" disabled selected>Selecciona un grupo</option>';
 
         if (sectorId) {
-            fetch(`/jefes/grupos-por-sector/${sectorId}`)
+            fetch(`/jefes/grupos-disponibles/${sectorId}`)
                 .then(response => response.json())
                 .then(grupos => {
                     grupos.forEach(grupo => {

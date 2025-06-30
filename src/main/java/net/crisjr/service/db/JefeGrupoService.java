@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import net.crisjr.enums.EstadoJefeGrupo;
 import net.crisjr.model.Grupo;
 import net.crisjr.model.JefeGrupo;
+import net.crisjr.model.Sector;
+import net.crisjr.model.Usuario;
 import net.crisjr.repository.JefeGrupoRepository;
 import net.crisjr.service.IJefeGrupoService;
 
@@ -45,6 +47,21 @@ public class JefeGrupoService implements IJefeGrupoService {
     @Override
     public boolean existeJefeActivoEnGrupo(Grupo grupo) {
         return jefeGrupoRepo.existsByGrupoAndEstado(grupo, EstadoJefeGrupo.ACTIVO);
+    }
+
+    @Override
+    public boolean socioYaEsJefeActivo(Usuario socio) {
+        return jefeGrupoRepo.existsBySocioAndEstado(socio, EstadoJefeGrupo.ACTIVO);
+    }
+
+    @Override
+    public List<JefeGrupo> buscarJefesActivosPorSector(Sector sector) {
+        return jefeGrupoRepo.findByGrupo_SectorAndEstado(sector, EstadoJefeGrupo.ACTIVO);
+    }
+
+    @Override
+    public List<JefeGrupo> buscarTodosActivos() {
+        return jefeGrupoRepo.findByEstado(EstadoJefeGrupo.ACTIVO);
     }
 
 }

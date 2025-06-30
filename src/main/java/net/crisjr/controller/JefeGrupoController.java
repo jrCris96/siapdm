@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import net.crisjr.enums.EstadoJefeGrupo;
 import net.crisjr.model.Grupo;
 import net.crisjr.model.JefeGrupo;
+import net.crisjr.model.Sector;
 import net.crisjr.model.Usuario;
 import net.crisjr.service.IGruposService;
 import net.crisjr.service.IJefeGrupoService;
@@ -41,8 +42,19 @@ public class JefeGrupoController {
     private IGruposService grupoService;
 
     @GetMapping("/lista")
-    public String listarJefes(Model model) {
-        List<JefeGrupo> jefes = jefeGrupoService.buscarPorEstado(EstadoJefeGrupo.ACTIVO);
+    public String listarJefesPorSector(@RequestParam(required = false) Integer sectorId, Model model) {
+        List<Sector> sectores = sectorService.buscarTodas();
+        List<JefeGrupo> jefes;
+
+        if (sectorId != null) {
+            Sector sector = sectorService.buscarPorId(sectorId);
+            jefes = jefeGrupoService.buscarJefesActivosPorSector(sector);
+            model.addAttribute("sectorSeleccionado", sectorId);
+        } else {
+            jefes = jefeGrupoService.buscarTodosActivos();
+        }
+
+        model.addAttribute("sectores", sectores);
         model.addAttribute("jefes", jefes);
         return "jefeGrupo/lista";
     }
@@ -66,6 +78,7 @@ public class JefeGrupoController {
         }
 
         Grupo grupo = grupoService.buscarPorId(grupoId);
+
         if (grupo == null) {
             attributes.addFlashAttribute("error", "Grupo no válido.");
             return "redirect:/jefes/create";
@@ -74,6 +87,19 @@ public class JefeGrupoController {
         // Validar que no exista otro jefe activo en el grupo
         if (jefeGrupoService.existeJefeActivoEnGrupo(grupo)) {
             attributes.addFlashAttribute("error", "Este grupo ya tiene un jefe activo.");
+            return "redirect:/jefes/create";
+        }
+
+        // Validar que el socio no sea ya jefe en otro grupo
+        if (jefeGrupoService.socioYaEsJefeActivo(socio)) {
+            attributes.addFlashAttribute("error", "Este socio ya es jefe de otro grupo.");
+            return "redirect:/jefes/create";
+        }
+
+        
+        // Validar que el socio pertenece al grupo seleccionado
+        if (!socio.getGrupo().getId().equals(grupo.getId())) {
+            attributes.addFlashAttribute("error", "Este socio no pertenece al grupo seleccionado.");
             return "redirect:/jefes/create";
         }
 
@@ -95,13 +121,30 @@ public class JefeGrupoController {
     }
 
     @PostMapping("/retirar/{id}")
-    public String retirar(@PathVariable Integer id) {
+    public String retirarJefe(@PathVariable Integer id, RedirectAttributes attributes) {
         JefeGrupo jefe = jefeGrupoService.buscarPorId(id);
         if (jefe != null) {
             jefe.setEstado(EstadoJefeGrupo.INACTIVO);
             jefe.setFechaFin(LocalDate.now());
             jefeGrupoService.guardar(jefe);
+            attributes.addFlashAttribute("msg", "Jefe retirado correctamente.");
         }
-        return "redirect:/jefes-grupo/lista";
+        return "redirect:/jefes/lista";
+    }
+
+    @GetMapping("/grupos-disponibles/{sectorId}")
+    @ResponseBody
+    public List<Grupo> obtenerGruposSinJefe(@PathVariable int sectorId) {
+        List<Grupo> todosGrupos = grupoService.findBySectorId(sectorId);
+        return todosGrupos.stream()
+            .filter(grupo -> !jefeGrupoService.existeJefeActivoEnGrupo(grupo))
+            .toList();
+    }
+
+    @GetMapping("/grupo-del-socio/{idUsuario}")
+    @ResponseBody
+    public Grupo obtenerGrupoDelSocio(@PathVariable String idUsuario) {
+        Usuario socio = usuariosService.buscarPorIdUsuario(idUsuario);
+        return (socio != null) ? socio.getGrupo() : null;
     }
 }
