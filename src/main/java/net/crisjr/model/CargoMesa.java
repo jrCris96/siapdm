@@ -4,16 +4,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table; 
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name= "Perfil")
-public class Perfil {
-    
+@Table(name= "cargo_mesa")
+public class CargoMesa {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String perfil;
+    private String nombre;
 
     public Integer getId() {
         return id;
@@ -21,15 +21,15 @@ public class Perfil {
     public void setId(Integer id) {
         this.id = id;
     }
-    public String getPerfil() {
-        return perfil;
+    public String getNombre() {
+        return nombre;
     }
-    public void setPerfil(String perfil) {
-        this.perfil = perfil;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @Override
     public String toString() {
-        return "Perfil [id=" + id + ", perfil=" + perfil + "]";
-    }   
+        return "CargoMesa [id=" + id + ", nombre=" + nombre + "]";
+    }
 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+        
+        <h2>Registrar Jefe de Grupo</h2>
+
+    <form th:action="@{/jefes/save}" method="post" th:object="${jefeGrupo}">
+        <!-- ID personalizado del socio -->
+        <div>
+            <label>ID del socio:</label>
+            <input type="text" name="idUsuario" placeholder="Ej: SOC001" required />
+        </div>
+
+        <!-- Sector -->
+        <div>
+            <label for="sectorSelect">Sector:</label>
+            <select id="sectorSelect" name="sectorId" required>
+                <option value="">Seleccione un sector</option>
+                <option th:each="sector : ${sectores}"
+                        th:value="${sector.id}"
+                        th:text="${sector.nombre}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Grupo dependiente del sector -->
+        <div>
+            <label for="grupoSelect">Grupo:</label>
+            <select id="grupoSelect" name="grupoId" required>
+                <option value="">Seleccione un grupo</option>
+                <!-- Las opciones se llenan dinámicamente con JS -->
+            </select>
+        </div>
+
+        <!-- Fecha inicio -->
+        <div>
+            <label>Fecha de Inicio:</label>
+            <input type="date" th:field="*{fechaInicio}" required />
+        </div>
+
+        <button type="submit">Registrar</button>
+    </form>
+    
+        
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script>
+    <script th:src="@{/js/script5.js}"></script>
+</body>
+</html>

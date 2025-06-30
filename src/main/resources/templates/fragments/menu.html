@@ -47,12 +47,24 @@
                 <li class="list__inside">
                     <a th:href="@{/vehiculos/create}" class="nav__link nav__link--inside">Registro Movilidad</a>
                 </li>
+                <li class="list__inside">
+                    <a th:href="@{/mesa/create}" class="nav__link nav__link--inside">Registro de Mesa Directiva</a>
+                </li>
+                <li class="list__inside">
+                    <a th:href="@{/jefes/create}" class="nav__link nav__link--inside">Registro Jefe de Grupo</a>
+                </li>
             </ul>
         </li>
         <li>
             <a th:href="@{/usuarios/indexPaginate}">
                 <img src="/icons2/list.svg" alt="">
                 <span>Socios</span>
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/mesa/actual}">
+                <img src="/icons2/asistencia.svg" alt="">
+                <span>MesaDirectiva</span>
             </a>
         </li>
         <li>

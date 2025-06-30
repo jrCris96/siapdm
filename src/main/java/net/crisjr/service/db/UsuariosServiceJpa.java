@@ -92,4 +92,9 @@ public void guardar(Usuario usuario) {
         return usuariosRepo.findAll(page);
     }
 
+    @Override
+    public Usuario buscarPorIdUsuario(String idUsuario) {
+        return usuariosRepo.findByIdUsuario(idUsuario);
+    }
+
 }
