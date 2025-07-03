@@ -12,5 +12,6 @@ public interface IDetalleMesaService {
     List<DetalleMesa> buscarPorMesaActivos(MesaDirectiva mesa);
     boolean existeSocioEnMesa(MesaDirectiva mesa, Usuario socio);
     DetalleMesa buscarPorId(Integer id);
+    List<DetalleMesa> buscarHaciendasActivas();
 
 }

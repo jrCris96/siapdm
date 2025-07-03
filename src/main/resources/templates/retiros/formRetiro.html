@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+        <h2>Registrar Retiro del Sindicato</h2>
+
+    <!-- Mensajes -->
+    <div th:if="${msg}" style="color: green;" th:text="${msg}"></div>
+    <div th:if="${error}" style="color: red;" th:text="${error}"></div>
+
+    <!-- Formulario -->
+        <form th:action="@{/retiros/save}" method="post">
+            <label for="detalleMesaId">Encargado (Hacienda):</label>
+            <select name="idMesaDetalle" id="detalleMesaId" required>
+                <option value="">Seleccione encargado</option>
+                <option th:each="detalle : ${detallesMesa}"
+                        th:value="${detalle.id}"
+                        th:text="${detalle.usuario.nombre + ' ' + detalle.usuario.apellido}">
+                </option>
+            </select>
+            <br><br>
+
+            <label for="fecha">Fecha del Retiro:</label>
+            <input type="date" name="fecha" id="fecha" required>
+            <br><br>
+
+            <label for="monto">Monto:</label>
+            <input type="number" step="0.01" name="monto" id="monto" required>
+            <br><br>
+
+            <label for="motivo">Motivo:</label>
+            <input type="text" name="motivo" id="motivo" required>
+            <br><br>
+
+            <button type="submit">Guardar Retiro</button>
+        </form>
+         <br>
+        <a th:href="@{/retiros/lista}">Ver lista de retiros</a>
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script> 
+    <script th:src="@{/js/script4.js}"></script>
+</body>
+</html>

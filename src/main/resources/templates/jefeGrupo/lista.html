@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" th:href="@{/css/style3.css}">
-    
-
+    <link rel="stylesheet" th:href="@{/css/style3.css}"> 
+    <link rel="stylesheet" th:href="@{/css/style8.css}">
+    <link rel="stylesheet" th:href="@{/css/styleListSocio.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
 </head>
@@ -19,48 +20,69 @@
     </header>
 
     <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
-
+    
     <main id="main">
-        
-        <h2>Lista de Jefes de Grupo</h2>
+      <div class="container">
+        <header>Lista de los jefes de grupo</header>
 
         <form method="get" th:action="@{/jefes/lista}">
-            <label for="sectorId">Filtrar por Sector:</label>
-            <select name="sectorId" id="sectorId">
-                <option value="">Todos</option>
-                <option th:each="sector : ${sectores}" 
-                        th:value="${sector.id}" 
-                        th:text="${sector.nombre}" 
-                        th:selected="${sector.id == sectorSeleccionado}">
-                </option>
-            </select>
-            <button type="submit">Buscar</button>
+
+            <div class="form first">
+                <div class="details personal">
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Filtrar por Sector</label>
+                            <select name="sectorId" id="sectorId">
+                                <option value="">Todos</option>
+                                <option th:each="sector : ${sectores}" 
+                                        th:value="${sector.id}" 
+                                        th:text="${sector.nombre}" 
+                                        th:selected="${sector.id == sectorSeleccionado}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn">
+                        <button class="btnBuscar">
+                            <span class="btnText">Buscar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>    
         </form>
 
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Celular</th>
-                    <th>Grupo</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="jefe : ${jefes}">
-                    <td th:text="${jefe.socio.idUsuario}"></td>
-                    <td th:text="${jefe.socio.nombre + ' ' + jefe.socio.apellido}"></td>
-                    <td th:text="${jefe.socio.celular}"></td>
-                    <td th:text="${jefe.grupo.nombre}"></td>
-                    <td>
-                        <form th:action="@{/jefes/retirar/{id}(id=${jefe.id})}" method="post" style="display:inline;">
-                            <button type="submit" onclick="return confirm('¿Deseas desactivar a este jefe?')">Desactivar</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table">
+                <div class="table_section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Foto</th>
+                                <th>Nombre y Apellido</th>
+                                <th>Celular</th>
+                                <th>Grupo</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="jefe : ${jefes}">
+                                <td th:text="${jefe.socio.idUsuario}"></td>
+                                <td><img src="/user1.png" alt=""></td>
+                                <td th:text="${jefe.socio.nombre + ' ' + jefe.socio.apellido}"></td>
+                                <td th:text="${jefe.socio.celular}"></td>
+                                <td th:text="${jefe.grupo.nombre}"></td>
+                                <td>
+                                    <form th:action="@{/jefes/retirar/{id}(id=${jefe.id})}" method="post" style="display:inline;">
+                                        <button type="submit" class="btnSocio" onclick="return confirm('¿Deseas desactivar a este jefe?')">Desactivar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+      </div>
         
     </main>
     

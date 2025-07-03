@@ -17,4 +17,5 @@ public interface IUsuariosService {
     List<Usuario> buscarPorFiltros(String idUsuario, Integer idGrupo, Integer idSector);
     Page<Usuario>buscarTodas(Pageable page);
     Usuario buscarPorIdUsuario(String idUsuario);
+    List<Usuario> buscarPorGrupo(Integer grupoId);
 }

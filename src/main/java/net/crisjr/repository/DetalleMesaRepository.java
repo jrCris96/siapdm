@@ -16,7 +16,8 @@ public interface DetalleMesaRepository extends JpaRepository<DetalleMesa, Intege
     List<DetalleMesa> findByMesaDirectivaAndEstadoTrue(MesaDirectiva mesa);
     boolean existsByMesaDirectivaAndUsuarioAndEstadoTrue(MesaDirectiva mesa, Usuario usuario);
     
-    
+    List<DetalleMesa> findByCargo_IdAndEstado(Integer idCargo, boolean estado);
+
     
 
 

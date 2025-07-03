@@ -5,158 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/css/style3.css}">
-    
-
+    <link rel="stylesheet" th:href="@{/css/styleVerMesaDir.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
 </head>
 <body>
     <header>
-        <div class="left">
-            <div class="menu-container">
-                <div class="menu" id="menu">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-
-            <div class="brand">
-                <img src="/icons2/udemy.svg" alt="icon-udemy" class="logo">
-                <span class="name">apex</span>
-            </div>
-        </div>
-        
-        <div class="right">
-            <a href="#" class="icons-header">
-                <img src="/icons2/chat.svg" alt="chat">
-            </a>
-            <a href="#" class="icons-header">
-                <img src="/icons2/question.svg" alt="chat">
-            </a>
-            <a href="#" class="icons-header">
-                <img src="/icons2/notification.svg" alt="chat">
-            </a>
-            <img src="/user1.png" alt="img-user" class="user">
-        </div>
+        <!-- Inserta el fragmento izquierda --> 
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
     </header>
 
-    <div class="sidebar" id="sidebar">
-        <nav>
-            <ul>
-                <li>
-                    <a href="/home.html">
-                        <img src="/icons2/home.svg" alt="">
-                        <span>Home</span>
-                    </a>
-                </li>
-                <li class=" list__item list__item--click">
-                    <a class="list__button list__button--click">
-                        <img src="/icons2/register.svg" alt="">
-                        <span>Registro</span>
-                        <img src="/icons/arrow.svg" class="list__arrow">
-                    </a>
-                    <ul class="list__show">
-                        <li class="list__inside">
-                            <a href="/formRegistroSocio.html" class="nav__link nav__link--inside">Registro Socio</a>
-                        </li>
-                        <li class="list__inside">
-                            <a href="/formRegistroMovilidad.html" class="nav__link nav__link--inside">Registro Movilidad</a>
-                        </li>
-                        <li class="list__inside">
-                            <a href="/formRegistroMovilidad.html" class="nav__link nav__link--inside">Registro Mesa Directiva</a>
-                        </li>
-                        <li class="list__inside">
-                            <a href="/formRegistroMovilidad.html" class="nav__link nav__link--inside">Registro Jefe de Grupo</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/listSocio.html">
-                        <img src="/icons2/list.svg" alt="">
-                        <span>Socios</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/AsistenciaSocio.html">
-                        <img src="/icons2/asistencia.svg" alt="">
-                        <span>Asistencia</span>
-                    </a>
-                </li>
-        
-                <li>
-                    <a href="/reporteSocio.html">
-                        <img src="/icons2/report.svg" alt="">
-                        <span>Reporte</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-    </div>
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
     <main id="main">
-        <h2>Mesa Directiva - Gestión de Integrantes</h2>
-
-        <!-- Mensajes -->
+      <div class="container">
+        <header>Mesa Directiva</header>
         <div th:if="${msg}" style="color:green;">[[${msg}]]</div>
         <div th:if="${error}" style="color:red;">[[${error}]]</div>
 
-        <!-- Info de la mesa -->
-        <p><strong>Fecha inicio:</strong> [[${mesa.fecha_inicio}]]</p>
-        <p><strong>Fecha fin:</strong> [[${mesa.fecha_fin}]]</p>
-        <p><strong>Motivo de cambio:</strong> [[${mesa.motivo_cambio}]]</p>
-
-        <!-- Formulario para añadir integrante -->
         <div th:if="${puedeAgregar}">
             <form th:action="@{/mesa/detalle/agregar}" method="post" th:object="${detalleMesa}">
-                <input type="hidden" th:field="*{mesaDirectiva.id}" />
-                
-                <div>
-                    <label>ID del Socio:</label>
-                    <input type="text" name="idUsuario" required placeholder="Ej: SOC001">
-                </div>
+            <input type="hidden" th:field="*{mesaDirectiva.id}" />
+            <div class="arribaTabla">
+                <div class="details personal">
 
-                <div>
-                    <label>Cargo:</label>
-                    <select th:field="*{cargo.id}" required>
-                        <option th:each="cargo : ${cargos}" 
-                                th:value="${cargo.id}" 
-                                th:text="${cargo.nombre}">
-                        </option>
+                    <span class="title">Ingrese datos para registrar Integrantes</span>
+ 
+                    <div class="fields1">
+                        <div class="input-field">
+                            <label for="">Fecha Inicio</label>
+                            <span th:text="${#dates.format(mesa.fecha_inicio, 'dd-MM-yyyy')}"></span>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">Fecha Final</label>
+                            <span th:text="${#dates.format(mesa.fecha_fin, 'dd-MM-yyyy')}"></span>
+                        </div>
+                    </div>
+
+                    <div class="fields1">
+                        <div class="input-field">
+                            <label for="">Id Socio</label>
+                            <input type="text" name="idUsuario" required placeholder="Ej: SOC001">
+                        </div>
+
+                        <div class="input-field">
+                            <label>Cargo</label>
+                            <select th:field="*{cargo.id}" required>
+                            <option th:each="cargo : ${cargos}" 
+                                    th:value="${cargo.id}" 
+                                    th:text="${cargo.nombre}">
+                            </option>
                     </select>
+                        </div>
+                    </div>
+
+                    <button class="nextBtn">
+                        <span class="btnText">Guardar</span>
+                    </button>
                 </div>
-
-                <button type="submit">Agregar Integrante</button>
-            </form>
+            </div>
+        </form>
         </div>
+        
+        
+        <div class="table">
+            <div class="table_section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Foto</th>
+                            <th>Nombre y Apellido</th>
+                            <th>Cargo</th>
+                            <th>Grupo</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="detalle : ${integrantes}">
+                            <td th:text="${detalle.usuario.idUsuario}"></td>
+                            <td><img src="/user1.png" alt=""></td>
+                            <td th:text="${detalle.usuario.nombre + ' ' + detalle.usuario.apellido}"></td>
+                            <td th:text="${detalle.cargo.nombre}"></td>
+                            <td></td>
+                            <td>
+                                <form th:action="@{/mesa/detalle/desactivar/{id}(id=${detalle.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btnSocio">Desactivar</button>
+                                </form> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="/" style="margin-top: 20px; display:inline-block;">Volver al inicio</a>
+            </div>
 
-        <!-- Tabla de integrantes activos -->
-        <h3>Integrantes actuales</h3>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Socio</th>
-                    <th>ID</th>
-                    <th>Cargo</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="detalle : ${integrantes}">
-                    <td th:text="${detalle.usuario.nombre + ' ' + detalle.usuario.apellido}"></td>
-                    <td th:text="${detalle.usuario.idUsuario}"></td>
-                    <td th:text="${detalle.cargo.nombre}"></td>
-                    <td>
-                        <form th:action="@{/mesa/detalle/desactivar/{id}(id=${detalle.id})}" method="post" style="display:inline;">
-                            <button type="submit">Retirar</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <a href="/" style="margin-top: 20px; display:inline-block;">Volver al inicio</a>
-
+      </div>
+        
     </main>
     
     <script th:src="@{/js/scrip3.js}"></script>

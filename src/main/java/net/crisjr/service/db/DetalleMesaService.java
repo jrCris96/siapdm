@@ -41,4 +41,9 @@ public class DetalleMesaService implements IDetalleMesaService{
         return detalleMesaRepo.existsByMesaDirectivaAndUsuarioAndEstadoTrue(mesa, socio);
     }
 
+    @Override
+    public List<DetalleMesa> buscarHaciendasActivas() {
+        return detalleMesaRepo.findByCargo_IdAndEstado(3, true);
+    }
+
 }

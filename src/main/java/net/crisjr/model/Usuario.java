@@ -44,6 +44,9 @@ public class Usuario {
     @JoinColumn(name = "id_grupo")
     private Grupo grupo;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     // Vehículos donde el usuario es el dueño
     @OneToMany(mappedBy = "usuarioId", fetch = FetchType.LAZY)
     private List<Vehiculo> vehiculosPropios;
@@ -159,6 +162,12 @@ public class Usuario {
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
     }
+    public String getPassword() {
+    return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    } 
     
     public List<Perfil> getPerfiles() {
         return perfiles;
@@ -189,8 +198,7 @@ public class Usuario {
                 + ", apellido=" + apellido + ", carnet=" + carnet + ", fecha_nacimiento=" + fecha_nacimiento
                 + ", ubicacion=" + ubicacion + ", celular=" + celular + ", genero=" + genero + ", estado_civil="
                 + estado_civil + ", fecha_ingreso=" + fecha_ingreso + ", estado=" + estado + ", es_decano=" + es_decano
-                + ", grupo=" + grupo + "]";
+                + ", grupo=" + grupo + ", password=" + password + "]";
     }
-
-    
+ 
 }

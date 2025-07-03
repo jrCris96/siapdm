@@ -17,5 +17,7 @@ public interface UsuariosRepository extends JpaRepository<Usuario, Integer> {
        "(:idGrupo IS NULL OR u.grupo.id = :idGrupo) AND " +
        "(:idSector IS NULL OR u.grupo.sector.id = :idSector)")
     List<Usuario> buscarPorFiltros(@Param("idUsuario") String idUsuario, @Param("idGrupo") Integer idGrupo, @Param("idSector") Integer idSector);
+
+    List<Usuario> findByGrupoId(Integer grupoId);
 }
   

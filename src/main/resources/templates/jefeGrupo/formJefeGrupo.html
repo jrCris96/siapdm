@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/css/style3.css}">
-    
+    <link rel="stylesheet" th:href="@{/css/styleJefeGrupo1.css}">
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
@@ -21,41 +21,47 @@
     <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
 
     <main id="main">
-        
-        <h2>Registrar Jefe de Grupo</h2>
+      <div class="container">
+        <header>Registro Jefe de Grupo</header>
 
-    <form th:action="@{/jefes/save}" method="post" th:object="${jefeGrupo}">
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-        <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
-        <!-- ID personalizado del socio -->
-        <div>
-            <label for="idUsuario">ID del Socio:</label>
-            <input type="text" id="idUsuario" name="idUsuario" required>
-        </div>
+        <form th:action="@{/jefes/save}" method="post" th:object="${jefeGrupo}">
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+            <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Datos</span>
 
-        <!-- Sector -->
-        <div id="sectorContainer" style="margin-top: 1em;">
-            <label>Sector:</label>
-            <span id="sectorNombre">-</span>
-            <input type="hidden" id="sectorId" name="sectorId">
-        </div>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label for="">Id del Socio</label>
+                            <input type="text" id="idUsuario" name="idUsuario" required>
+                        </div>
 
-        <!-- Grupo dependiente del sector -->
-        <div id="grupoContainer" style="margin-top: 1em;">
-            <label>Grupo:</label>
-            <span id="grupoNombre">-</span>
-            <input type="hidden" id="grupoId" name="grupoId">
-        </div>
+                        <div class="input-field" id="sectorContainer">
+                            <label for="">Sector</label>
+                            <span id="sectorNombre">-</span>
+                            <input type="hidden" id="sectorId" name="sectorId">
+                        </div>
 
-        <!-- Fecha inicio -->
-        <div>
-            <label>Fecha de Inicio:</label>
-            <input type="date" th:field="*{fechaInicio}" required />
-        </div>
+                        <div class="input-field">
+                            <label for="">Grupo</label>
+                            <span id="grupoNombre">-</span>
+                            <input type="hidden" id="grupoId" name="grupoId">
+                        </div>
 
-        <button type="submit">Registrar</button>
-    </form>
-    
+                        <div class="input-field">
+                            <label for="">Fecha de Inicio</label>
+                            <input type="date" th:field="*{fechaInicio}" required>
+                        </div>
+                    </div>
+
+                    <button class="nextBtn">
+                        <span class="btnText">Guardar</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+      </div>
         
     </main>
     

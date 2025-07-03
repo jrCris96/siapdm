@@ -97,4 +97,9 @@ public void guardar(Usuario usuario) {
         return usuariosRepo.findByIdUsuario(idUsuario);
     }
 
+    @Override
+    public List<Usuario> buscarPorGrupo(Integer grupoId) {
+        return usuariosRepo.findByGrupoId(grupoId);
+    }
+
 }

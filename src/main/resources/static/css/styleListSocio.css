@@ -15,7 +15,7 @@
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 .container header{
-    position: static;
+    position: static; 
     font-size: 20px;
     font-weight: 600;
     color: #333;
@@ -114,10 +114,10 @@ form .fields .input-field {
     padding: 10px; 
     color: #ffffff; 
 }
-td a:nth-of-type(1) .btnSocio {
+td :nth-of-type(1) .btnSocio {
     background-color: #0298cf;
 }
-td a:nth-of-type(2) .btnSocio {
+td :nth-of-type(2) .btnSocio {
     background-color: #FFDE21;
 }
 
@@ -133,6 +133,12 @@ td a:nth-of-type(2) .btnSocio {
     color: #ffffff;
     background-color: #0298cf;
 }
+tr:hover td{
+    color: #0298cf;
+    cursor: pointer;
+    background-color: #f6f9fc;
+}
+
 
 
 input{

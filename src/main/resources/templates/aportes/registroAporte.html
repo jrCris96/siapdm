@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+        
+        <!-- Formulario superior -->
+        <form th:action="@{/aportes/guardar}" method="post">
+            <label>Sector:</label>
+            <select id="sectorSelect" name="sectorId">
+                <option value="">Seleccione un sector</option>
+                <option th:each="sector : ${sectores}" th:value="${sector.id}" th:text="${sector.nombre}"></option>
+            </select>
+
+            <label for="grupoSelect">Grupo:</label>
+                <select id="grupoSelect" name="grupoId" required>
+                    <option value="">Seleccione un grupo</option>
+            </select>
+
+            <label>Fecha:</label>
+            <input type="date" name="fecha" required>
+
+            <label>Monto Total:</label>
+            <input type="number" step="0.01" name="montoTotal" required>
+
+            <!-- Tabla de socios -->
+            <div id="tablaSocios">
+                <h3>Socios del Grupo</h3>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>¿Pagó?</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaSociosBody">
+                        <!-- Filas llenadas por JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="submit">Registrar Aporte</button>
+        </form>
+
+         
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script> 
+    <script th:src="@{/js/registro-aportes.js}"></script>
+
+</body>
+</html>

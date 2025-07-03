@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+*{
+    font-family: 'Nunito', sans-serif;
+}
+
+
+.container{
+    position: relative;
+    max-width: 941px;
+    width: 100%;
+    border-radius: 6px;
+    padding: 30px;
+    margin: 0 15px;
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+.container header{
+    position: relative;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+.container header::before{
+    content: "";
+    position: absolute; 
+    left: 0;
+    bottom: -2px;
+    height: 3px;
+    width: 27px;
+    border-radius: 8px;
+    background-color: #4070f4;
+}
+.container form{
+    position: relative;
+    margin-top: 16px;
+    min-height: 263px;
+    background-color: #fff;
+}
+.container form .details{
+    margin-top: 30px;
+}
+.container form .details.ID{
+    margin-top: 10px;
+}
+.container form .title{
+    display: block;
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 6px 0;
+    color: #333;
+}
+.container form .fields{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.container form .fields1{
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+form .fields1 .input-field {
+    display: flex;
+    width: calc(100% / 3 - 15px);
+    flex-direction: column;
+    margin: 4px 0;
+}
+
+.input-field label{
+    font-size: 12px;
+    font-weight: 500;
+    color: #2e2e2e;
+}
+.input-field input {
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    height: 42px;
+    margin: 8px 0;
+}
+.input-field .radio {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+} 
+.input-field .radio label{
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+} 
+.input-field select{
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+} 
+
+.input-field .input-file input{
+    display: none;
+} 
+.input-field .imgFile{
+    height: 150px;
+    width: 150px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+}
+
+
+.input-field input[type="date"]{
+    color: #707070;
+}
+.input-field input[type="date"]:valid{
+    color: #333;
+}
+
+
+
+.arribaTabla button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    max-width: 200px;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #fff;
+    border-radius: 5px;
+    margin: 25px 0;
+    background-color: #4070f4;
+    transition: all 0.3s linear;
+    cursor: pointer;
+}
+form button:hover{
+    background-color: #265df2;
+}
+form button i{
+    margin: 0 6px;
+}
+
+.table{
+    width: 100%;
+}
+
+.table_header{ 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.table_header p{
+    color: #000000;
+}
+
+
+.table_section{
+    height: 500px;
+    overflow: auto;
+}
+
+table{
+    width: 100%;
+    table-layout: auto;
+    min-width: 900px;
+    border-collapse: collapse;
+}
+
+
+thead th{
+    position: sticky;
+    top: 0;
+    background-color: #f6f9fc;
+    color: #8493a5;
+    font-size: 15px;
+    font-weight: 900;
+}
+th, td{
+    border-bottom: 1px solid #dddddd;
+    padding: 10px 20px;
+    word-break: break-all;
+    text-align: center;
+}
+
+td img{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 2px solid #ced0d2;
+}
+
+.btnSocio{
+    outline: none ; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    padding: 10px; 
+    color: #ffffff; 
+}
+
+td .btnSocio:nth-child(1){
+    background-color: #0298cf;
+}
+td .btnSocio:nth-child(2){
+    background-color: #FFDE21;
+}
+td .btnSocio:nth-child(3){
+    background-color: #f80000;
+}
+.add_new{
+    padding: 10px 20px;
+    color: #ffffff;
+    background-color: #0298cf;
+}
+
+tr:hover td{
+    color: #0298cf;
+    cursor: pointer;
+    background-color: #f6f9fc;
+}
+
+
+@media (max-width: 750px){
+    .container form{
+        overflow-y: scroll;
+    }
+    .container form::-webkit-scrollbar{
+        display: none;
+    }
+    form .fields .input-field{
+        width: calc(100% / 2 - 15px);
+    }
+}
+
+@media (max-width: 550px){
+    form .fields .input-field{
+        width: 100%;
+    }
+}
