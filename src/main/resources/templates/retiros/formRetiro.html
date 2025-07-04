@@ -6,6 +6,9 @@
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/css/style3.css}">
     <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
+    <link rel="stylesheet" th:href="@{/css/style8.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
@@ -28,33 +31,49 @@
     <div th:if="${error}" style="color: red;" th:text="${error}"></div>
 
     <!-- Formulario -->
+        <div class="container">
+        <header>Registro Pagos</header>
+        <div th:if="${msg}" style="color: green;" th:text="${msg}"></div>
+        <div th:if="${error}" style="color: red;" th:text="${error}"></div>
         <form th:action="@{/retiros/save}" method="post">
-            <label for="detalleMesaId">Encargado (Hacienda):</label>
-            <select name="idMesaDetalle" id="detalleMesaId" required>
-                <option value="">Seleccione encargado</option>
-                <option th:each="detalle : ${detallesMesa}"
-                        th:value="${detalle.id}"
-                        th:text="${detalle.usuario.nombre + ' ' + detalle.usuario.apellido}">
-                </option>
-            </select>
-            <br><br>
+            <div class="form first">
+                <div class="details personal"> 
+                    <span class="title">Datos del Socio</span>
 
-            <label for="fecha">Fecha del Retiro:</label>
-            <input type="date" name="fecha" id="fecha" required>
-            <br><br>
+                    <div class="fields">
 
-            <label for="monto">Monto:</label>
-            <input type="number" step="0.01" name="monto" id="monto" required>
-            <br><br>
+                        <div class="input-field">
+                            <label>Encargado (Hacienda)</label>
+                            <select name="idMesaDetalle" id="detalleMesaId" required>
+                                <option value="">Seleccione encargado</option>
+                                <option th:each="detalle : ${detallesMesa}"
+                                        th:value="${detalle.id}"
+                                        th:text="${detalle.usuario.nombre + ' ' + detalle.usuario.apellido}">
+                                </option>
+                            </select>
+                        </div>
 
-            <label for="motivo">Motivo:</label>
-            <input type="text" name="motivo" id="motivo" required>
-            <br><br>
+                        <div class="input-field">
+                            <label for="fecha">Fecha del Retiro:</label>
+                            <input type="date" name="fecha" id="fecha" required>
+                        </div>
 
-            <button type="submit">Guardar Retiro</button>
-        </form>
-         <br>
-        <a th:href="@{/retiros/lista}">Ver lista de retiros</a>
+                        <div class="input-field">
+                            <label for="monto">Monto:</label>
+                            <input type="number" step="0.01" name="monto" id="monto" required>
+                        </div>    
+                        <div class="input-field">
+                            <label for="motivo">Motivo:</label>
+                            <input type="text" name="motivo" id="motivo" required>
+                        </div>        
+                    </div>
+                </div>
+            </div>
+            <button class="nextBtn" type="submit">
+                <span class="btnText">Guardar</span>
+            </button>
+        </form>      
+      </div> 
     </main>
     
     <script th:src="@{/js/scrip3.js}"></script> 

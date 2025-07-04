@@ -1,5 +1,6 @@
 package net.crisjr.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,6 @@ public interface RetirosSindicatoRepository extends JpaRepository<RetiroSindicat
 
     // Buscar todos los retiros por orden descendente
     List<RetiroSindicato> findAllByOrderByFechaDesc();
+    List<RetiroSindicato> findByFechaBetween(LocalDate desde, LocalDate hasta);
+
 }

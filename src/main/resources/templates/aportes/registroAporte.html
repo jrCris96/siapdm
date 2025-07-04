@@ -6,6 +6,9 @@
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/css/style3.css}">
     <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
+    <link rel="stylesheet" th:href="@{/css/style8.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
@@ -22,45 +25,65 @@
 
     <main id="main">
         
-        <!-- Formulario superior -->
+        <div class="container">
+        <header>Registro Pagos</header>
+
         <form th:action="@{/aportes/guardar}" method="post">
-            <label>Sector:</label>
-            <select id="sectorSelect" name="sectorId">
-                <option value="">Seleccione un sector</option>
-                <option th:each="sector : ${sectores}" th:value="${sector.id}" th:text="${sector.nombre}"></option>
-            </select>
+            <div class="form first">
+                <div class="details personal"> 
+                    <span class="title">Datos del Socio</span>
 
-            <label for="grupoSelect">Grupo:</label>
-                <select id="grupoSelect" name="grupoId" required>
-                    <option value="">Seleccione un grupo</option>
-            </select>
+                    <div class="fields">
 
-            <label>Fecha:</label>
-            <input type="date" name="fecha" required>
+                        <div class="input-field">
+                            <label>Sectores</label>
+                            <select id="sectorSelect" name="sectorId">
+                                <option value="">Seleccione un sector</option>
+                                <option th:each="sector : ${sectores}" th:value="${sector.id}" th:text="${sector.nombre}"></option>
+                            </select>
+                        </div>
 
-            <label>Monto Total:</label>
-            <input type="number" step="0.01" name="montoTotal" required>
+                        <div class="input-field">
+                            <label>Grupos</label>
+                            <select id="grupoSelect" name="grupoId" required>
+                                <option value="">Seleccione un grupo</option>
+                            </select>
+                        </div>
 
-            <!-- Tabla de socios -->
-            <div id="tablaSocios">
-                <h3>Socios del Grupo</h3>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>¿Pagó?</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaSociosBody">
-                        <!-- Filas llenadas por JS -->
-                    </tbody>
-                </table>
+                        <div class="input-field">
+                            <label for="">Fecha</label>
+                            <input type="date" name="fecha" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">Monto Total</label>
+                            <input type="number" step="0.01" name="montoTotal" required>
+                        </div>           
+                    </div>
+                </div>
             </div>
+            <div class="table">
+                <div id="tablaSocios" class="table_section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>¿Pagó?</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaSociosBody">
 
-            <button type="submit">Registrar Aporte</button>
-        </form>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button class="nextBtn" type="submit">
+                <span class="btnText">Guardar</span>
+            </button>
+        </form>      
+      </div> 
 
          
     </main>

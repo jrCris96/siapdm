@@ -1,5 +1,6 @@
 package net.crisjr.service.db;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,10 @@ public class RetirosSindicatoService implements IRetirosSindicatoService{
     @Override
     public List<RetiroSindicato> buscarPorMesaDetalle(DetalleMesa mesaDetalle) {
         return repo.findByDetalleMesa(mesaDetalle);
+    }
+
+    @Override
+    public List<RetiroSindicato> buscarPorRangoFechas(LocalDate desde, LocalDate hasta) {
+        return repo.findByFechaBetween(desde, hasta);
     }
 }

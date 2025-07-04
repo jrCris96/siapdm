@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/styleSocioCopy.css}">
+    <link rel="stylesheet" th:href="@{/css/style8.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+        <div class="container">
+        <header>Registro Pagos</header>
+
+        <form method="get" th:action="@{/retiros/reportes}">
+            <div class="form first">
+                <div class="details personal"> 
+                    <span class="title">Datos del Socio</span>
+
+                    <div class="fields">
+
+                        <div class="input-field">
+                            <label>Desde:</label>
+                            <input type="date" name="desde" th:value="${desde}" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Hasta:</label>
+                            <input type="date" name="hasta" th:value="${hasta}" required>
+                        </div>        
+                    </div>
+                </div>
+            </div>
+            <button class="nextBtn" type="submit">
+                <span class="btnText">Buscar</span>
+            </button>
+        </form>
+        <div th:if="${retiros != null}">
+            <div id="tablaSocios" class="table_section">
+                <h3>Retiros entre [[${desde}]] y [[${hasta}]]</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Monto</th> 
+                                <th>Motivo</th>
+                                <th>Encargado</th>
+                            </tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r : ${retiros}">
+                            <td th:text="${r.detalleMesa.usuario.nombre + ' ' + r.detalleMesa.usuario.apellido}"></td>
+                            <td th:text="${#temporals.format(r.fecha, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${r.monto} + ' Bs'"></td>
+                            <td th:text="${r.motivo}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Total retirado: <span th:text="${totalRetirado} + ' Bs'"></span></h4>
+            </div>
+        </div>  
+      </div>  
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script> 
+    <script th:src="@{/js/registro-aportes.js}"></script>
+</body>
+</html>

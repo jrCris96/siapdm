@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/styleSocioCopy.css}">
+    <link rel="stylesheet" th:href="@{/css/style8.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+        <div class="container">
+        <header>Registro Pagos</header>
+
+        <form method="get" th:action="@{/aportes/reportes}">
+            <div class="form first">
+                <div class="details personal"> 
+                    <span class="title">Datos del Socio</span>
+
+                    <div class="fields">
+
+                        <div class="input-field">
+                            <label for="">Desde:</label>
+                            <input type="date" name="desde" id="desde">
+                        </div>
+
+                        <div class="input-field">
+                            <label for="">Hasta</label>
+                            <input type="date" name="hasta" id="hasta">
+                        </div>
+
+                        <div class="input-field">
+                            <label>Sectores</label>
+                            <select id="sectorSelect" name="sectorId">
+                                <option value="">Todos</option>
+                                <option th:each="sector : ${sectores}" 
+                                        th:value="${sector.id}" 
+                                        th:text="${sector.nombre}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Grupos</label>
+                            <select id="grupoSelect" name="grupoId">
+                                <option value="">Seleccione un grupo</option>
+                            </select>
+                        </div>         
+                    </div>
+                </div>
+            </div>
+            <button class="nextBtn" type="submit">
+                <span class="btnText">Buscar</span>
+            </button>
+        </form>
+        <div class="table" th:if="${resultados != null}">
+            <div id="tablaSocios" class="table_section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th th:text="${tipoResultado == 'sector' ? 'Sector' : 'Grupo'}"></th>
+                            <th>Monto Recaudado</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="dato : ${resultados}">
+                        <td th:text="${dato.nombreGrupo}"></td>
+                        <td th:text="${#numbers.formatDecimal(dato.montoTotal, 1, 'POINT', 2, 'POINT')} + ' Bs'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div> 
+
+        <div th:if="${tipoReporte == 'DETALLE'}">
+            <h4>Detalle de pagos del grupo</h4>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Fecha de Pago</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pago : ${detallePagos}">
+                        <td th:text="${pago.fecha}">2025-07-01</td>
+                        <td th:text="${#numbers.formatDecimal(pago.montoTotal, 1, 'POINT', 2, 'POINT')} + ' Bs'">0.00 Bs</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> 
+
+        <div th:if="${resultados == null}">
+            <p>No se han realizado búsquedas aún.</p>
+        </div> 
+      </div> 
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script> 
+    <script th:src="@{/js/reportes-aportes.js}"></script>
+</body>
+</html>

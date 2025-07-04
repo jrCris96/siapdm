@@ -73,29 +73,48 @@
                 <span>Jefes de Grupo</span>
             </a>
         </li>
-        <li>
-            <a href="/AsistenciaSocio.html">
-                <img src="/icons2/asistencia.svg" alt="">
-                <span>Asistencia</span>
-            </a>
-        </li>
-        <li>
-            <a th:href="@{/aportes/create}">
-                <img src="/icons2/asistencia.svg" alt="">
+
+        <li class=" list__item list__item--click">
+            <a class="list__button list__button--click">
+                <img src="/icons2/moneySvg.svg" alt="">
                 <span>Pagos</span>
+                <img src="/icons/arrow.svg" class="list__arrow">
             </a>
-        </li>
-        <li>
-            <a th:href="@{/retiros/create}">
-                <img src="/icons2/asistencia.svg" alt="">
-                <span>Retiros</span>
-            </a>
+            <ul class="list__show">
+                <li class="list__inside">
+                    <a th:href="@{/aportes/create}" class="nav__link nav__link--inside">Registro de Pagos</a>
+                </li>
+                <li class="list__inside">
+                    <a th:href="@{/aportes/reportes}" class="nav__link nav__link--inside">Reportes de PAgos</a>
+                </li>
+            </ul>
         </li>
 
+        <li class=" list__item list__item--click">
+            <a class="list__button list__button--click">
+                <img src="/icons2/moneySendSvg.svg" alt="">
+                <span>Retiros</span>
+                <img src="/icons/arrow.svg" class="list__arrow">
+            </a>
+            <ul class="list__show">
+                <li class="list__inside">
+                    <a th:href="@{/retiros/create}" class="nav__link nav__link--inside">Registrar retiros</a>
+                </li>
+                <li class="list__inside">
+                    <a th:href="@{/retiros/reportes}" class="nav__link nav__link--inside">Reportes de Retiros</a>
+                </li>
+            </ul>
+        </li>
         <li>
-            <a href="/reporteSocio.html">
-                <img src="/icons2/report.svg" alt="">
-                <span>Reporte</span>
+            <a th:href="@{/amonestaciones/create}">
+                <img src="/icons2/asistencia.svg" alt="">
+                <span>Amonestacion</span>
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/amonestaciones/listar}">
+                <img src="/icons2/asistencia.svg" alt="">
+                <span>Amonestacion Listar</span>
             </a>
         </li>
     </ul>

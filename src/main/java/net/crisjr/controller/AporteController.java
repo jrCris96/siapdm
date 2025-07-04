@@ -2,8 +2,10 @@ package net.crisjr.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import net.crisjr.dto.ReporteDTO;
 import net.crisjr.dto.UsuarioDTO;
 import net.crisjr.model.AporteGrupal;
 import net.crisjr.model.AporteSocio;
@@ -37,14 +40,12 @@ public class AporteController {
 
     @Autowired
     private ISectorService sectorService;
-
+ 
     @Autowired
     private IGruposService grupoService;
 
     @Autowired
     private IUsuariosService usuarioService;
-
-    
 
     @GetMapping("/create")
     public String mostrarFormulario(Model model) {
@@ -107,4 +108,43 @@ public class AporteController {
         attributes.addFlashAttribute("msg", "Registro de aporte guardado correctamente.");
         return "redirect:/aportes/create";
     }
+
+@GetMapping("/reportes")
+public String mostrarReportes(
+        @RequestParam(name = "desde", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+        @RequestParam(name = "hasta", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta,
+        @RequestParam(name = "sectorId", required = false) Integer sectorId,
+        @RequestParam(name = "grupoId", required = false) Integer grupoId,
+        Model model) {
+
+    model.addAttribute("sectores", sectorService.buscarTodas());
+
+    if (desde == null || hasta == null) {
+        model.addAttribute("error", "Debe seleccionar un rango de fechas para realizar la búsqueda.");
+        return "aportes/reporteAportes";
+    }
+
+    List<ReporteDTO> resultados=null;
+    String tipoReporte;
+
+    if (sectorId == null && grupoId == null) {
+        resultados = aporteGrupalService.reportePorSector(desde, hasta);
+        tipoReporte = "SECTOR";
+    } else if (sectorId != null && grupoId == null) {
+        resultados = aporteGrupalService.reportePorGrupo(desde, hasta, sectorId);
+        tipoReporte = "GRUPO";
+    } else {
+        tipoReporte = "DETALLE";
+    }
+
+    if ("DETALLE".equals(tipoReporte)) {
+        List<AporteGrupal> detallePagos = aporteGrupalService.obtenerPagosDetalleGrupo(desde, hasta, grupoId);
+        detallePagos.sort(Comparator.comparing(AporteGrupal::getFecha).reversed());
+        model.addAttribute("detallePagos", detallePagos);
+    }
+
+    model.addAttribute("resultados", resultados);
+    model.addAttribute("tipoReporte", tipoReporte);
+    return "aportes/reporteAportes";
+}
 }
