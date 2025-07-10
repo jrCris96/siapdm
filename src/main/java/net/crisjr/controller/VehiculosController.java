@@ -36,10 +36,19 @@ public class VehiculosController {
     private UsuariosRepository usuariosRepo;
 
     @GetMapping("/create")
-    public String crear(Vehiculo vehiculo, Model model){
-        
-        return "vehiculos/formRegistroMovilidad";
+    public String crearVehiculo(@RequestParam(name = "idUsuario", required = false) String idUsuario, Model model) {
+    Vehiculo vehiculo = new Vehiculo();
+
+    if (idUsuario != null) {
+        Usuario propietario = usuariosRepo.findByIdUsuario(idUsuario);
+        if (propietario != null) {
+            vehiculo.setUsuarioId(propietario);
+        }
     }
+
+    model.addAttribute("vehiculo", vehiculo);
+    return "vehiculos/formRegistroMovilidad";
+}
 
     @PostMapping("/save")
     public String guardarVehiculo(
@@ -59,7 +68,7 @@ public class VehiculosController {
         // Validar cantidad de vehículos según si es creación o edición
         if (vehiculo.getId() == null) {
             // Nuevo vehículo
-            long cantidadVehiculos = vehiculosRepo.countByUsuarioIdExceptVehiculoId(propietario, null);
+            long cantidadVehiculos = serviceVehiculos.contarVehiculosActivosPorUsuario(propietario, null);
             if (cantidadVehiculos >= 2) {
                 attributes.addFlashAttribute("error", "Este usuario ya tiene 2 vehículos asignados.");
                 return "redirect:/vehiculos/create";
@@ -111,6 +120,8 @@ public class VehiculosController {
     @GetMapping("/view/{id}")
     public String verDetalle(@PathVariable("id") int idVehiculo, Model model){
 
+        
+
         Vehiculo vehiculo= serviceVehiculos.buscarPorId(idVehiculo);
         System.out.println("vehiculo: "+vehiculo);
         model.addAttribute("vehiculos", vehiculo);
@@ -136,6 +147,18 @@ public class VehiculosController {
 
         return "/vehiculos/formRegistroMovilidad"; // tu formulario para editar el vehículo
     }
+
+    @GetMapping("/desactivar/{id}")
+    public String desactivarVehiculo(@PathVariable("id") Integer id, RedirectAttributes attributes) {
+        Vehiculo vehiculo = serviceVehiculos.buscarPorId(id);
+        if (vehiculo != null) {
+            vehiculo.setEstado("INACTIVO");
+            serviceVehiculos.guardar(vehiculo);
+            attributes.addFlashAttribute("msg", "Vehículo desactivado correctamente.");
+        }
+        return "redirect:/usuarios/view/" + vehiculo.getUsuarioId().getIdUsuario();
+    }
+
 
 }
  

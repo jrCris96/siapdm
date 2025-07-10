@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Document</title>
     <link rel="stylesheet" th:href="@{/css/style3.css}">
-    <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
-
+    <link rel="stylesheet" th:href="@{/css/styleVerMesaDir.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
 </head>
@@ -22,61 +22,89 @@
 
     <main id="main">
         
-            <h2>Lista de Amonestaciones</h2>
+      <div class="container">
+        <header>Mesa Directiva</header>
 
-    <form method="get" th:action="@{/amonestaciones/listar}">
-        <label for="idUsuario">ID Socio:</label>
-        <input type="text" id="idUsuario" name="idUsuario" placeholder="Ej: spdm_scp_1">
+        <div >
+            <form method="get" th:action="@{/amonestaciones/listar}">
+            <input type="hidden"/>
+            <div class="arribaTabla">
+                <div class="details personal">
+ 
+                    <div class="fields1">
+                        <div class="input-field">
+                            <label for="idUsuario">ID Socio:</label>
+                            <input type="text" id="idUsuario" name="idUsuario" placeholder="Ej: spdm_scp_1">
+                        </div>
 
-        <label for="sectorId">Sector:</label>
-        <select id="sectorSelect" name="sectorId">
-            <option value="">Todos</option>
-            <option th:each="sector : ${sectores}" th:value="${sector.id}" th:text="${sector.nombre}"></option>
-        </select>
+                        <div class="input-field">
+                            <label for="grupoId">Sector:</label>
+                            <select id="sectorSelect" name="sectorId">
+                                <option value="">Todos</option>
+                                <option th:each="sector : ${sectores}" 
+                                        th:value="${sector.id}" 
+                                        th:text="${sector.nombre}" 
+                                        th:selected="${param.sectorId == sector.id}"></option>
+                            </select>
+                        </div>
 
-        <label for="grupoId">Grupo:</label>
-        <select id="grupoSelect" name="grupoId">
-            <option value="">Todos</option>
-        </select>
+                        <div class="input-field">
+                            <label for="grupoId">Grupo:</label>
+                            <select id="grupoSelect" name="grupoId">
+                                <option value="">Todos</option>
+                                <option th:each="grupo : ${grupoPorSector}" 
+                                        th:value="${grupo.id}" 
+                                        th:text="${grupo.nombre}" 
+                                        th:selected="${param.grupoId == grupo.id}"></option>
+                            </select>
+                        </div>
+                    </div>
 
-        <button type="submit">Buscar</button>
-    </form>
+                    <button class="nextBtn">
+                        <span class="btnText">Buscar</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+        </div>
+        
+        
+        <div class="table">
+            <div class="table_section">
+                <table th:if="${amonestaciones != null and !amonestaciones.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Grupo</th>
+                            <th>Nivel</th>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        <tr th:each="a : ${amonestaciones}">
+                            <td th:text="${a.socio.idUsuario}">spdm_scp_1</td>
+                            <td th:text="${a.socio.nombre}">Nombre</td>
+                            <td th:text="${a.socio.apellido}">Apellido</td>
+                            <td th:text="${a.socio.grupo.nombre}">Grupo</td>
+                            <td th:text="${a.nivel}">Nivel</td>
+                            <td th:text="${a.fecha}"></td>
+                            <td>
+                                <a th:href="@{/amonestaciones/detalle/{id}(id=${a.id})}" class="btn btn-info">Ver</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-    <br>
-
-    <table border="1" th:if="${amonestaciones != null and !amonestaciones.isEmpty()}">
-        <thead>
-            <tr>
-                <th>ID Usuario</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Grupo</th>
-                <th>Nivel</th>
-                <th>Fecha</th>
-                <th>Descripción</th>
-                <th>Fecha Reingreso</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="a : ${amonestaciones}">
-                <td th:text="${a.socio.idUsuario}">spdm_scp_1</td>
-                <td th:text="${a.socio.nombre}">Nombre</td>
-                <td th:text="${a.socio.apellido}">Apellido</td>
-                <td th:text="${a.socio.grupo.nombre}">Grupo</td>
-                <td th:text="${a.nivel}">Nivel</td>
-                <td th:text="${a.fecha}"></td>
-                <td th:text="${a.descripcion}">Motivo</td>
-                <td th:text="${a.fechaReingreso != null ? #dates.format(a.fechaReingreso, 'dd/MM/yyyy') : '-'}">--</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <p th:if="${amonestaciones == null or amonestaciones.isEmpty()}">No se encontraron amonestaciones.</p>
+      </div>
 
     </main>
     
     <script th:src="@{/js/scrip3.js}"></script> 
-    <script th:src="@{/js/registro-aportes.js}"></script>
+    <script th:src="@{/js/amonestacionList.js}"></script>
 
 </body>
 </html>

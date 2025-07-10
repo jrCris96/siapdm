@@ -53,6 +53,14 @@
                                         th:text="${grupo.nombre}"></option>
                             </select>
                         </div>
+                        <div class="input-field">
+                            <label for="estado">Estado</label>
+                            <select name="estado" id="estado">
+                                <option value="">Todos</option>
+                                <option value="habilitado">Habilitado</option>
+                                <option value="deshabilitado">Deshabilitado</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="btn">
@@ -105,7 +113,9 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="pagination1">
+                    
+                </div>
+                <div class="pagination1">
                         <nav th:if="${usuarios instanceof T(org.springframework.data.domain.Page)} and ${usuarios.totalPages > 0}">
                             <ul class="pagination">
 
@@ -147,7 +157,6 @@
                             </ul>
                         </nav>
                     </div>
-                </div>
                 
         </div>   
     </main>

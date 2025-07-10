@@ -65,6 +65,18 @@ public class MesaDirectivaController {
     @GetMapping("/detalle/lista/{idMesa}")
     public String verIntegrantes(@PathVariable Integer idMesa, Model model) {
         MesaDirectiva mesa = mesaService.buscarPorId(idMesa);
+
+        // Verifica si la mesa ya terminó
+        if (mesa.getFecha_inicio() != null && mesa.getFecha_fin().before(new Date())) {
+            // Desactiva todos los integrantes activos de esa mesa
+            List<DetalleMesa> activos = detalleMesaService.buscarPorMesaActivos(mesa);
+            for (DetalleMesa detalle : activos) {
+                detalle.setEstado(false);
+                detalleMesaService.guardar(detalle);
+            }
+        }
+
+        // Después de la posible desactivación, carga nuevamente los activos
         List<DetalleMesa> integrantesActivos = detalleMesaService.buscarPorMesaActivos(mesa);
         int totalActivos = integrantesActivos.size();
 
@@ -79,6 +91,7 @@ public class MesaDirectivaController {
 
         return "mesaDirectiva/listaIntegrantes";
     }
+
 
     @PostMapping("/detalle/agregar")
     public String agregarIntegrante(@ModelAttribute DetalleMesa detalle,
@@ -140,8 +153,19 @@ public class MesaDirectivaController {
             attributes.addFlashAttribute("error", "No hay ninguna mesa directiva activa.");
             return "redirect:/";
         }
+
+        // Verifica si la mesa ya terminó
+        if (mesa.getFecha_inicio() != null && mesa.getFecha_fin().before(new Date())) {
+            List<DetalleMesa> activos = detalleMesaService.buscarPorMesaActivos(mesa);
+            for (DetalleMesa detalle : activos) {
+                detalle.setEstado(false);
+                detalleMesaService.guardar(detalle);
+            }
+        }
+
         return "redirect:/mesa/detalle/lista/" + mesa.getId();
     }
+
 
     // ========== FORMATO DE FECHAS ==========
     @InitBinder

@@ -116,7 +116,7 @@ form .fields .input-field {
     color: #333;
 }
 
-.container form button{
+.container form .nextBtn{
     display: flex;
     align-items: center;
     justify-content: center;

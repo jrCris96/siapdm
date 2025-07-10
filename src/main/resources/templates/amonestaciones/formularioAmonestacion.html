@@ -22,42 +22,72 @@
 
     <main id="main">
         
-        <h2>Registrar Amonestación</h2>
+        <div class="container">
+        <header>Registro de Amonestacion</header>
 
         <form th:action="@{/amonestaciones/save}" method="post">
-            <label for="idUsuario">ID del Socio:</label>
-            <input type="text" id="idUsuario" name="idUsuario" placeholder="Ej: spdm_scp_12" required />
-            <br><br>
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Ingreso de Datos</span>
 
-            <label for="fecha">Fecha:</label>
-            <input type="date" id="fecha" name="fecha" required />
-            <br><br>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label for="idUsuario">ID del Socio:</label>
+                            <input type="text" id="idUsuario" name="idUsuario" placeholder="Ej: spdm_scp_12" required />
+                        </div>
+                        <div class="input-field">
+                            <label for="fecha">Fecha Inicio:</label>
+                            <input type="date" id="fecha" name="fecha" required />
+                        </div>
+                        <div class="input-field">
+                            <label for="fechaReingreso">Fecha de Reingreso (si aplica):</label>
+                            <input type="date" id="fechaReingreso" name="fechaReingreso" />
+                        </div>
 
-            <label for="nivel">Nivel de Amonestación:</label>
-            <select id="nivel" name="nivel" required>
-                <option value="">Seleccione</option>
-                <option value="Primer tiempo">Primer Tiempo</option>
-                <option value="Segundo tiempo">Segundo Tiempo</option>
-                <option value="Tercer tiempo">Tercer Tiempo</option>
-                <option value="Cuarto tiempo">Cuarto Tiempo</option>
-            </select>
-            <br><br>
+                        <div class="input-field">
+                            <label for="nivel">Nivel de Amonestación:</label>
+                            <select id="nivel" name="nivel" required>
+                                <option value="">Seleccione</option>
+                                <option value="Primer tiempo">Primer Tiempo</option>
+                                <option value="Segundo tiempo">Segundo Tiempo</option>
+                                <option value="Tercer tiempo">Tercer Tiempo</option>
+                                <option value="Cuarto tiempo">Cuarto Tiempo</option>
+                            </select>
+                        </div>
+       
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion"  required></textarea> 
+                    </div>
 
-            <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
-            <br><br>
-
-            <label for="fechaReingreso">Fecha de Reingreso (si aplica):</label>
-            <input type="date" id="fechaReingreso" name="fechaReingreso" />
-            <br><br>
-
-            <button type="submit">Guardar Amonestación</button>
+                    <button class="nextBtn" type="submit">
+                        <span class="btnText">Guardar</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                
+                </div>
+            </div>
         </form>
+      </div>
 
     </main>
     
     <script th:src="@{/js/scrip3.js}"></script> 
-    <script th:src="@{/js/registro-aportes.js}"></script>
+    <script th:src="@{/tinymce/tinymce.min.js}"></script>
+
+    <script>
+    tinymce.init({
+        selector: '#descripcion',
+        plugins: "textcolor, table lists code",
+        toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor table code",
+        setup: function (editor) {
+        editor.on('change', function () {
+            editor.save(); // 👈 Esto sincroniza el contenido con el <textarea>
+        });
+        }
+    });
+    </script>
+
+    
 
 </body>
 </html>

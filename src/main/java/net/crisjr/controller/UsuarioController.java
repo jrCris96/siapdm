@@ -28,6 +28,7 @@ import net.crisjr.service.IGruposService;
 import net.crisjr.service.IPerfilService;
 import net.crisjr.service.ISectorService;
 import net.crisjr.service.IUsuariosService;
+import net.crisjr.service.IVehiculosService;
 import net.crisjr.util.Utileria;
 
 import org.springframework.web.bind.WebDataBinder;
@@ -57,6 +58,9 @@ public class UsuarioController {
     @Autowired
     private IPerfilService servicePerfil;
 
+    @Autowired
+    private IVehiculosService serviceVehiculo;
+
     @GetMapping("/index") 
     public String mostrarIndex(Model model) {
 
@@ -67,11 +71,12 @@ public class UsuarioController {
     }
 
     @GetMapping(value = "/indexPaginate")
-        public String mostrarIndexPaginado(Model model, Pageable page) {
-        Page<Usuario>lista = serviceUsuario.buscarTodas(page);
+    public String mostrarIndexPaginado(Model model, Pageable page) {
+        Page<Usuario> lista = serviceUsuario.buscarPorEstado("habilitado", page);
         model.addAttribute("usuarios", lista);
         return "usuarios/listSocio";
     }
+
     
     @GetMapping("/create") 
     public String crear(Usuario usuario, Model model){
@@ -91,6 +96,7 @@ public class UsuarioController {
 
     @PostMapping("/save")
     public String guardar(Usuario usuario, BindingResult result, RedirectAttributes attributes, @RequestParam("archivoImagen") MultipartFile multipart) {
+        
         if (result.hasErrors()) {
             for (ObjectError error : result.getAllErrors()) {
                 System.out.println("Ocurrio un error: " + error.getDefaultMessage());
@@ -99,7 +105,7 @@ public class UsuarioController {
         }
 
         try {
-            // Subir la imagen si existe
+            // Subir la imagen si existe 
             if (!multipart.isEmpty()) {
                 String nombreImagen = Utileria.guardarArchivo(multipart, ruta);
                 if (nombreImagen != null) {
@@ -111,9 +117,18 @@ public class UsuarioController {
             serviceUsuario.guardar(usuario);
 
             attributes.addFlashAttribute("msg", "Registro Guardado!");
-            System.out.println("Usuario: " + usuario);
 
-            return "redirect:/usuarios/index";
+             // Verificar si el usuario tiene perfil "SOCIO PROPIETARIO"
+            boolean esPropietario = usuario.getPerfiles().stream()
+                .anyMatch(p -> p.getPerfil().equalsIgnoreCase("SOCIO PROPIETARIO"));
+
+            if (esPropietario) {
+                // Redirigir al registro de vehículo con el ID personalizado ya incluido
+                return "redirect:/vehiculos/create?idUsuario=" + usuario.getIdUsuario();
+            } else {
+                // Redirigir al inicio
+                return "redirect:/";
+            }
 
         } catch (IllegalArgumentException e) {
             // Captura la excepción y manda mensaje de error a la vista
@@ -138,7 +153,7 @@ public class UsuarioController {
         }
 
         // Cargar los vehículos donde es dueño
-        List<Vehiculo> vehiculosPropios = usuario.getVehiculosPropios();
+        List<Vehiculo> vehiculosPropios = serviceVehiculo.obtenerPorUsuarioYEstado(usuario, "ACTIVO");
 
         // Cargar los vehículos donde es asalariado
         List<Vehiculo> vehiculosAsignados = usuario.getVehiculosAsignados();
@@ -163,7 +178,7 @@ public class UsuarioController {
             attributes.addFlashAttribute("error",
                     "Usuario no encontrado.");
         }
-        return "redirect:/usuarios/index";
+        return "redirect:/usuarios/buscar?estado=habilitado";
     }
 
     @GetMapping("/activar/{id}")
@@ -176,7 +191,7 @@ public class UsuarioController {
         } else {
             attributes.addFlashAttribute("error", "Usuario no encontrado.");
         }
-        return "redirect:/usuarios/index";
+        return "redirect:/usuarios/buscar?estado=deshabilitado";
     }
 
     @GetMapping("/edit/{id}")
@@ -209,16 +224,19 @@ public class UsuarioController {
         @RequestParam(name = "idUsuario", required = false) String idUsuario,
         @RequestParam(name = "idGrupo", required = false) Integer idGrupo,
         @RequestParam(name = "idSector", required = false) Integer idSector,
+        @RequestParam(name = "estado", required = false) String estado,
         Model model) {
 
-        // Limpia idUsuario, si viene vacío lo pones en null
         if (idUsuario != null && idUsuario.trim().isEmpty()) {
             idUsuario = null;
         }
+        if (estado == null || estado.trim().isEmpty()) {
+            estado = "habilitado"; // por defecto
+        }
 
-        List<Usuario> lista = serviceUsuario.buscarPorFiltros(idUsuario, idGrupo, idSector);
-
+        List<Usuario> lista = serviceUsuario.buscarPorFiltros(idUsuario, idGrupo, idSector, estado);
         model.addAttribute("usuarios", lista);
+        model.addAttribute("estadoActual", estado);
         model.addAttribute("sectores", serviceSector.buscarTodas());
 
         if (idSector != null) {
@@ -228,8 +246,7 @@ public class UsuarioController {
 
         return "usuarios/listSocio";
     }
-
-    
+ 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

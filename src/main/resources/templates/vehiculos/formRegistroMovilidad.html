@@ -80,10 +80,10 @@
                             </select>
                         </div>
  
+                        <!-- Mostrar nombre y apellido -->
                         <div class="input-field" th:if="${vehiculo.usuarioId != null}">
                             <label>Propietario:</label>
                             <input type="text" th:value="${vehiculo.usuarioId.nombre + ' ' + vehiculo.usuarioId.apellido}" disabled>
-                            <!-- Campo oculto para enviar el idPropietario -->
                             <input type="hidden" name="idPropietario" th:value="${vehiculo.usuarioId.idUsuario}" />
                         </div>
 

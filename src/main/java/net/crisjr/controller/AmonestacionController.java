@@ -9,14 +9,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.crisjr.model.Amonestacion;
+import net.crisjr.model.Grupo;
 import net.crisjr.model.Usuario;
 import net.crisjr.service.IAmonestacionService;
+import net.crisjr.service.IGruposService;
 import net.crisjr.service.ISectorService;
 import net.crisjr.service.IUsuariosService;
 
@@ -31,6 +35,9 @@ public class AmonestacionController {
 
     @Autowired
     private ISectorService sectorService;
+
+    @Autowired
+    private IGruposService grupoService;
 
     // 👉 Mostrar formulario de nueva amonestación
     @GetMapping("/create")
@@ -80,21 +87,49 @@ public String guardarAmonestacion(@RequestParam("idUsuario") String idUsuario,
 
         List<Amonestacion> amonestaciones = new ArrayList<>();
 
-        // Buscar por ID personalizado del socio (prioridad)
         if (idUsuario != null && !idUsuario.isBlank()) {
             Usuario socio = usuarioService.buscarPorIdUsuario(idUsuario);
             if (socio != null) {
                 amonestaciones = amonestacionService.buscarPorSocio(socio);
             }
         } else if (grupoId != null) {
-            // Si solo se seleccionó grupo
             amonestaciones = amonestacionService.buscarPorGrupo(grupoId);
+        } else if (sectorId != null) {
+            amonestaciones = amonestacionService.buscarPorSector(sectorId); 
+        }
+
+        // ✅ Siempre cargar grupos si hay un sector seleccionado
+        if (sectorId != null) {
+            List<Grupo> grupos = sectorService.buscarGruposPorSector(sectorId);
+            model.addAttribute("grupoPorSector", grupos);
         }
 
         model.addAttribute("sectores", sectorService.buscarTodas());
         model.addAttribute("amonestaciones", amonestaciones);
+        model.addAttribute("sectorId", sectorId);  // Para que se mantenga seleccionado
+        model.addAttribute("grupoId", grupoId);    // Para mantener selección
 
         return "amonestaciones/listarAmonestaciones";
     }
+
+
+    @GetMapping("/porSector/{id}")
+    @ResponseBody
+    public List<Grupo> obtenerGruposPorSector(@PathVariable("id") Integer idSector) {
+        return grupoService.findBySectorId(idSector);
+    }
+
+    @GetMapping("/detalle/{id}")
+    public String verDescripcion(@PathVariable("id") Integer id, Model model) {
+        Amonestacion amonestacion = amonestacionService.buscarPorId(id);
+        if (amonestacion == null) {
+            model.addAttribute("error", "Amonestación no encontrada.");
+            return "redirect:/amonestaciones/listar";
+        }
+        model.addAttribute("amonestacion", amonestacion);
+        return "amonestaciones/detalleDescripcion";
+    }
+
+
 
 }

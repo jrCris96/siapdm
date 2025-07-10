@@ -83,8 +83,8 @@ public void guardar(Usuario usuario) {
         return usuariosRepo.findAll(example);
     }
     @Override
-    public List<Usuario> buscarPorFiltros(String idUsuario, Integer idGrupo, Integer idSector) {
-        return usuariosRepo.buscarPorFiltros(idUsuario, idGrupo, idSector);
+    public List<Usuario> buscarPorFiltros(String idUsuario, Integer idGrupo, Integer idSector, String estado) {
+        return usuariosRepo.buscarPorFiltros(idUsuario, idGrupo, idSector, estado);
     }
 
     @Override
@@ -100,6 +100,11 @@ public void guardar(Usuario usuario) {
     @Override
     public List<Usuario> buscarPorGrupo(Integer grupoId) {
         return usuariosRepo.findByGrupoId(grupoId);
+    }
+
+    @Override
+    public Page<Usuario> buscarPorEstado(String estado, Pageable page) {
+        return usuariosRepo.findByEstadoOrderByFechaIngresoDesc(estado, page);
     }
 
 }

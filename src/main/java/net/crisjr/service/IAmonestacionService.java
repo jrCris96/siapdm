@@ -12,4 +12,6 @@ public interface IAmonestacionService {
     Amonestacion buscarPorId(Integer id);
     void eliminar(Integer id);
     List<Amonestacion> buscarPorGrupo(Integer grupoId);
+    List<Amonestacion> buscarPorSector(Integer sectorId);
+
 }

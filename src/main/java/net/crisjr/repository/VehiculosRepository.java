@@ -17,5 +17,12 @@ public interface VehiculosRepository extends JpaRepository<Vehiculo, Integer> {
     @Query("SELECT COUNT(v) FROM Vehiculo v WHERE v.usuarioId = :usuario AND (:vehiculoId IS NULL OR v.id <> :vehiculoId)")
     long countByUsuarioIdExceptVehiculoId(@Param("usuario") Usuario usuario, @Param("vehiculoId") Integer vehiculoId);
 
+    @Query("SELECT COUNT(v) FROM Vehiculo v WHERE v.usuarioId = :usuario AND v.estado = 'ACTIVO' AND (:excluirId IS NULL OR v.id != :excluirId)")
+    long countVehiculosActivosByUsuario(@Param("usuario") Usuario usuario, @Param("excluirId") Integer excluirId);
+
+
+    List<Vehiculo> findByUsuarioIdAndEstado(Usuario usuarioId, String estado);
+
+
     }
   

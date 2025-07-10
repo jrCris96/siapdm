@@ -14,8 +14,10 @@ public interface IUsuariosService {
     List<Usuario> buscarTodas();
     Usuario buscarPorId(Integer idUsuario);
     List<Usuario> buscarByExample(Example<Usuario> example);
-    List<Usuario> buscarPorFiltros(String idUsuario, Integer idGrupo, Integer idSector);
+    List<Usuario> buscarPorFiltros(String idUsuario, Integer idGrupo, Integer idSector, String estado);
     Page<Usuario>buscarTodas(Pageable page);
     Usuario buscarPorIdUsuario(String idUsuario);
     List<Usuario> buscarPorGrupo(Integer grupoId);
+    Page<Usuario> buscarPorEstado(String estado, Pageable page);
+
 }

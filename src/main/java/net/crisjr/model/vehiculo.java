@@ -1,5 +1,6 @@
 package net.crisjr.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +31,9 @@ public class Vehiculo {
     @ManyToOne
     @JoinColumn(name = "socioAsalariadoId")
     private Usuario socioAsalariadoId;
+
+    @Column(nullable = false)
+    private String estado = "ACTIVO"; // Valor por defecto
 
     public Integer getId() {
         return id;
@@ -111,11 +115,19 @@ public class Vehiculo {
         this.socioAsalariadoId = socioAsalariadoId;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "Vehiculo [id=" + id + ", foto=" + foto + ", tipo_vehiculo=" + tipo_vehiculo + ", placa=" + placa
                 + ", marca=" + marca + ", modelo=" + modelo + ", color=" + color + ", año_fabricacion="
-                + año_fabricacion + ", usuarioId=" + usuarioId + ", socioAsalariadoId=" + socioAsalariadoId + "]";
+                + año_fabricacion + ", usuarioId=" + usuarioId + ", socioAsalariadoId=" + socioAsalariadoId
+                + ", estado=" + estado + "]";
     }
-
 }

@@ -31,12 +31,15 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String carnet;
-    private Date fecha_nacimiento;
+    private Date fecha_nacimiento; 
     private String ubicacion;
     private String celular;
     private String genero;
     private String estado_civil;
-    private Date fecha_ingreso;
+    
+    @Column(name = "fecha_ingreso")
+    private Date fechaIngreso;
+    
     private String estado;
     private Integer es_decano=0;
 
@@ -136,10 +139,10 @@ public class Usuario {
         this.estado_civil = estado_civil;
     }
     public Date getFecha_ingreso() {
-        return fecha_ingreso;
+        return fechaIngreso;
     }
     public void setFecha_ingreso(Date fecha_ingreso) {
-        this.fecha_ingreso = fecha_ingreso;
+        this.fechaIngreso = fecha_ingreso;
     }
     public String getEstado() {
         return estado;
@@ -187,7 +190,7 @@ public class Usuario {
         return "Usuario [id=" + id + ", idUsuario=" + idUsuario + ", foto=" + foto + ", nombre=" + nombre
                 + ", apellido=" + apellido + ", carnet=" + carnet + ", fecha_nacimiento=" + fecha_nacimiento
                 + ", ubicacion=" + ubicacion + ", celular=" + celular + ", genero=" + genero + ", estado_civil="
-                + estado_civil + ", fecha_ingreso=" + fecha_ingreso + ", estado=" + estado + ", es_decano=" + es_decano
+                + estado_civil + ", fecha_ingreso=" + fechaIngreso + ", estado=" + estado + ", es_decano=" + es_decano
                 + ", grupo=" + grupo + "]";
     }
 }
