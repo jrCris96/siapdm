@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="/fragments/menu :: menu-derecha"></div>
+    </header>
+
+    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+      <div class="container">
+            <h2>Crear Nueva Reunión</h2>
+            <form th:action="@{/reuniones/guardar}" th:object="${reunion}" method="post">
+                <label>Asunto:</label>
+                <input type="text" th:field="*{asunto}" required /><br><br>
+                <label>Detalle:</label>
+                <textarea th:field="*{detalle}" required></textarea><br><br>
+                <label>Fecha de Reunión:</label>
+                <input type="date" th:field="*{fechaReunion}" required /><br><br>
+                <label>Fecha de Envío:</label>
+                <input type="date" th:field="*{fechaEnvio}" required /><br><br>
+                <button type="submit">Guardar</button>
+            </form>
+            <br>
+            <a th:href="@{/reuniones/lista}">Ver lista de reuniones</a>
+      </div>
+         
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script> 
+    <script th:src="@{/js/script4.js}"></script>
+</body>
+</html>
