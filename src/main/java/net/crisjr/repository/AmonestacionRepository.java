@@ -16,7 +16,8 @@ public interface AmonestacionRepository extends JpaRepository<Amonestacion, Inte
     List<Amonestacion> findBySectorId(@Param("sectorId") Integer sectorId);
 
     List<Amonestacion> findBySocio_Id(Integer idUsuario);
-;
 
+    @Query("SELECT COUNT(a) FROM Amonestacion a WHERE a.socio.id = :idSocio")
+    int contarPorIdSocio(@Param("idSocio") Integer idSocio);
 
 }

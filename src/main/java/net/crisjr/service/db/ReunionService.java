@@ -14,7 +14,7 @@ import net.crisjr.service.IReunionJefeService;
 import net.crisjr.service.IReunionService;
 
 @Service
-public class ReunionService implements IReunionService{
+public class ReunionService implements IReunionService{ 
 
     @Autowired
     private ReunionRepository reunionRepository;

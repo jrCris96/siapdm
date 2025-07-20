@@ -36,29 +36,32 @@ public class DatabaseWebSecurity {
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(authorize -> authorize
-        .requestMatchers("/tinymce/**", "/icons/**", "/css/**", "/bcrypt/**", "/icons2/**").permitAll()
-
-        //asiganar permiso por roles
-        .requestMatchers("/home").hasAnyAuthority("SUPER_ADMIN")
-        .requestMatchers("/usuarios/view/**").permitAll()
-        .requestMatchers("/usuarios/**").hasAnyAuthority("SUPER_ADMIN")
-        .requestMatchers("/vehiculos/**").hasAnyAuthority("SUPER_ADMIN")
-        .requestMatchers("/mesa/**").hasAnyAuthority("SUPER_ADMIN")
-        .requestMatchers("/jefes/**").hasAnyAuthority("SUPER_ADMIN")
-        .requestMatchers("/amonestaciones/**").hasAnyAuthority("SUPER_ADMIN")
-        .requestMatchers("/aportes/**").hasAuthority("Hacienda")
-        .requestMatchers("/retiros/**").hasAuthority("Hacienda")
-
-
-
-        .anyRequest().authenticated());
-
-        http.formLogin(form -> form .loginPage("/login").successHandler(successHandler).permitAll());
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf
+                .ignoringRequestMatchers("/api/dialogflow/fulfillment") // CSRF desactivado solo para el webhook
+            )
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/dialogflow/fulfillment").permitAll() // Solo este endpoint es público
+                // El resto de tus reglas aquí
+                .requestMatchers("/tinymce/**", "/icons/**", "/css/**", "/bcrypt/**", "/icons2/**").permitAll()
+                .requestMatchers("/home").hasAnyAuthority("SUPER_ADMIN")
+                .requestMatchers("/usuarios/view/**").permitAll()
+                .requestMatchers("/usuarios/**").hasAnyAuthority("SUPER_ADMIN")
+                .requestMatchers("/vehiculos/**").hasAnyAuthority("SUPER_ADMIN")
+                .requestMatchers("/mesa/**").hasAnyAuthority("SUPER_ADMIN")
+                .requestMatchers("/jefes/**").hasAnyAuthority("SUPER_ADMIN")
+                .requestMatchers("/amonestaciones/**").hasAnyAuthority("SUPER_ADMIN")
+                .requestMatchers("/aportes/**").hasAuthority("Hacienda")
+                .requestMatchers("/retiros/**").hasAuthority("Hacienda")
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form.loginPage("/login").successHandler(successHandler).permitAll())
+            .logout(logout -> logout.permitAll());
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){

@@ -14,5 +14,6 @@ public interface IAporteSocioService {
     boolean existeRegistro(Usuario usuario, AporteGrupal aporteGrupal);
     AporteSocio buscarPorId(Integer id);
     List<PagoDTO> obtenerPagosPorSocio(Integer idSocio);
+    List<AporteSocio> listarPagosPorIdSocio(Integer idSocio);
 
 }

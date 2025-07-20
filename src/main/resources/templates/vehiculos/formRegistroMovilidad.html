@@ -13,12 +13,12 @@
 <body>
     <header>
         <!-- Inserta el fragmento izquierda -->
-        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <div th:insert="~{/fragments/menu :: menu-izquierda}"></div>
         <!-- Inserta el fragmento derecha -->
-        <div th:insert="/fragments/menu :: menu-derecha"></div>
+        <div th:insert="~{/fragments/menu :: menu-derecha}"></div>
     </header>
 
-    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+    <div th:insert="~{/fragments/menu :: menu-barra}" class="sidebar" id="sidebar"></div>
 
     <main id="main">
       <div class="container">

@@ -48,4 +48,9 @@ public class AporteSocioService implements IAporteSocioService{
         return aporteSocioRepo.obtenerPagosPorSocio(idSocio);
     }
 
+    @Override
+    public List<AporteSocio> listarPagosPorIdSocio(Integer idSocio) {
+        return aporteSocioRepo.findByUsuarioIdOrderByAporteGrupal_FechaAsc(idSocio);
+    }
+
 }

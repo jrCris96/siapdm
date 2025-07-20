@@ -23,4 +23,7 @@ public interface AporteSocioRepository extends JpaRepository<AporteSocio, Intege
         "WHERE a.usuario.id = :idSocio ORDER BY ag.fecha DESC")
     List<PagoDTO> obtenerPagosPorSocio(@Param("idSocio") Integer idSocio);
 
+    List<AporteSocio> findByUsuarioIdOrderByAporteGrupal_FechaAsc(Integer usuarioId);
+
+
 }

@@ -66,4 +66,9 @@ public class AmonestacionServiceJpa implements IAmonestacionService{
     public List<Amonestacion> obtenerPorUsuarioId(int idUsuario) {
         return amonestacionRepo.findBySocio_Id(idUsuario);
     }
+
+    @Override
+    public int contarPorIdSocio(Integer idSocio) {
+        return amonestacionRepo.contarPorIdSocio(idSocio);
+    }
 }

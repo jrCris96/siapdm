@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import net.crisjr.model.Perfil;
@@ -121,6 +120,11 @@ public class UsuariosServiceJpa implements IUsuariosService {
     @Override
     public Usuario buscarPorUserName(String username) {
         return usuariosRepo.findByIdUsuario(username);
+    }
+
+    @Override
+    public Usuario buscarPorCelular(String celular) {
+        return usuariosRepo.findByCelular(celular);
     }
 
 }

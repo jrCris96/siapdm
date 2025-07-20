@@ -22,4 +22,6 @@ public interface IUsuariosService {
     List<Usuario> buscarHabilitadosPorGrupo(Integer idGrupo);
 
     Usuario buscarPorUserName(String username);
+    Usuario buscarPorCelular(String celular);
+
 }

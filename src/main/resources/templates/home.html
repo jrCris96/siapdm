@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" th:href="@{css/style3.css}">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
@@ -12,12 +12,12 @@
 <body>
     <header>
         <!-- Inserta el fragmento izquierda -->
-        <div th:insert="/fragments/menu :: menu-izquierda"></div>
+        <div th:insert="~{/fragments/menu :: menu-izquierda}"></div>
         <!-- Inserta el fragmento derecha -->
-        <div th:insert="/fragments/menu :: menu-derecha"></div>
+        <div th:insert="~{/fragments/menu :: menu-derecha}"></div>
     </header>
 
-    <div th:insert="/fragments/menu :: menu-barra" class="sidebar" id="sidebar"></div>
+    <div th:insert="~{/fragments/menu :: menu-barra}" class="sidebar" id="sidebar"></div>
     
     <main id="main">
         <div class="cards">

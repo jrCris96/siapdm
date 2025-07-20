@@ -37,6 +37,6 @@ public interface UsuariosRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT u.grupo.sector.nombre, COUNT(u) FROM Usuario u WHERE u.estado = 'habilitado' GROUP BY u.grupo.sector.nombre")
     List<Object[]> contarSociosPorSector();
 
-
+    Usuario findByCelular(String celular);
 }
   
