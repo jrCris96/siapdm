@@ -48,8 +48,12 @@
     width: 150px;
     height: 150px;
 }
-.header h2{
+.header h3{
     color: #f0522a;
+}
+.header h2{
+    color: #4341bb;
+    margin-top: 15px;
 }
 .header h4{
     margin-bottom: 20px;

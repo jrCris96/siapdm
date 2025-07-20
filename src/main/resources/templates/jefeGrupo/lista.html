@@ -65,7 +65,7 @@
                                 <th>Accion</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody> 
                             <tr th:each="jefe : ${jefes}">
                                 <td th:text="${jefe.socio.idUsuario}"></td>
                                 <td><img th:src="@{/logos/{img} (img=${jefe.socio.foto})}" alt=""></td>

@@ -24,6 +24,7 @@ button{
     cursor: pointer;
     padding: 10px;
     color: #ffffff;
+    background-color: #0298cf;
 }
 
 .table_section{
@@ -57,22 +58,6 @@ tr:hover td{
 }
 .btn{
     text-align: right;
-}
-.nextBtn{
-    display: inline-block;
-    align-items: center;
-    justify-content: center;
-    height: 45px;
-    max-width: 200px;
-    width: 100%;
-    border: none;
-    outline: none;
-    color: #000;
-    border-radius: 5px;
-    margin: 25px 0;
-    background-color: #cbced4;
-    transition: all 0.3s linear;
-    cursor: pointer;
 }
 
 @media (max-width: 768px) {

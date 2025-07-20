@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -33,7 +34,7 @@ public class ReunionController {
     // Guardar reunión y asociar a los jefes de grupo activos
     @PostMapping("/guardar")
     public String guardarReunion(@ModelAttribute("reunion") Reunion reunion) {
-        reunionServiceJpa.crearYNotificarReunion(reunion); // usa tu método personalizado
+        reunionServiceJpa.crearYNotificarReunion(reunion); 
         return "redirect:/reuniones/lista";
     }
 
@@ -42,5 +43,12 @@ public class ReunionController {
     public String listarReuniones(Model model) {
         model.addAttribute("reuniones", reunionService.listarReuniones());
         return "/reuniones/listaReuniones";
+    }
+
+    @GetMapping("/detalle/{id}")
+    public String verDetalleReunion(@PathVariable("id") Integer id, Model model) {
+        Reunion reunion = reunionService.obtenerPorId(id); 
+        model.addAttribute("reunion", reunion);
+        return "/reuniones/detalleReunion";
     }
 }

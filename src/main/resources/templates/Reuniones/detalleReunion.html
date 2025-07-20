@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Reunion</title>
+    <link rel="stylesheet" th:href="@{/css/style3.css}">
+    <link rel="stylesheet" th:href="@{/css/carta.css}">
+    
+    
+    <link rel="stylesheet" th:href="@{/css/style8.css}">
+    
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
+</head>
+<body>
+    <header>
+        <!-- Inserta el fragmento izquierda -->
+        <div th:insert="~{/fragments/menu :: menu-izquierda}"></div>
+        <!-- Inserta el fragmento derecha -->
+        <div th:insert="~{/fragments/menu :: menu-derecha}"></div>
+    </header>
+
+    <div th:insert="~{/fragments/menu :: menu-barra}" class="sidebar" id="sidebar"></div>
+
+    <main id="main">
+        <div class="container">
+            <h2>Descripción detallada de la Reunión</h2>
+            <div class="card-container">
+                <div class="header">
+                    <h3>Asunto:</h3>
+                    <h2 th:text="${reunion.asunto}"></h2>
+                </div>
+                <div class="descripcion">
+                    <p>
+                        <strong>Fecha de la Reunión:</strong>
+                        <span th:text="${reunion.fechaReunion}"></span>
+                    </p>
+                    <p>
+                        <strong>Detalle:</strong>
+                        <span th:utext="${reunion.detalle}"></span>
+                    </p>
+                </div>
+            </div>
+            <br>
+            <form th:action="@{/reuniones/lista}" method="get" style="display:inline;">
+                <button type="submit" class="nextBtn">Volver a la Lista</button>
+            </form>
+        </div>
+        
+    </main>
+    
+    <script th:src="@{/js/scrip3.js}"></script> 
+</body>
+</html>

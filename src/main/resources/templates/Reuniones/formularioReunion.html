@@ -21,26 +21,78 @@
     <div th:insert="~{/fragments/menu :: menu-barra}" class="sidebar" id="sidebar"></div>
 
     <main id="main">
-      <div class="container">
+      <div class="container"> 
             <h2>Crear Nueva Reunión</h2>
-            <form th:action="@{/reuniones/guardar}" th:object="${reunion}" method="post">
-                <label>Asunto:</label>
-                <input type="text" th:field="*{asunto}" required /><br><br>
-                <label>Detalle:</label>
-                <textarea th:field="*{detalle}" required></textarea><br><br>
-                <label>Fecha de Reunión:</label>
-                <input type="date" th:field="*{fechaReunion}" required /><br><br>
-                <label>Fecha de Envío:</label>
-                <input type="date" th:field="*{fechaEnvio}" required /><br><br>
-                <button type="submit">Guardar</button>
+
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                <a th:href="@{/reuniones/lista}" class="nextBtn" style="
+                    display: inline-block;
+                    padding: 10px 22px;
+                    background-color: #6ca679;
+                    color: #fff;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    letter-spacing: 0px;
+                    box-shadow: 0 2px 6px rgba(30,60,130,0.1);
+                    transition: background 0.2s, box-shadow 0.2s;
+                    border: none;
+                    cursor: pointer;
+                ">
+                    Ver lista Reuniones
+                </a>
+            </div>
+
+
+            <form th:action="@{/reuniones/guardar}" th:object="${reunion}" method="post"> 
+                <div class="form first">
+                    <div class="details personal"> 
+                        <span class="title">Datos del Socio</span>
+                        <div class="fields">
+                            <div class="input-field">
+                                <label for="">Asunto:</label>
+                                <input type="text" th:field="*{asunto}" placeholder="Ingrese el Asunto" required>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="">Fecha Reunión</label>
+                                <input type="date" th:field="*{fechaReunion}" required>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="">Fecha de Envío</label>
+                                <input type="date" th:field="*{fechaEnvio}" required>
+                            </div>
+                                <label>Detalle:</label>
+                                <textarea th:field="*{detalle}" id="descripcion" name="descripcion" required></textarea><br><br>
+                        </div>  
+                            <button class="nextBtn">
+                                <span class="btnText">Guardar</span>
+                            </button>
+                    </div>
+                    
+                </div>
+                
             </form>
-            <br>
-            <a th:href="@{/reuniones/lista}">Ver lista de reuniones</a>
       </div>
          
     </main>
     
     <script th:src="@{/js/scrip3.js}"></script> 
     <script th:src="@{/js/script4.js}"></script>
+    <script th:src="@{/tinymce/tinymce.min.js}"></script>
+
+    <script>
+    tinymce.init({
+        selector: '#descripcion',
+        plugins: "textcolor, table lists code",
+        toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor table code",
+        setup: function (editor) {
+        editor.on('change', function () {
+            editor.save(); // 👈 Esto sincroniza el contenido con el <textarea>
+        });
+        }
+    });
+    </script>
 </body>
 </html>

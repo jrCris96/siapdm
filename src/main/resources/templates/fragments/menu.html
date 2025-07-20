@@ -102,17 +102,21 @@
                 </li>
             </ul>
         </li>
-        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
-            <a th:href="@{/amonestaciones/create}">
-                <img src="/icons2/asistencia.svg" alt="">
+
+        <li class=" list__item list__item--click" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
+            <a class="list__button list__button--click">
+                <img src="/icons2/danger.svg" alt="">
                 <span>Amonestacion</span>
+                <img src="/icons/arrow.svg" class="list__arrow">
             </a>
-        </li>
-        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')"> 
-            <a th:href="@{/amonestaciones/listar}">
-                <img src="/icons2/asistencia.svg" alt="">
-                <span>Amonestacion Listar</span>
-            </a>
+            <ul class="list__show">
+                <li class="list__inside">
+                    <a th:href="@{/amonestaciones/create}" class="nav__link nav__link--inside">Registrar Amonestacion</a>
+                </li>
+                <li class="list__inside">
+                    <a th:href="@{/amonestaciones/listar}" class="nav__link nav__link--inside">Lista de Amonestados</a>
+                </li>
+            </ul>
         </li>
         <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
             <a th:href="@{/reuniones/nueva}">

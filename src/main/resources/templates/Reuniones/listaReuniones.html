@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Reuniones</title>
     <link rel="stylesheet" th:href="@{/css/style3.css}">
-    <link rel="stylesheet" th:href="@{/css/styleSocio.css}">
+    <link rel="stylesheet" th:href="@{/css/style8.css}">
+    <link rel="stylesheet" th:href="@{/css/styleListSocio.css}">
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 
@@ -22,28 +23,40 @@
 
     <main id="main">
       <div class="container">
-        
-        <h2>Reuniones Registradas</h2>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Asunto</th>
-                    <th>Detalle</th>
-                    <th>Fecha de Reunión</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="reunion : ${reuniones}">
-                    <td th:text="${reunion.id}"></td>
-                    <td th:text="${reunion.asunto}"></td>
-                    <td th:text="${reunion.detalle}"></td>
-                    <td th:text="${reunion.fechaReunion}"></td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
-        <a th:href="@{/reuniones/nueva}">Crear nueva reunión</a>
+        <header>Lista de Reuniones</header>
+        <div class="table">
+            <div class="table_section"> 
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Asunto</th>
+                            <th>Fecha Reunion</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        <tr th:each="reunion : ${reuniones}">
+                            <td th:text="${reunion.id}"></td>
+                            <td th:text="${reunion.asunto}"></td>
+                            <td th:text="${reunion.fechaReunion}"></td>
+                            <td>
+                                <form th:action="@{'/reuniones/detalle/' + ${reunion.id}}" method="get" style="display:inline;">
+                                    <button type="submit" class="btnSocio">Ver detalle</button>
+                                </form>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+
+            </div>
+            <br>
+            <form th:action="@{/reuniones/nueva}" method="get" style="display:inline;">
+                <button type="submit" class="nextBtn">Crear nueva reunión</button>
+            </form>         
+        </div>
 
       </div>
          
@@ -51,5 +64,6 @@
     
     <script th:src="@{/js/scrip3.js}"></script> 
     <script th:src="@{/js/script4.js}"></script>
+    </script>
 </body>
 </html>
