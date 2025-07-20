@@ -15,7 +15,8 @@
 }
 /* ===== BODY - BACKGROUND IMAGE ===== */
 body{
-    background-image: url("/illimani1.png");
+    background-image: url("illimani1.png");
+    background-color: red;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

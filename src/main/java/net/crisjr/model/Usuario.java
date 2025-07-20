@@ -36,7 +36,7 @@ public class Usuario {
     private String celular;
     private String genero;
     private String estado_civil;
-    
+     
     @Column(name = "fecha_ingreso")
     private Date fechaIngreso;
     
@@ -70,6 +70,13 @@ public class Usuario {
         }
         perfiles.add(tempPerfil);
     }
+    public boolean tienePerfil(String nombrePerfil) {
+        return perfiles != null && perfiles.stream()
+            .anyMatch(p -> p.getPerfil().equalsIgnoreCase(nombrePerfil));
+    }
+
+    @Column(nullable = false)
+    private String password;
 
     public Integer getId() {
         return id;
@@ -183,6 +190,13 @@ public class Usuario {
 
     public void setVehiculosAsignados(List<Vehiculo> vehiculosAsignados) {
         this.vehiculosAsignados = vehiculosAsignados;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

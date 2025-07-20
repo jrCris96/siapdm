@@ -30,5 +30,13 @@ public interface UsuariosRepository extends JpaRepository<Usuario, Integer> {
     Page<Usuario> findByEstadoOrderByFechaIngresoDesc(String estado, Pageable pageable);
 
     List<Usuario> findByGrupoId(Integer grupoId);
+
+    @Query("SELECT u FROM Usuario u WHERE u.grupo.id = :idGrupo AND u.estado = 'habilitado'")
+    List<Usuario> findHabilitadosByGrupo(@Param("idGrupo") Integer idGrupo);
+
+    @Query("SELECT u.grupo.sector.nombre, COUNT(u) FROM Usuario u WHERE u.estado = 'habilitado' GROUP BY u.grupo.sector.nombre")
+    List<Object[]> contarSociosPorSector();
+
+
 }
   

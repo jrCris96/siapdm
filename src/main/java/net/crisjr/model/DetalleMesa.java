@@ -45,7 +45,7 @@ public class DetalleMesa {
     public void setEstado(Boolean estado) {
         this.estado = estado;
     }
-    public Usuario getUsuario() {
+    public Usuario getUsuario() { 
         return usuario;
     }
 

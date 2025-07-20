@@ -61,4 +61,9 @@ public class AmonestacionServiceJpa implements IAmonestacionService{
     public List<Amonestacion> buscarPorSector(Integer sectorId) {
         return amonestacionRepo.findBySectorId(sectorId);
     }
+
+    @Override
+    public List<Amonestacion> obtenerPorUsuarioId(int idUsuario) {
+        return amonestacionRepo.findBySocio_Id(idUsuario);
+    }
 }

@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/jefes/grupo-del-socio/${idUsuario}`)
                 .then(response => response.json())
                 .then(grupo => {
-                    if (grupo && grupo.id && grupo.sector) {
+                    if (grupo && grupo.id && grupo.sectorNombre) {
                         grupoNombreSpan.textContent = grupo.nombre;
                         grupoIdInput.value = grupo.id;
 
-                        sectorNombreSpan.textContent = grupo.sector.nombre;
-                        sectorIdInput.value = grupo.sector.id;
+                        sectorNombreSpan.textContent = grupo.sectorNombre;
+                        sectorIdInput.value = grupo.sectorId;
                     } else {
                         grupoNombreSpan.textContent = "No encontrado";
                         grupoIdInput.value = "";
@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 })
                 .catch(error => {
-                    console.error("Error al obtener grupo del socio:", error);
                     grupoNombreSpan.textContent = "Error";
                     sectorNombreSpan.textContent = "Error";
                 });
         }
     });
 });
+
 

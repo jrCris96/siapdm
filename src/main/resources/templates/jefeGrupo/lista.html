@@ -68,7 +68,7 @@
                         <tbody>
                             <tr th:each="jefe : ${jefes}">
                                 <td th:text="${jefe.socio.idUsuario}"></td>
-                                <td><img src="/user1.png" alt=""></td>
+                                <td><img th:src="@{/logos/{img} (img=${jefe.socio.foto})}" alt=""></td>
                                 <td th:text="${jefe.socio.nombre + ' ' + jefe.socio.apellido}"></td>
                                 <td th:text="${jefe.socio.celular}"></td>
                                 <td th:text="${jefe.grupo.nombre}"></td>

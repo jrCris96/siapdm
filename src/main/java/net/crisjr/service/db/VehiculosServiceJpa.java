@@ -48,5 +48,11 @@ public class VehiculosServiceJpa implements IVehiculosService {
         return vehiculosRepo.countVehiculosActivosByUsuario(usuario, excluirId);
     }
 
+    @Override
+    public boolean asalariadoYaTieneVehiculoActivo(Usuario asalariado) {
+        return vehiculosRepo.existsBySocioAsalariadoActivo(asalariado);
+    }
+
+
 }
   

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import net.crisjr.dto.GrupoConSectorDTO;
 import net.crisjr.enums.EstadoJefeGrupo;
 import net.crisjr.model.Grupo;
 import net.crisjr.model.JefeGrupo;
@@ -95,7 +96,6 @@ public class JefeGrupoController {
             attributes.addFlashAttribute("error", "Este socio ya es jefe de otro grupo.");
             return "redirect:/jefes/create";
         }
-
         
         // Validar que el socio pertenece al grupo seleccionado
         if (!socio.getGrupo().getId().equals(grupo.getId())) {
@@ -143,8 +143,10 @@ public class JefeGrupoController {
 
     @GetMapping("/grupo-del-socio/{idUsuario}")
     @ResponseBody
-    public Grupo obtenerGrupoDelSocio(@PathVariable String idUsuario) {
+    public GrupoConSectorDTO obtenerGrupoDelSocio(@PathVariable String idUsuario) {
         Usuario socio = usuariosService.buscarPorIdUsuario(idUsuario);
-        return (socio != null) ? socio.getGrupo() : null;
+        if (socio == null || socio.getGrupo() == null) return null;
+        return new GrupoConSectorDTO(socio.getGrupo());
     }
+
 }

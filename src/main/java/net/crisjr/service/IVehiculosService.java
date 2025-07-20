@@ -12,6 +12,6 @@ public interface IVehiculosService {
     Vehiculo buscarPorId(Integer idVehiculo);
     List<Vehiculo> obtenerPorUsuarioYEstado(Usuario usuario, String estado);
     long contarVehiculosActivosPorUsuario(Usuario usuario, Integer excluirId);
-
+    boolean asalariadoYaTieneVehiculoActivo(Usuario asalariado);
 }
    

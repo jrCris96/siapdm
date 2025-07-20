@@ -13,68 +13,65 @@
     </div>
 </div>
         
-<div th:fragment="menu-derecha" class="right">
-    <a href="#" class="icons-header">
-        <img th:src="@{/icons2/chat.svg}" alt="chat">
+<div th:fragment="menu-derecha" class="right" sec:authorize="isAuthenticated()">
+    <span th:if="${session.usuario != null}" class="text-light" th:text="'Bienvenido ' + ${session.usuario.nombre}"></span>&nbsp;
+    <a th:href="@{/logout}" class="icons-header">
+        <img th:src="@{/icons2/exit.svg}" alt="chat">
     </a>
-    <a href="#" class="icons-header">
-        <img th:src="@{/icons2/question.svg}" alt="chat">
-    </a>
-    <a href="#" class="icons-header">
-        <img th:src="@{/icons2/notification.svg}" alt="chat">
-    </a>
-    <img th:src="@{/img/foto.jpg}" alt="img-user" class="user">
+    <img th:src="@{'/logos/' + ${session.usuario.foto}}" alt="img-user" class="user"/>
+
+
 </div>
 
 <nav th:fragment="menu-barra">
     <ul>
-        <li>
-            <a href="/home.html">
+        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN', 'Hacienda')">
+            <a th:href="@{/index}">
                 <img src="/icons2/home.svg" alt="">
                 <span>Home</span>
             </a>
         </li>
-        <li class=" list__item list__item--click">
+        <li class=" list__item list__item--click" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
             <a class="list__button list__button--click">
                 <img src="/icons2/register.svg" alt="">
                 <span>Registro</span>
                 <img src="/icons/arrow.svg" class="list__arrow">
             </a>
             <ul class="list__show">
-                <li class="list__inside">
+                <li class="list__inside" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
                     <a th:href="@{/usuarios/create}" class="nav__link nav__link--inside">Registro Socio</a>
                 </li>
-                <li class="list__inside">
+                <li class="list__inside" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
                     <a th:href="@{/vehiculos/create}" class="nav__link nav__link--inside">Registro Movilidad</a>
                 </li>
-                <li class="list__inside">
+                <li class="list__inside" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
                     <a th:href="@{/mesa/create}" class="nav__link nav__link--inside">Registro de Mesa Directiva</a>
                 </li>
-                <li class="list__inside">
+                <li class="list__inside" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
                     <a th:href="@{/jefes/create}" class="nav__link nav__link--inside">Registro Jefe de Grupo</a>
                 </li>
             </ul>
         </li>
-        <li>
+        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
             <a th:href="@{/usuarios/indexPaginate}">
                 <img src="/icons2/list.svg" alt="">
                 <span>Socios</span>
             </a>
         </li>
-        <li>
+        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
             <a th:href="@{/mesa/actual}">
                 <img src="/icons2/asistencia.svg" alt="">
                 <span>MesaDirectiva</span>
             </a>
         </li>
-        <li>
+        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
             <a th:href="@{/jefes/lista}">
                 <img src="/icons2/list.svg" alt="">
                 <span>Jefes de Grupo</span>
             </a>
         </li>
 
-        <li class=" list__item list__item--click">
+        <li class=" list__item list__item--click" sec:authorize="hasAnyAuthority('Hacienda')">
             <a class="list__button list__button--click">
                 <img src="/icons2/moneySvg.svg" alt="">
                 <span>Pagos</span>
@@ -90,7 +87,7 @@
             </ul>
         </li>
 
-        <li class=" list__item list__item--click">
+        <li class=" list__item list__item--click" sec:authorize="hasAnyAuthority('Hacienda')">
             <a class="list__button list__button--click">
                 <img src="/icons2/moneySendSvg.svg" alt="">
                 <span>Retiros</span>
@@ -105,19 +102,19 @@
                 </li>
             </ul>
         </li>
-        <li>
+        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
             <a th:href="@{/amonestaciones/create}">
                 <img src="/icons2/asistencia.svg" alt="">
                 <span>Amonestacion</span>
             </a>
         </li>
-        <li>
+        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')"> 
             <a th:href="@{/amonestaciones/listar}">
                 <img src="/icons2/asistencia.svg" alt="">
                 <span>Amonestacion Listar</span>
             </a>
         </li>
-        <li>
+        <li sec:authorize="hasAnyAuthority('SUPER_ADMIN')">
             <a th:href="@{/reuniones/nueva}">
                 <img src="/icons2/asistencia.svg" alt="">
                 <span>Reunion</span>

@@ -19,5 +19,7 @@ public interface IUsuariosService {
     Usuario buscarPorIdUsuario(String idUsuario);
     List<Usuario> buscarPorGrupo(Integer grupoId);
     Page<Usuario> buscarPorEstado(String estado, Pageable page);
+    List<Usuario> buscarHabilitadosPorGrupo(Integer idGrupo);
 
+    Usuario buscarPorUserName(String username);
 }

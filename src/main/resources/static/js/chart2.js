@@ -1,31 +1,34 @@
-var ctx2 = document.getElementById('doughnut').getContext('2d');
-var myChart2 = new Chart(ctx2, {
-    type: 'doughnut',
-    data: {
-        labels: ['Academic', 'Non-Academic', 'Administration', 'Others'],
+fetch('/api/total-recaudado-por-sector')
+  .then(response => response.json())
+  .then(data => {
+    const labels = Object.keys(data);
+    const values = Object.values(data);
 
+    const backgroundColors = labels.map(() =>
+      `hsl(${Math.random() * 360}, 60%, 60%)`
+    );
+
+    const ctx2 = document.getElementById('doughnut').getContext('2d');
+    new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
         datasets: [{
-            label: 'Employees',
-            data: [42, 12, 8, 6],
-            backgroundColor: [
-                'rgba(41, 155, 99, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(120, 46, 139,1)'
-
-            ],
-            borderColor: [
-                'rgba(41, 155, 99, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(120, 46, 139,1)'
-
-            ],
-            borderWidth: 1
+          label: 'Total recaudado (Bs)',
+          data: values,
+          backgroundColor: backgroundColors,
+          borderColor: backgroundColors,
+          borderWidth: 1
         }]
-
-    },
-    options: {
-        responsive: true
-    }
-});
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Total Recaudado por Sector (Bs)'
+          }
+        }
+      }
+    });
+  });

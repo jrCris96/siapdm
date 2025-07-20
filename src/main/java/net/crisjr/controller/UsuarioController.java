@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,9 +23,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
+import net.crisjr.dto.PagoDTO;
+import net.crisjr.model.Amonestacion;
 import net.crisjr.model.Grupo;
 import net.crisjr.model.Usuario;
 import net.crisjr.model.Vehiculo;
+import net.crisjr.service.IAmonestacionService;
+import net.crisjr.service.IAporteSocioService;
 import net.crisjr.service.IGruposService;
 import net.crisjr.service.IPerfilService;
 import net.crisjr.service.ISectorService;
@@ -61,6 +68,15 @@ public class UsuarioController {
     @Autowired
     private IVehiculosService serviceVehiculo;
 
+    @Autowired
+    private IAporteSocioService serviceAporteSocio;
+
+    @Autowired
+    private IAmonestacionService serviceAmonestacionService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @GetMapping("/index") 
     public String mostrarIndex(Model model) {
 
@@ -97,6 +113,9 @@ public class UsuarioController {
     @PostMapping("/save")
     public String guardar(Usuario usuario, BindingResult result, RedirectAttributes attributes, @RequestParam("archivoImagen") MultipartFile multipart) {
         
+        // Codifica el carnet y lo asigna como password ENCRIPTADO
+        usuario.setPassword(passwordEncoder.encode(usuario.getCarnet()));
+
         if (result.hasErrors()) {
             for (ObjectError error : result.getAllErrors()) {
                 System.out.println("Ocurrio un error: " + error.getDefaultMessage());
@@ -127,7 +146,7 @@ public class UsuarioController {
                 return "redirect:/vehiculos/create?idUsuario=" + usuario.getIdUsuario();
             } else {
                 // Redirigir al inicio
-                return "redirect:/";
+                return "redirect:/index";
             }
 
         } catch (IllegalArgumentException e) {
@@ -142,28 +161,66 @@ public class UsuarioController {
         }
 }
 
-    @GetMapping("/view/{id}")
-    public String verDetalle(@PathVariable("id") int idUsuario, Model model) {
+    @GetMapping("/view/{idUsuario}")
+    public String verDetalle(@PathVariable("idUsuario") String idUsuario, Model model, Authentication auth, HttpSession session) {
+        System.out.println(">>> LLEGUE A /usuarios/view/" + idUsuario);
 
-        Usuario usuario = serviceUsuario.buscarPorId(idUsuario);
+        // Siempre asegura que el usuario logueado esté en sesión
+        if(session.getAttribute("usuario") == null){
+            Usuario usuarioSesion = serviceUsuario.buscarPorUserName(auth.getName());
+            if(usuarioSesion != null) usuarioSesion.setPassword(null);
+            session.setAttribute("usuario", usuarioSesion);
+        }
+
+        Usuario usuario = null;
+
+        // Detecta si es un número (id numérico)
+        if (idUsuario.matches("\\d+")) {
+            int id = Integer.parseInt(idUsuario);
+            usuario = serviceUsuario.buscarPorId(id);
+        } else {
+            // Si no, busca por id_usuario (string personalizado)
+            usuario = serviceUsuario.buscarPorUserName(idUsuario);
+        }
 
         if (usuario == null) {
             model.addAttribute("error", "Usuario no encontrado");
             return "error";
         }
 
-        // Cargar los vehículos donde es dueño
-        List<Vehiculo> vehiculosPropios = serviceVehiculo.obtenerPorUsuarioYEstado(usuario, "ACTIVO");
+        // --- CONTROL DE ACCESO ---
+        String username = auth.getName();
 
-        // Cargar los vehículos donde es asalariado
+        boolean isAdmin = auth.getAuthorities().stream()
+            .anyMatch(a -> a.getAuthority().equals("SUPER_ADMIN"));
+
+        // Si NO es admin, solo puede ver su propio perfil
+        if (!isAdmin) {
+            Usuario usuarioLogueado = serviceUsuario.buscarPorUserName(username);
+            if (usuarioLogueado == null || 
+                !(usuarioLogueado.getId() == usuario.getId() || usuarioLogueado.getIdUsuario().equals(idUsuario))) {
+                model.addAttribute("error", "No tienes permiso para ver este perfil");
+                return "error";
+            }
+        }
+        // --- FIN CONTROL ---
+
+        // Lógica para cargar datos adicionales
+        List<Vehiculo> vehiculosPropios = serviceVehiculo.obtenerPorUsuarioYEstado(usuario, "ACTIVO");
         List<Vehiculo> vehiculosAsignados = usuario.getVehiculosAsignados();
+        List<Amonestacion> amonestaciones = serviceAmonestacionService.obtenerPorUsuarioId(usuario.getId());
+        List<PagoDTO> pagos = serviceAporteSocio.obtenerPagosPorSocio(usuario.getId());
 
         model.addAttribute("usuarios", usuario);
         model.addAttribute("vehiculosPropios", vehiculosPropios);
         model.addAttribute("vehiculosAsignados", vehiculosAsignados);
+        model.addAttribute("amonestaciones", amonestaciones);
+        model.addAttribute("pagos", pagos);
 
         return "/usuarios/verSocio";
     }
+
+
 
     @GetMapping("/desactivar/{id}")
     public String desactivarUsuario(@PathVariable("id") Integer idUsuario, RedirectAttributes attributes) {

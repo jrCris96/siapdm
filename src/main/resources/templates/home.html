@@ -21,34 +21,19 @@
     
     <main id="main">
         <div class="cards">
-            <div class="card">
+            <div class="card" th:each="entry : ${sociosPorSector}">
                 <div class="card-content">
-                    <div class="number">1217</div>
-                    <div class="card-name">Socios</div>
+                    <div class="number" th:text="${entry.value}">0</div>
+                    <div class="card-name" th:text="|Socios en ${entry.key}|">Sector</div>
                 </div>
                 <div class="icon-box">
                     <i class="fas fa-user"></i>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-content">
-                    <div class="number">42</div>
-                    <div class="card-name">Administrativos</div>
-                </div>
-                <div class="icon-box">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-content">
-                    <div class="number">Bs 4500</div>
-                    <div class="card-name">Recaudacion Anual</div>
-                </div>
-                <div class="icon-box">
-                    <i class="fas fa-money-bill"></i>
-                </div>
-            </div>
         </div>
+
+
+
         <div class="charts">
             <div class="chart">
                 <h2>Recaudacion (Ultimos 12 meses)</h2>
@@ -57,7 +42,7 @@
                 </div>
             </div>
             <div class="chart doughnut-chart">
-                <h2>Employees</h2>
+                <h2>Pagos</h2>
                 <div>
                     <canvas id="doughnut"></canvas>
                 </div>

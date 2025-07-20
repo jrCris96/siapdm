@@ -1,7 +1,8 @@
 package net.crisjr.service;
 
 import java.util.List;
- 
+
+import net.crisjr.model.CargoMesa;
 import net.crisjr.model.DetalleMesa;
 import net.crisjr.model.MesaDirectiva;
 import net.crisjr.model.Usuario;
@@ -13,5 +14,6 @@ public interface IDetalleMesaService {
     boolean existeSocioEnMesa(MesaDirectiva mesa, Usuario socio);
     DetalleMesa buscarPorId(Integer id);
     List<DetalleMesa> buscarHaciendasActivas();
+    boolean existeCargoEnMesa(MesaDirectiva mesa, CargoMesa cargo);
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.crisjr.dto.PagoDTO;
 import net.crisjr.model.AporteGrupal;
 import net.crisjr.model.AporteSocio;
 import net.crisjr.model.Usuario;
@@ -40,6 +41,11 @@ public class AporteSocioService implements IAporteSocioService{
     @Override
     public AporteSocio buscarPorId(Integer id) {
         return aporteSocioRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<PagoDTO> obtenerPagosPorSocio(Integer idSocio) {
+        return aporteSocioRepo.obtenerPagosPorSocio(idSocio);
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.crisjr.model.CargoMesa;
 import net.crisjr.model.DetalleMesa;
 import net.crisjr.model.MesaDirectiva;
 import net.crisjr.model.Usuario;
@@ -44,6 +45,11 @@ public class DetalleMesaService implements IDetalleMesaService{
     @Override
     public List<DetalleMesa> buscarHaciendasActivas() {
         return detalleMesaRepo.findByCargo_IdAndEstado(3, true);
+    }
+
+    @Override
+    public boolean existeCargoEnMesa(MesaDirectiva mesa, CargoMesa cargo) {
+        return detalleMesaRepo.existsByMesaDirectivaAndCargoAndEstadoTrue(mesa, cargo);
     }
 
 }

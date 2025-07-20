@@ -50,71 +50,92 @@ public class VehiculosController {
     return "vehiculos/formRegistroMovilidad";
 }
 
-    @PostMapping("/save")
-    public String guardarVehiculo(
+@PostMapping("/save")
+public String guardarVehiculo(
         Vehiculo vehiculo,
         @RequestParam("idPropietario") String idPropietario,
-        @RequestParam(value = "idAsalariado", required = false) String idAsalariado, 
+        @RequestParam(value = "idAsalariado", required = false) String idAsalariado,
         @RequestParam("archivoImagen") MultipartFile multiPart,
         RedirectAttributes attributes) {
 
-        // Buscar propietario por ID dinámico
-        Usuario propietario = usuariosRepo.findByIdUsuario(idPropietario);
-        if (propietario == null) {
-            attributes.addFlashAttribute("error", "No se encontró el propietario con ID: " + idPropietario);
-            return "redirect:/vehiculos/create";
-        }
-
-        // Validar cantidad de vehículos según si es creación o edición
-        if (vehiculo.getId() == null) {
-            // Nuevo vehículo
-            long cantidadVehiculos = serviceVehiculos.contarVehiculosActivosPorUsuario(propietario, null);
-            if (cantidadVehiculos >= 2) {
-                attributes.addFlashAttribute("error", "Este usuario ya tiene 2 vehículos asignados.");
-                return "redirect:/vehiculos/create";
-            }
-        } else {
-            // Edición de vehículo, excluir el vehículo actual del conteo
-            long cantidadVehiculos = vehiculosRepo.countByUsuarioIdExceptVehiculoId(propietario, vehiculo.getId());
-            if (cantidadVehiculos >= 2) {
-                attributes.addFlashAttribute("error", "Este usuario ya tiene 2 vehículos asignados.");
-                return "redirect:/vehiculos/edit/" + vehiculo.getId();
-            }
-        }
-
-        // Asignar propietario
-        vehiculo.setUsuarioId(propietario);
-
-        // Buscar asalariado si existe
-        if (idAsalariado != null && !idAsalariado.trim().isEmpty()) { 
-            Usuario asalariado = usuariosRepo.findByIdUsuario(idAsalariado);
-            if (asalariado == null) {
-                attributes.addFlashAttribute("error", "No se encontró el asalariado con ID: " + idAsalariado);
-                return vehiculo.getId() == null ? "redirect:/vehiculos/create" : "redirect:/vehiculos/edit/" + vehiculo.getId();
-            }
-            vehiculo.setSocioAsalariadoId(asalariado);
-        } else {
-            vehiculo.setSocioAsalariadoId(null); // Si quitan el asalariado
-        }
-
-        // Subir imagen si la hay
-        if (!multiPart.isEmpty()) {
-            String nombreImagen = Utileria.guardarArchivo(multiPart, ruta);
-            if (nombreImagen != null) {
-                vehiculo.setFoto(nombreImagen);
-            }
-        }
-
-        // Guardar vehículo
-        serviceVehiculos.guardar(vehiculo);
-
-        attributes.addFlashAttribute("msg", vehiculo.getId() == null ? "Vehículo registrado correctamente." : "Vehículo actualizado correctamente.");
-        
-        Integer idNumerico= propietario.getId();
-        return "redirect:/usuarios/view/" + idNumerico;
+    // Buscar propietario
+    Usuario propietario = usuariosRepo.findByIdUsuario(idPropietario);
+    if (propietario == null) {
+        attributes.addFlashAttribute("error", "No se encontró el propietario con ID: " + idPropietario);
+        return "redirect:/vehiculos/create";
     }
 
+    // Validar cantidad de vehículos activos
+    if (vehiculo.getId() == null) {
+        long cantidadVehiculos = serviceVehiculos.contarVehiculosActivosPorUsuario(propietario, null);
+        if (cantidadVehiculos >= 2) {
+            attributes.addFlashAttribute("error", "Este usuario ya tiene 2 vehículos asignados.");
+            return "redirect:/vehiculos/create";
+        }
+    } else {
+        long cantidadVehiculos = vehiculosRepo.countByUsuarioIdExceptVehiculoId(propietario, vehiculo.getId());
+        if (cantidadVehiculos >= 2) {
+            attributes.addFlashAttribute("error", "Este usuario ya tiene 2 vehículos asignados.");
+            return "redirect:/vehiculos/edit/" + vehiculo.getId();
+        }
+    }
 
+    // Asignar propietario
+    vehiculo.setUsuarioId(propietario);
+
+    // Validar asalariado si se proporciona
+    if (idAsalariado != null && !idAsalariado.trim().isEmpty()) {
+        Usuario asalariado = usuariosRepo.findByIdUsuario(idAsalariado);
+        if (asalariado == null) {
+            attributes.addFlashAttribute("error", "No se encontró el asalariado con ID: " + idAsalariado);
+            return vehiculo.getId() == null ? "redirect:/vehiculos/create" : "redirect:/vehiculos/edit/" + vehiculo.getId();
+        }
+
+        // 🚫 Verificar que no sea un socio propietario
+        if (asalariado.tienePerfil("Socio Propietario")) {
+            attributes.addFlashAttribute("error", "Este socio es propietario y no puede ser asignado como asalariado.");
+            return vehiculo.getId() == null ? "redirect:/vehiculos/create" : "redirect:/vehiculos/edit/" + vehiculo.getId();
+        }
+
+        boolean asalariadoAsignadoEnOtro = false;
+
+        if (vehiculo.getId() != null) {
+            Vehiculo vehiculoExistente = serviceVehiculos.buscarPorId(vehiculo.getId());
+            Usuario asalariadoAnterior = vehiculoExistente.getSocioAsalariadoId();
+
+            // Validar solo si se cambió el asalariado
+            if (asalariadoAnterior == null || !asalariadoAnterior.getId().equals(asalariado.getId())) {
+                asalariadoAsignadoEnOtro = serviceVehiculos.asalariadoYaTieneVehiculoActivo(asalariado);
+            }
+        } else {
+            asalariadoAsignadoEnOtro = serviceVehiculos.asalariadoYaTieneVehiculoActivo(asalariado);
+        }
+
+        if (asalariadoAsignadoEnOtro) {
+            attributes.addFlashAttribute("error", "Este socio asalariado ya está asignado a otro vehículo activo.");
+            return vehiculo.getId() == null ? "redirect:/vehiculos/create" : "redirect:/vehiculos/edit/" + vehiculo.getId();
+        }
+
+        vehiculo.setSocioAsalariadoId(asalariado);
+    } else {
+        vehiculo.setSocioAsalariadoId(null);
+    }
+
+    // Subir imagen
+    if (!multiPart.isEmpty()) {
+        String nombreImagen = Utileria.guardarArchivo(multiPart, ruta);
+        if (nombreImagen != null) {
+            vehiculo.setFoto(nombreImagen);
+        }
+    }
+
+    // Guardar vehículo
+    serviceVehiculos.guardar(vehiculo);
+
+    attributes.addFlashAttribute("msg", vehiculo.getId() == null ? "Vehículo registrado correctamente." : "Vehículo actualizado correctamente.");
+
+    return "redirect:/usuarios/view/" + propietario.getId();
+}
 
 
     @GetMapping("/view/{id}")

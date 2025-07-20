@@ -32,7 +32,7 @@
                     <div class="left-column background2-left-column">
                         <h6>Socio</h6>
                         <h2><span th:text="${usuario.nombre}"></span> <span th:text="${usuario.apellido}">Quispe Choque</span></h2>
-                        <img th:src="@{/logos/{img} (img=${usuario.foto})}" alt="">
+                        <img th:src="@{/logos/{img} (img=${usuario.foto})}" alt=""> 
                     </div>
 
                     <div class="right-column" >
@@ -52,8 +52,8 @@
                             <p>Sector: <span th:text="${usuario.grupo.sector.nombre}"></span></p>
                         </div>
                         <div>
-                            <button class="button background2-left-column">Editar</button>
-                            <button class="button background3-left-column">Desactivar</button>
+                            <button class="button background2-left-column" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">Editar</button>
+                            <button class="button background3-left-column" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">Desactivar</button>
                         </div>
                     </div>
                 </div>
@@ -64,9 +64,9 @@
         <hr>
 
         <div class="DVehiculo">
-            <h2 class="titulo">Vehiculo</h2>
-            <div th:if="${vehiculosPropios.size() < 2}">
-                <a th:href="@{/vehiculos/create(idUsuario=${usuarios.idUsuario})}" class="button background2-left-column">
+            <div th:if="${vehiculosPropios.size() < 2 and vehiculosAsignados.size() == 0}">
+                <h2 class="titulo">Vehiculo</h2>
+                <a th:href="@{/vehiculos/create(idUsuario=${usuarios.idUsuario})}" sec:authorize="hasAnyAuthority('SUPER_ADMIN')" class="button background2-left-column">
 
                     Añadir Vehículo
                 </a>
@@ -90,16 +90,17 @@
                             <p>Placa: <span th:text="${vehiculo.placa}"></span></p>
                             <p>Marca: <span th:text="${vehiculo.marca}"></span></p>
                             <p>Modelo: <span th:text="${vehiculo.modelo}"></span></p>
-                            <p>Color: <span th:text="${vehiculo.color}">Masculino</span></p>
+                            <p>Color: <span th:text="${vehiculo.color}"></span></p>
                             <p>Año Fabricacion: <span th:text="${vehiculo.año_fabricacion}"></span></p>
                         </div>
                         <div>
-                            <a th:href="@{/vehiculos/edit/{id}(id=${vehiculo.id})}" class="button background2-left-column">
+                            <a th:href="@{/vehiculos/edit/{id}(id=${vehiculo.id})}" sec:authorize="hasAnyAuthority('SUPER_ADMIN')" class="button background2-left-column">
                                 Editar
                             </a>
                         </div>
                         <a th:href="@{/vehiculos/desactivar/{id}(id=${vehiculo.id})}"
                             class="button background3-left-column"
+                            sec:authorize="hasAnyAuthority('SUPER_ADMIN')"
                             onclick="return confirm('¿Estás seguro de desactivar este vehículo?')">
                             Desactivar
                         </a>
@@ -112,8 +113,38 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="DVehiculo" th:if="${vehiculosAsignados != null and !vehiculosAsignados.isEmpty()}">
+            <h2 class="titulo">Vehículo Asignado</h2>
+
+            <div class="containerCard">
+                <div class="card" th:each="vehiculo : ${vehiculosAsignados}">
+                    <div class="left-column background2-left-column">
+                        <h6>Vehículo Asignado</h6>
+                        <h2>Dueño: <span th:text="${vehiculo.usuarioId.nombre + ' ' + vehiculo.usuarioId.apellido}"></span></h2>
+                        <img th:src="@{/logos/{img}(img=${vehiculo.foto})}" alt="">
+                    </div>
+
+                    <div class="right-column">
+                        <p>Tipo de Vehículo: <span th:text="${vehiculo.tipo_vehiculo}"></span></p>
+                        <p>Placa: <span th:text="${vehiculo.placa}"></span></p>
+                        <p>Marca: <span th:text="${vehiculo.marca}"></span></p>
+                        <p>Modelo: <span th:text="${vehiculo.modelo}"></span></p>
+                        <p>Color: <span th:text="${vehiculo.color}"></span></p>
+                        <p>Año Fabricación: <span th:text="${vehiculo.año_fabricacion}"></span></p>
+                        <a th:href="@{/usuarios/view/{id}(id=${vehiculo.usuarioId.id})}" class="button background1-left-column">
+                            Ver Socio Propietario
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+
+            </div>
+        </div>
+
+        
+
 
         <hr>
 
@@ -123,66 +154,17 @@
                 <table> 
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Fecha</th>
                             <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-malo">Pendiente</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td><p class="p-bueno">Pago</p></td>
+                        <tr th:each="pago : ${pagos}">
+                            <td th:text="${pago.fechaFormateada}"></td>
+                            <td>
+                                <p th:class="${pago.pagado} ? 'p-bueno' : 'p-malo'" 
+                                th:text="${pago.pagado} ? 'Pago' : 'Pendiente'"></p>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -198,40 +180,24 @@
                 <table class="tabla-ancha"> 
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Fecha</th>
                             <th>Nivel de Amonestación</th>
-                            <th>Descripcion</th>
                             <th>Fecha de reingreso</th>
+                            <th>Descripcion</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td>Primera</td>
-                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis, repellat dicta dolor at sequi, deserunt sed autem maxime doloribus culpa ipsum.</td>
-                            <td>11/12/1999</td>
+                    <tbody th:if="${amonestaciones != null}">
+                        <tr th:each="a : ${amonestaciones}">
+                            <td th:text="${#temporals.format(a.fecha, 'dd/MM/yyyy')}">00/00/0000</td>
+                            <td th:text="${a.nivel}">Nivel</td>
+                            <td th:text="${a.fechaReingreso != null ? #temporals.format(a.fechaReingreso, 'dd/MM/yyyy') : 'N/A'}">Fecha</td>
+                            <td>
+                                <a th:href="@{/amonestaciones/detalle/{id}(id=${a.id})}" class="btn btn-info">Ver</a>
+                            </td>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td>Primera</td>
-                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis, repellat dicta dolor at sequi, deserunt sed autem maxime doloribus culpa ipsum.</td>
-                            <td>11/12/1999</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>11/11/1999</td>
-                            <td>Primera</td>
-                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis, repellat dicta dolor at sequi, deserunt sed autem maxime doloribus culpa ipsum.</td>
-                            <td>11/12/1999</td>
-                        </tr>
-                        
                     </tbody>
                 </table>
             </div>
-
         </div>
         </div>
       

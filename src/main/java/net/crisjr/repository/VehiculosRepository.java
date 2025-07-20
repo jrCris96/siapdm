@@ -23,6 +23,10 @@ public interface VehiculosRepository extends JpaRepository<Vehiculo, Integer> {
 
     List<Vehiculo> findByUsuarioIdAndEstado(Usuario usuarioId, String estado);
 
+    List<Vehiculo> findBySocioAsalariadoIdAndEstadoTrue(Usuario socioAsalariadoId);
+
+    @Query("SELECT COUNT(v) > 0 FROM Vehiculo v WHERE v.socioAsalariadoId = :asalariado AND v.estado = 'ACTIVO'")
+    boolean existsBySocioAsalariadoActivo(@Param("asalariado") Usuario asalariado);
 
     }
   

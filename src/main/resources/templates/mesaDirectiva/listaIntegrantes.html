@@ -86,11 +86,11 @@
                     </thead> 
                     <tbody>
                         <tr th:each="detalle : ${integrantes}">
-                            <td th:text="${detalle.usuario.idUsuario}"></td>
-                            <td><img src="/user1.png" alt=""></td>
+                            <td th:text="${detalle.usuario.idUsuario}"></td> 
+                            <td><img th:src="@{/logos/{img} (img=${detalle.usuario.foto})}" alt=""></td>
                             <td th:text="${detalle.usuario.nombre + ' ' + detalle.usuario.apellido}"></td>
                             <td th:text="${detalle.cargo.nombre}"></td>
-                            <td></td>
+                            <td th:text="${detalle.usuario.grupo.nombre}"></td>
                             <td>
                                 <form th:action="@{/mesa/detalle/desactivar/{id}(id=${detalle.id})}" method="post" style="display:inline;">
                                     <button type="submit" class="btnSocio">Desactivar</button>

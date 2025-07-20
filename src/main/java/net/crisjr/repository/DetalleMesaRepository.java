@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import net.crisjr.model.CargoMesa;
 import net.crisjr.model.DetalleMesa;
 import net.crisjr.model.MesaDirectiva;
 import net.crisjr.model.Usuario;
@@ -17,8 +18,6 @@ public interface DetalleMesaRepository extends JpaRepository<DetalleMesa, Intege
     boolean existsByMesaDirectivaAndUsuarioAndEstadoTrue(MesaDirectiva mesa, Usuario usuario);
     
     List<DetalleMesa> findByCargo_IdAndEstado(Integer idCargo, boolean estado);
-
-    
-
+    boolean existsByMesaDirectivaAndCargoAndEstadoTrue(MesaDirectiva mesa, CargoMesa cargo);
 
 }

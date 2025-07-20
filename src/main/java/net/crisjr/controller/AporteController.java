@@ -64,7 +64,7 @@ public class AporteController {
     @GetMapping("/socios-por-grupo/{grupoId}")
     @ResponseBody
     public List<UsuarioDTO> obtenerSociosPorGrupo(@PathVariable Integer grupoId) {
-        return usuarioService.buscarPorGrupo(grupoId)
+        return usuarioService.buscarHabilitadosPorGrupo(grupoId)
                             .stream()
                             .map(UsuarioDTO::new)
                             .toList();
@@ -96,8 +96,9 @@ public class AporteController {
         
 
         // Registrar estado de pago de cada socio
-        List<Usuario> socios = usuarioService.buscarPorGrupo(grupoId);
+        List<Usuario> socios = usuarioService.buscarHabilitadosPorGrupo(grupoId);
         for (Usuario socio : socios) {
+            System.out.println("Socio: " + socio.getIdUsuario() + " | Estado: " + socio.getEstado());
             AporteSocio aporteSocio = new AporteSocio();
             aporteSocio.setUsuario(socio);
             aporteSocio.setAporteGrupal(aporteGrupal);

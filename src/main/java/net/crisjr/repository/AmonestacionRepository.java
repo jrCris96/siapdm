@@ -15,4 +15,8 @@ public interface AmonestacionRepository extends JpaRepository<Amonestacion, Inte
     @Query("SELECT a FROM Amonestacion a WHERE a.socio.grupo.sector.id = :sectorId")
     List<Amonestacion> findBySectorId(@Param("sectorId") Integer sectorId);
 
+    List<Amonestacion> findBySocio_Id(Integer idUsuario);
+;
+
+
 }

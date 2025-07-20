@@ -88,7 +88,6 @@ public class MesaDirectivaController {
         model.addAttribute("detalleMesa", nuevoIntegrante);
         model.addAttribute("cargos", cargoMesaService.buscarTodas());
         model.addAttribute("puedeAgregar", totalActivos < 25);
-
         return "mesaDirectiva/listaIntegrantes";
     }
 
@@ -106,16 +105,26 @@ public class MesaDirectivaController {
             return "redirect:/mesa/detalle/lista/" + (mesa != null ? mesa.getId() : "");
         }
 
+        // NUEVO: Validar si el usuario está deshabilitado
+        if (!"habilitado".equalsIgnoreCase(socio.getEstado())) {
+            attributes.addFlashAttribute("error", "No se puede agregar un socio deshabilitado.");
+            return "redirect:/mesa/detalle/lista/" + (mesa != null ? mesa.getId() : "");
+        }
+
         // Validar campos
         if (mesa == null || detalle.getCargo() == null) {
             attributes.addFlashAttribute("error", "Todos los campos son obligatorios.");
             return "redirect:/mesa/detalle/lista/" + (mesa != null ? mesa.getId() : "");
         }
 
-    
-
         if (detalleMesaService.existeSocioEnMesa(detalle.getMesaDirectiva(), socio)) {
             attributes.addFlashAttribute("error", "Este socio ya forma parte de la mesa directiva actual.");
+            return "redirect:/mesa/detalle/lista/" + detalle.getMesaDirectiva().getId();
+        }
+
+        // AQUÍ va la nueva validación:
+        if (detalleMesaService.existeCargoEnMesa(detalle.getMesaDirectiva(), detalle.getCargo())) {
+            attributes.addFlashAttribute("error", "Ya existe un miembro con ese cargo en la mesa directiva.");
             return "redirect:/mesa/detalle/lista/" + detalle.getMesaDirectiva().getId();
         }
 
