@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpSession;
 import net.crisjr.dto.PagoDTO;
 import net.crisjr.model.Amonestacion;
 import net.crisjr.model.Grupo;
+import net.crisjr.model.Perfil;
 import net.crisjr.model.Usuario;
 import net.crisjr.model.Vehiculo;
 import net.crisjr.service.IAmonestacionService;
@@ -96,11 +97,13 @@ public class UsuarioController {
     
     @GetMapping("/create") 
     public String crear(Usuario usuario, Model model){
-        
-
         if (usuario.getPerfiles() == null) {
         usuario.setPerfiles(new LinkedList<>());
         }
+
+        List<Perfil> perfiles = servicePerfil.buscarTodas();
+        perfiles.removeIf(perfil -> "SUPER_ADMIN".equalsIgnoreCase(perfil.getPerfil()));
+        model.addAttribute("perfiles", perfiles);
         return "usuarios/formRegistroSocio";
     }
 
@@ -130,7 +133,7 @@ public class UsuarioController {
                 if (nombreImagen != null) {
                     usuario.setFoto(nombreImagen); 
                 }
-            }
+            } 
 
             // Guardar usuario con la lógica del servicio (que puede lanzar excepciones)
             serviceUsuario.guardar(usuario);

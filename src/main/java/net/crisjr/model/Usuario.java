@@ -78,7 +78,7 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
-    public Integer getId() {
+    public Integer getId() { 
         return id;
     }
     public void setId(Integer id) {
