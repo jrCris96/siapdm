@@ -1,7 +1,7 @@
 package net.crisjr.service;
 
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -23,5 +23,6 @@ public interface IUsuariosService {
 
     Usuario buscarPorUserName(String username);
     Usuario buscarPorCelular(String celular);
+    Map<String, Integer> obtenerSociosPorSector();
 
 }

@@ -1,6 +1,8 @@
 package net.crisjr.service.db;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +81,7 @@ public class UsuariosServiceJpa implements IUsuariosService {
         if(optional.isPresent()){
             return optional.get();
         }
-        return null;
+        return null; 
     }
 
 
@@ -125,6 +127,21 @@ public class UsuariosServiceJpa implements IUsuariosService {
     @Override
     public Usuario buscarPorCelular(String celular) {
         return usuariosRepo.findByCelular(celular);
+    }
+
+    @Override
+    public Map<String, Integer> obtenerSociosPorSector() {
+        List<Usuario> usuarios = usuariosRepo.findAll();
+        Map<String, Integer> conteo = new HashMap<>();
+
+        for (Usuario usuario : usuarios) {
+            // Validar que tenga grupo y sector (puede haber usuarios sin grupo/sector)
+            if (usuario.getGrupo() != null && usuario.getGrupo().getSector() != null) {
+                String nombreSector = usuario.getGrupo().getSector().getNombre();
+                conteo.put(nombreSector, conteo.getOrDefault(nombreSector, 0) + 1);
+            }
+        }
+        return conteo;
     }
 
 }

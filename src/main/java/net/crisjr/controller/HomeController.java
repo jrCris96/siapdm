@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,7 +57,7 @@ public class HomeController {
     }
 
     @GetMapping("/index")
-    public String mostrarIndex(Authentication auth, HttpSession session) {
+    public String mostrarIndex(Authentication auth, HttpSession session, Model model) {
 
         String username= auth.getName();
         System.out.println("nombre del usuario: "+username);
@@ -71,6 +72,8 @@ public class HomeController {
             System.out.println("Usuario: "+usuario);
             session.setAttribute("usuario", usuario);
         }
+        Map<String, Integer> sociosPorSector = serviceUsuario.obtenerSociosPorSector();
+        model.addAttribute("sociosPorSector", sociosPorSector);
         return "home";
     }
 
