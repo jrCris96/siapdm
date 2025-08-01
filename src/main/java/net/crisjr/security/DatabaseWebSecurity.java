@@ -38,7 +38,7 @@ public class DatabaseWebSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf
+            .csrf(csrf -> csrf 
                 .ignoringRequestMatchers("/api/dialogflow/fulfillment") // CSRF desactivado solo para el webhook
             )
             .authorizeHttpRequests(authorize -> authorize

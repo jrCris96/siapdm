@@ -74,7 +74,7 @@ public String guardarAmonestacion(@RequestParam("idUsuario") String idUsuario,
     amonestacionService.guardar(amonestacion);
 
     attributes.addFlashAttribute("msg", "Amonestación registrada correctamente.");
-    return "redirect:/";
+    return "redirect:/index";
 }
 
     // 👉 Listar todas las amonestaciones
@@ -129,7 +129,4 @@ public String guardarAmonestacion(@RequestParam("idUsuario") String idUsuario,
         model.addAttribute("amonestacion", amonestacion);
         return "amonestaciones/detalleDescripcion";
     }
-
-
-
 }

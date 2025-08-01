@@ -51,8 +51,14 @@
                             <p>Sector: <span th:text="${usuario.grupo.sector.nombre}"></span></p>
                         </div>
                         <div>
-                            <button class="button background2-left-column" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">Editar</button>
-                            <button class="button background3-left-column" sec:authorize="hasAnyAuthority('SUPER_ADMIN')">Desactivar</button>
+                            <a th:href="@{/usuarios/edit/{id}(id=${usuario.id})}"
+                            sec:authorize="hasAnyAuthority('SUPER_ADMIN')"
+                            class="button background2-left-column">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                Editar
+                            </a>
+
+                            
                         </div>
                     </div>
                 </div>
@@ -66,7 +72,6 @@
             <div th:if="${vehiculosPropios.size() < 2 and vehiculosAsignados.size() == 0}">
                 <h2 class="titulo">Vehiculo</h2>
                 <a th:href="@{/vehiculos/create(idUsuario=${usuarios.idUsuario})}" sec:authorize="hasAnyAuthority('SUPER_ADMIN')" class="button background2-left-column">
-
                     Añadir Vehículo
                 </a>
             </div>

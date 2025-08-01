@@ -138,7 +138,11 @@ public class UsuarioController {
             // Guardar usuario con la lógica del servicio (que puede lanzar excepciones)
             serviceUsuario.guardar(usuario);
 
-            attributes.addFlashAttribute("msg", "Registro Guardado!");
+            if (usuario.getId() == null) {
+                attributes.addFlashAttribute("msg", "Registro Guardado!");
+            } else {
+                attributes.addFlashAttribute("msg", "Usuario Actualizado!");
+            }
 
              // Verificar si el usuario tiene perfil "SOCIO PROPIETARIO"
             boolean esPropietario = usuario.getPerfiles().stream()
@@ -149,7 +153,7 @@ public class UsuarioController {
                 return "redirect:/vehiculos/create?idUsuario=" + usuario.getIdUsuario();
             } else {
                 // Redirigir al inicio
-                return "redirect:/index";
+                return "redirect:/usuarios/indexPaginate";
             }
 
         } catch (IllegalArgumentException e) {
@@ -223,12 +227,11 @@ public class UsuarioController {
         return "/usuarios/verSocio";
     }
 
-
-
     @GetMapping("/desactivar/{id}")
     public String desactivarUsuario(@PathVariable("id") Integer idUsuario, RedirectAttributes attributes) {
 
         Usuario usuario = serviceUsuario.buscarPorId(idUsuario);
+        
 
         if (usuario != null) {
             usuario.setEstado("deshabilitado"); 
@@ -258,6 +261,11 @@ public class UsuarioController {
     public String editar(@PathVariable("id") int idUsuario, Model model){
         Usuario usuario= serviceUsuario.buscarPorId(idUsuario);
         model.addAttribute("usuario", usuario);
+
+        // Filtra los perfiles para no mostrar SUPER_ADMIN
+        List<Perfil> perfiles = servicePerfil.buscarTodas();
+        perfiles.removeIf(perfil -> "SUPER_ADMIN".equalsIgnoreCase(perfil.getPerfil()));
+        model.addAttribute("perfiles", perfiles);
 
         Grupo grupoUsuario= usuario.getGrupo();
         model.addAttribute("grupoUsuario", grupoUsuario);

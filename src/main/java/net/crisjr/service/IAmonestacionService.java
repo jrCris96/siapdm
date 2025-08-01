@@ -15,6 +15,4 @@ public interface IAmonestacionService {
     List<Amonestacion> buscarPorSector(Integer sectorId);
     List<Amonestacion> obtenerPorUsuarioId(int idUsuario);
     int contarPorIdSocio(Integer idSocio);
-
-
 }

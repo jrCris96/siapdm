@@ -95,7 +95,4 @@ public class RetirosSindicatoController {
         model.addAttribute("hasta", hasta);
         return "retiros/reportesRetiro";
     }
-
-
-
 }

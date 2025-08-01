@@ -47,7 +47,7 @@ public class MesaDirectivaController {
         boolean existeMesaActiva = mesaService.hayMesaActiva();
         if (existeMesaActiva) {
             attributes.addFlashAttribute("error", "Ya existe una mesa directiva activa.");
-            return "redirect:/";
+            return "redirect:/index";
         }
 
         model.addAttribute("mesa", new MesaDirectiva());
@@ -99,6 +99,11 @@ public class MesaDirectivaController {
 
         MesaDirectiva mesa = detalle.getMesaDirectiva();
         Usuario socio = usuariosService.buscarPorIdUsuario(idUsuario);
+        boolean existeMesaActiva = mesaService.hayMesaActiva();
+        if (existeMesaActiva) {
+            attributes.addFlashAttribute("error", "Ya existe una mesa directiva activa.");
+            return "redirect:/index";
+        }
 
         if (socio == null) {
             attributes.addFlashAttribute("error", "No se encontró un socio con el ID proporcionado.");
@@ -182,6 +187,4 @@ public class MesaDirectivaController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, false));
     }
-
-
 }

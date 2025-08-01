@@ -31,8 +31,9 @@
                     <a href="#">
                         <img th:src="@{/logos/{img}(img=${amonestacion.socio.foto})}" alt="Foto del socio">
                     </a>
-                    <h2 th:text="${amonestacion.socio.nombre + ' ' + amonestacion.socio.apellido}">Cristian Javier Quispe Choque</h2>
-                    <h4 th:text="${amonestacion.socio.idUsuario}">Desarrollador web</h4>
+                    <h2 th:text="${amonestacion.socio.nombre}"></h2>
+                    <h2 th:text="${amonestacion.socio.apellido}"></h2>
+                    <h4 th:text="${amonestacion.socio.idUsuario}"></h4>
                 </div>
                 <div class="descripcion">
                     <p>fecha de Amonestacion: <span th:text="${amonestacion.fecha != null ? amonestacion.fecha.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : '-'}">12-12-2020</span></p>

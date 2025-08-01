@@ -148,5 +148,4 @@ public class JefeGrupoController {
         if (socio == null || socio.getGrupo() == null) return null;
         return new GrupoConSectorDTO(socio.getGrupo());
     }
-
 }

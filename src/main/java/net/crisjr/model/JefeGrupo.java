@@ -93,6 +93,4 @@ public class JefeGrupo {
         return "JefeGrupo [id=" + id + ", socio=" + socio + ", grupo=" + grupo + ", fechaInicio=" + fechaInicio
                 + ", fechaFin=" + fechaFin + ", estado=" + estado + "]";
     }
-
-    
 }

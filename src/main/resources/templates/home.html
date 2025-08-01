@@ -20,6 +20,10 @@
     <div th:insert="~{/fragments/menu :: menu-barra}" class="sidebar" id="sidebar"></div>
     
     <main id="main">
+
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+
         <div class="cards">
             <div class="card" th:each="entry : ${sociosPorSector}">
                 <div class="card-content">

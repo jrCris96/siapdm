@@ -179,7 +179,5 @@ public String guardarVehiculo(
         }
         return "redirect:/usuarios/view/" + vehiculo.getUsuarioId().getIdUsuario();
     }
-
-
 }
  
